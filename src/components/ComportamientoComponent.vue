@@ -1,6 +1,6 @@
 <template>
   <div>
-    datos
+    Componrtamiento del cliente
   </div>
 </template>
 

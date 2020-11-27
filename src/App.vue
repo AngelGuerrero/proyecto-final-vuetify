@@ -19,8 +19,8 @@
 
               <!-- Controles para recorrer los pasos -->
               <v-card-actions d-flex class="px-3">
-                <v-btn text color="secondary" @click="prevStep">Anterior</v-btn>
-                <v-btn text color="primary" @click="nextStep" class="ml-auto"
+                <v-btn color="secondary" @click="prevStep">Anterior</v-btn>
+                <v-btn color="primary" @click="nextStep" class="ml-auto"
                   >Siguiente</v-btn
                 >
               </v-card-actions>
@@ -30,7 +30,7 @@
       </div>
 
       <div id="my_footer">
-        <!-- <footer-component></footer-component> -->
+        <footer-component></footer-component>
       </div>
     </div>
   </v-app>
@@ -46,7 +46,9 @@ import FooterComponent from './components/FooterComponent'
 import ModelosComponent from './components/ModelosComponent'
 import SociodemograficosComponent from './components/SociodemograficosComponent'
 import ComportamientoComponent from './components/ComportamientoComponent'
+import GeograficosComponent from './components/GeograficosComponent'
 import DatosComponent from './components/DatosComponent'
+import FormularioComponent from './components/FormularioComponent'
 
 export default {
   name: 'App',
@@ -60,11 +62,13 @@ export default {
     ModelosComponent,
     SociodemograficosComponent,
     ComportamientoComponent,
-    DatosComponent
+    GeograficosComponent,
+    DatosComponent,
+    FormularioComponent
   },
 
   created () {
-    this.currentStep = this.steps[4]
+    this.currentStep = this.steps[5]
   },
 
   computed: {
@@ -102,7 +106,7 @@ export default {
       //
       // Verifica si el siguiente es el último elemento
       if (
-        this.currentStep.number + 1 >=
+        this.currentStep.number + 1 >
         this.steps[this.steps.length - 1].number
       ) {
         return

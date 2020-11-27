@@ -5,16 +5,17 @@
     </v-card-title>
 
     <v-card-text>
-      <v-container>
-        <v-radio-group v-model="selectedOption">
-          <v-radio
-            v-for="n in opciones"
-            :key="n"
-            :label="`${n}`"
-            :value="n"
-          ></v-radio>
-        </v-radio-group>
-      </v-container>
+      <v-row>
+        <v-col cols="12" class="d-flex justify-center">
+          <v-radio-group v-model="selectedOption" row>
+            <v-radio
+              v-for="n in opciones"
+              :key="n"
+              :label="`${n}`"
+              :value="n"
+            ></v-radio> </v-radio-group
+        ></v-col>
+      </v-row>
 
       <v-expansion-panels
         v-show="selectedOption === 'Segmentar Clientes'"
