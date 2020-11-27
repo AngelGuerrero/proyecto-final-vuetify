@@ -1,0 +1,28 @@
+
+.dev {
+  border: 1px dashed tomato;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#wrapper {
+  min-height: 100vh;
+
+  display: grid;
+
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr minmax(70px, auto);
+}
+
+#my_nav {
+  grid-row: 1/2;
+}
+#content {
+  grid-row: 2/3;
+  height: 100%;
+}
+#my_footer {
+  grid-row: 3/4;
+}
