@@ -15,44 +15,48 @@
       >
 
       <v-row>
-        <v-col cols="">
-          <v-select>
-            <option>Estado</option>
-            <option>AGUASCALIENTES</option>
-            <option>BAJA CALIFORNIA</option>
-            <option>BAJA CALIFORNIA SUR</option>
-            <option>CAMPECHE</option>
-            <option>COAHUILA DE ZARAGOZA</option>
-            <option>COLIMA</option>
-            <option>CHIAPAS</option>
-            <option>CHIHUAHUA</option>
-            <option>CIUDAD DE MEXICO</option>
-            <option>DURANGO</option>
-            <option>GUANAJUATO</option>
-            <option>GUERRERO</option>
-            <option>HIDALG</option>
-            <option>JALISCO</option>
-            <option>MEXICO</option>
-            <option>MICHOACAN DE OCAMPO</option>
-            <option>MORELOS</option>
-            <option>NAYARIT</option>
-            <option>NUEVO LEON</option>
-            <option>OAXACA</option>
-            <option>PUEBLA</option>
-            <option>QUERETARO</option>
-            <option>QUINTANA ROO</option>
-            <option>SAN LUIS POTOSI</option>
-            <option>SINALOA</option>
-            <option>SONORA</option>
-            <option>TABASCO</option>
-            <option>TAMAULIPAS</option>
-            <option>TLAXCALA</option>
-            <option>VERACRUZ DE IGNACIO DE LA LLAVE</option>
-            <option>YUCATAN</option>
-            <option>ZACATECAS</option>
+        <v-col cols="12" md="6">
+          <v-select
+            label="Estado"
+            outlined
+            :items="[
+              'AGUASCALIENTES',
+              'BAJA CALIFORNIA',
+              'BAJA CALIFORNIA SUR',
+              'CAMPECHE',
+              'COAHUILA DE ZARAGOZA',
+              'COLIMA',
+              'CHIAPAS',
+              'CHIHUAHUA',
+              'CIUDAD DE MEXICO',
+              'DURANGO',
+              'GUANAJUATO',
+              'GUERRERO',
+              'HIDALG',
+              'JALISCO',
+              'MEXICO',
+              'MICHOACAN DE OCAMPO',
+              'MORELOS',
+              'NAYARIT',
+              'NUEVO LEON',
+              'OAXACA',
+              'PUEBLA',
+              'QUERETARO',
+              'QUINTANA ROO',
+              'SAN LUIS POTOSI',
+              'SINALOA',
+              'SONORA',
+              'TABASCO',
+              'TAMAULIPAS',
+              'TLAXCALA',
+              'VERACRUZ DE IGNACIO DE LA LLAVE',
+              'YUCATAN',
+              'ZACATECAS'
+            ]"
+          >
           </v-select>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <v-select>
             <option>Municipio</option>
             <option>ACAMBAY</option>
