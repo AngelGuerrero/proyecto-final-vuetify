@@ -107,8 +107,8 @@ export default {
     prevStep () {
       //
       // Verifica que no sea menor que el primer elemento
-      if (this.currentStep - 1 <= 0) return
-      this.currentStep = this.currentStep - 1
+      if (this.currentStep.number - 1 <= 0) return
+      this.currentStep = this.steps[this.currentStep.number - 2]
     }
   }
 }

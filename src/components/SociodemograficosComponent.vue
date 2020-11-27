@@ -14,22 +14,26 @@
       </v-container>
 
       <!-- Género -->
-      <v-card>
+      <v-card class="elevation-0">
         <v-card-title primary-title class="justify-center">
-          <h2>Género</h2>
+          <h3>Género</h3>
         </v-card-title>
         <v-card-text>
+          <v-container class="elevation-3 rounded">
+
           <v-checkbox label="Hombre"></v-checkbox>
           <v-checkbox label="Mujer"></v-checkbox>
+
+          </v-container>
         </v-card-text>
       </v-card>
 
       <!-- Edad -->
       <v-row>
         <v-col>
-          <v-card>
+          <v-card class="elevation-0">
             <v-card-title primary-title class="justify-center">
-              <h2>Edad</h2>
+              <h3>Edad</h3>
             </v-card-title>
             <v-card-text>
               <p>
@@ -42,7 +46,7 @@
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
-                    <h2 class="text-h6 text-md-h5">Manual</h2>
+                    <h4>Manual</h4>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel></v-expansion-panel-content>
@@ -51,7 +55,7 @@
                 <!-- Option 2 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
-                    <h2 class="text-h6 text-md-h5">Rangos de edad</h2>
+                    <h4>Rangos de edad</h4>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
@@ -63,36 +67,25 @@
                       <v-row>
                         <v-col cols="12" md="3">
                           <v-checkbox label=" 15 a 19 años "></v-checkbox>
-
                           <v-checkbox label=" 20 a 24 años "></v-checkbox>
-
                           <v-checkbox label=" 25 a 29 años "></v-checkbox>
-
                           <v-checkbox label=" 30 a 34 años "></v-checkbox>
                         </v-col>
                         <v-col cols="12" md="3">
                           <v-checkbox label=" 35 a 39 años "></v-checkbox>
-
                           <v-checkbox label=" 40 a 44 años "></v-checkbox>
-
                           <v-checkbox label=" 45 a 49 años "></v-checkbox>
-
                           <v-checkbox label=" 50 a 54 años "></v-checkbox>
                         </v-col>
                         <v-col cols="12" md="3">
                           <v-checkbox label=" 55 a 59 años "></v-checkbox>
-
                           <v-checkbox label=" 60 a 64 años "></v-checkbox>
-
                           <v-checkbox label=" 65 a 69 años "></v-checkbox>
-
                           <v-checkbox label=" 70 a 74 años "></v-checkbox>
                         </v-col>
                         <v-col cols="12" md="3">
                           <v-checkbox label=" 75 a 79 años "></v-checkbox>
-
                           <v-checkbox label=" 80 a 84 años "></v-checkbox>
-
                           <v-checkbox label=" 85 años o más "></v-checkbox>
                         </v-col>
                       </v-row>
@@ -103,7 +96,7 @@
                 <!-- Option 3 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
-                    <h2 class="text-h6 text-md-h5">Etapas de vida</h2>
+                    <h4>Etapas de vida</h4>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
@@ -137,7 +130,7 @@
                 <!-- Option 4 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
-                    <h2 class="text-h6 text-md-h5">Generación</h2>
+                    <h4>Generación</h4>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
@@ -177,6 +170,213 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- Sin clasificación -->
+      <v-container>
+        <form action="">
+          <v-row>
+            <!-- Nivel de escolaridad -->
+            <v-col cols="12" md="6">
+              <div class="elevation-3 pa-3 rounded">
+                <h4>Nivel de escolaridad</h4>
+                <div>
+                  <v-checkbox label="Sin estudios"></v-checkbox>
+                  <v-checkbox label="Primaria"></v-checkbox>
+                  <v-checkbox label="Secundaria"></v-checkbox>
+                  <v-checkbox label="Carrera Técnica"></v-checkbox>
+                  <v-checkbox label="Preparatoria"></v-checkbox>
+                  <v-checkbox label="Profesional"></v-checkbox>
+                  <v-checkbox label="No identificado"></v-checkbox>
+                </div>
+              </div>
+            </v-col>
+            <!-- Estado civil -->
+            <v-col cols="12" md="6">
+              <div class="elevation-3 pa-3 rounded">
+                <h4>Estado Civil</h4>
+                <div class="card-text">
+                  <v-checkbox label="Casado"></v-checkbox>
+                  <v-checkbox label="Soltero"></v-checkbox>
+                  <v-checkbox label="Union Libre"></v-checkbox>
+                  <v-checkbox label="Divorciado"></v-checkbox>
+                  <v-checkbox label="Viudo"></v-checkbox>
+                  <v-checkbox label="Profesional"></v-checkbox>
+                  <v-checkbox label="Sin Identifica"></v-checkbox>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+
+          <!---->
+          <v-row>
+            <!-- Integrantes del hogar -->
+            <v-col cols="12" md="6">
+              <div class="elevation-3 pa-3 rounded">
+                <h4>Integrantes del hogar</h4>
+                <div>
+                  <v-checkbox label="1 persona"> </v-checkbox>
+                  <v-checkbox label="2 personas"> </v-checkbox>
+                  <v-checkbox label="3 personas"> </v-checkbox>
+                  <v-checkbox label="4 personas"> </v-checkbox>
+                  <v-checkbox label="5 personas"> </v-checkbox>
+                  <v-checkbox label="6 o más personas"></v-checkbox>
+                  <v-checkbox label="Sin dato"></v-checkbox>
+                </div>
+              </div>
+            </v-col>
+            <!-- Integrantes del hogar que trabajan -->
+            <v-col cols="12" md="6">
+              <div class="elevation-3 pa-3 rounded">
+                <h4>Integrantes del hogar que trabajan</h4>
+                <div>
+                  <v-checkbox label="1 persona"> </v-checkbox>
+                  <v-checkbox label="2 personas"> </v-checkbox>
+                  <v-checkbox label="3 personas"> </v-checkbox>
+                  <v-checkbox label="4 personas"> </v-checkbox>
+                  <v-checkbox label="5 o más personas"></v-checkbox>
+                  <v-checkbox label="Sin dato"></v-checkbox>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <!---->
+        </form>
+      </v-container>
+
+      <!-- Salario -->
+      <v-row>
+        <v-col>
+          <v-card class="elevation-0">
+            <v-card-title primary-title class="justify-center">
+              <h3>Salario</h3>
+            </v-card-title>
+            <v-card-text class="text-center">
+              <p>
+                Elije el ingreso del cliente que mejor considere.
+              </p>
+
+              <!-- Panels -->
+              <v-expansion-panels focusable multiple v-model="panels">
+                <!-- Option 1 -->
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="d-flex flex-row">
+                    <v-container>
+                      <h3>Salarios minimos</h3>
+                      <p class="my-3">
+                        Salario mínimo general vigente a partir del 1° de enero
+                        de 2020 corresponde a $123.22 pesos
+                      </p>
+                    </v-container>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content panel>
+                    <p class="my-3">
+                      Selecciona los rangos de salario minimo requerido
+                    </p>
+                    <v-row>
+                      <v-col cols="12" md="4">
+                        <v-checkbox label="Menor o igual a 1 SM"></v-checkbox>
+                        <v-checkbox label="Hasta 2 SM"></v-checkbox>
+                        <v-checkbox label="Hasta 3 SM"></v-checkbox>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-checkbox label="Hasta 4 SM"></v-checkbox>
+                        <v-checkbox label="De 5 a 10 SM"></v-checkbox>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-checkbox label="De 11 a 25 SM"></v-checkbox>
+                        <v-checkbox label="Mayor a 25 SM"></v-checkbox>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <!-- Option 2 -->
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="d-flex flex-row">
+                    <v-container>
+                      <h3>Ingreso promedio mensual</h3>
+                      <p class="my-3">
+                        Elije los minimos y maximos del ingreso promedio mensual
+                      </p>
+                    </v-container>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content panel>
+                    <p class="my-3">Salario promedio mensual</p>
+
+                    Slider
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <!-- Option 3 -->
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="d-flex flex-row">
+                    <v-container>
+                      <h3>Nivel socioeconómico</h3>
+                      <p class="my-3">
+                        Selecciona el Nivel Socieconomico de tu interes. *Datos
+                        calculados al 2020
+                      </p>
+                    </v-container>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content panel>
+                    <p class="my-3">
+                      Selecciona los rangos de nivel socioeconómico de tu
+                      interes
+                    </p>
+
+                    <form>
+                      <v-row>
+                        <v-col cols="12" md="4">
+                          <v-checkbox label="A/B"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $94,864
+                          </p>
+
+                          <v-checkbox label="C+"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $39,061
+                          </p>
+
+                          <v-checkbox label="C"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $22,205
+                          </p>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                          <v-checkbox label="C-"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $16,740
+                          </p>
+
+                          <v-checkbox label="D+"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $12,945
+                          </p>
+                        </v-col>
+
+                        <v-col cols="12" md="4">
+                          <v-checkbox label="D"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $7,833
+                          </p>
+
+                          <v-checkbox label="E"></v-checkbox>
+                          <p class="text-left">
+                            Ingreso promedio mensual $3,712
+                          </p>
+                        </v-col>
+                      </v-row>
+                    </form>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card-text>
   </div>
 </template>
@@ -186,7 +386,7 @@ export default {
   name: 'SociodemograficosComponent',
 
   data: () => ({
-    panels: [0, 0, 0, 3]
+    panels: [0, 0, 2, 0]
   })
 }
 </script>

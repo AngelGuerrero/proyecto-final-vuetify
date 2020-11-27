@@ -22,17 +22,22 @@
         multiple
         v-model="panels"
       >
-        <h1 class="text-center text-h4 text-md-h4">Modelos de segmentación</h1>
-        <p class="my-3">
-          Elige el modelo de segmentación de clientes que mas se ajuste a tus
-          necesidades.
-        </p>
+        <v-container>
+          <h1 class="text-center text-h4 text-md-h4">
+            Modelos de segmentación
+          </h1>
+          <p class="text-center my-3">
+            Elige el modelo de segmentación de clientes que mas se ajuste a tus
+            necesidades.
+          </p>
+        </v-container>
+
         <!-- Option 1 -->
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="text-h6 text-md-h5 mb-3">RFM por Categorias</h2>
-              <p>
+              <h3>RFM por Categorias</h3>
+              <p class="my-3">
                 Consiste en clasificar a los clientes mediante tres variables
                 indicadoras:
               </p>
@@ -121,10 +126,8 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="text-h6 text-md-h5 mb-3">
-                SPC "Probabilidad de compra"
-              </h2>
-              <p>
+              <h3>SPC "Probabilidad de compra"</h3>
+              <p class="my-3">
                 Este modelo clasifica a los clientes acuerdo al número de
                 compras y tiempo transcurrido entre compras por medios digitales
                 y los divide<br />
@@ -160,8 +163,8 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="text-h6 text-md-h5 mb-3">Puntualidad "N"</h2>
-              <p>
+              <h3>Puntualidad "N"</h3>
+              <p class="my-3">
                 Utiliza diversas variables económicas, demográficas y de perfil
                 digital que permite predecir la puntualidad de abono<br />
                 para Clientes clasificación "N" antes de que sus meses de
@@ -200,17 +203,21 @@
         multiple
         v-model="panels"
       >
-        <h1 class="text-center text-h4 text-md-h4">Modelos de Recomendación</h1>
-        <p class="my-3">
-          Elige el modelo de recomendación de productos que mas se ajuste a tus
-          necesidades.
-        </p>
+        <v-container>
+          <h1 class="text-center text-h4 text-md-h4">
+            Modelos de Recomendación
+          </h1>
+          <p class="text-center my-3">
+            Elige el modelo de recomendación de productos que mas se ajuste a
+            tus necesidades.
+          </p>
+        </v-container>
         <!-- Option 1 -->
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="text-h6 text-md-h5 mb-3">Recomendar productos</h2>
-              <p>
+              <h3>Recomendar productos</h3>
+              <p class="my-3">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Est,
                 laboriosam!
               </p>
