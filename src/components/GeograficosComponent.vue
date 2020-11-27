@@ -57,24 +57,28 @@
           </v-select>
         </v-col>
         <v-col cols="12" md="6">
-          <v-select>
-            <option>Municipio</option>
-            <option>ACAMBAY</option>
-            <option>ACOLMAN</option>
-            <option>ACULCO</option>
-            <option>ALMOLOYA DE ALQUISIRAS</option>
-            <option>ALMOLOYA DE JUAREZ</option>
-            <option>ALMOLOYA DEL RIO</option>
-            <option>AMANALCO</option>
-            <option>AMATEPEC</option>
-            <option>AMECAMECA</option>
-            <option>APAXCO</option>
-            <option>ATENCO</option>
-            <option>ATIZAPAN</option>
-            <option>ATIZAPAN DE ZARAGOZA</option>
-            <option>ATLAUTLA</option>
-            <option>AXAPUSCO</option>
-            <option>AYAPANGO</option>
+          <v-select
+            label="Municipio"
+            outlined
+            :items="[
+              'ACAMBAY',
+              'ACOLMAN',
+              'ACULCO',
+              'ALMOLOYA DE ALQUISIRAS',
+              'ALMOLOYA DE JUAREZ',
+              'ALMOLOYA DEL RIO',
+              'AMANALCO',
+              'AMATEPEC',
+              'AMECAMECA',
+              'APAXCO',
+              'ATENCO',
+              'ATIZAPAN',
+              'ATIZAPAN DE ZARAGOZA',
+              'ATLAUTLA',
+              'AXAPUSCO',
+              'AYAPANGO'
+            ]"
+          >
           </v-select>
         </v-col>
       </v-row>
@@ -181,15 +185,16 @@
       </v-card>
 
       <!--Google map-->
-      <div class="min-vh-50">
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe
-            class="embed-responsive-item"
-            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d5287197.88756685!2d-101.89025342665099!3d23.78338017554413!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1603843493857!5m2!1ses!2smx"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
+      <v-card class="elevation-0">
+        <v-responsive :aspect-ratio="16 / 9">
+          <v-card-text class="myIframe">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d5287197.88756685!2d-101.89025342665099!3d23.78338017554413!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1603843493857!5m2!1ses!2smx"
+              allowfullscreen
+            ></iframe>
+          </v-card-text>
+        </v-responsive>
+      </v-card>
       <!--Google Maps-->
     </v-card-text>
   </div>
@@ -201,4 +206,20 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.myIframe {
+  position: relative;
+  padding-bottom: 65.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.myIframe iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
