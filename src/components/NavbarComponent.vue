@@ -9,6 +9,10 @@
         transition="scale-transition"
         width="40"
       />
+      <v-container class="d-flex flex-column">
+      <span>Modelos de segmentación</span>
+      <span class="caption">Facultad de Geografía</span>
+      </v-container>
     </div>
 
     <v-spacer></v-spacer>
@@ -16,6 +20,10 @@
     <v-btn href="#" text>
       <v-icon>mdi-home</v-icon>
       <span class="ml-2">Inicio</span>
+    </v-btn>
+    <v-btn href="#" text>
+      <v-icon>mdi-information</v-icon>
+      <span class="ml-2">Instrucciones</span>
     </v-btn>
   </v-app-bar>
 </template>

@@ -1,38 +1,37 @@
 <template>
-  <v-app id="wrapper">
-    <div id="my_nav">
-      <navbar-component></navbar-component>
-    </div>
+  <v-app>
+    <div id="wrapper">
+      <nav id="my_nav">
+        <navbar-component></navbar-component>
+      </nav>
 
-    <div id="content" class="grey lighten-3">
-      <v-main>
-        <v-container>
-          <!-- Contiene la visualización de los pasos a seguir -->
-          <header-component
-            :steps="steps"
-            :currentStep="currentStep.number"
-          ></header-component>
+      <div id="content" class="blue-grey lighten-5">
+        <v-main>
+          <v-container>
+            <!-- Contiene la visualización de los pasos a seguir -->
+            <header-component
+              :steps="steps"
+              :currentStep="currentStep.number"
+            ></header-component>
+            <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
+            <v-card class="py-3 elevation-10">
+              <component :is="getCurrentComponent"></component>
 
-          <!--
-            Renderiza un componente dinámico en base al paso seleccionado.
-           -->
-          <v-card class="py-3 elevation-10">
-            <component :is="getCurrentComponent"></component>
+              <!-- Controles para recorrer los pasos -->
+              <v-card-actions d-flex class="px-3">
+                <v-btn text color="secondary" @click="prevStep">Anterior</v-btn>
+                <v-btn text color="primary" @click="nextStep" class="ml-auto"
+                  >Siguiente</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-container>
+        </v-main>
+      </div>
 
-            <!-- Controles para recorrer los pasos -->
-            <v-card-actions d-flex class="px-3">
-              <v-btn text color="secondary" @click="prevStep">Anterior</v-btn>
-              <v-btn text color="primary" @click="nextStep" class="ml-auto"
-                >Siguiente</v-btn
-              >
-            </v-card-actions>
-          </v-card>
-        </v-container>
-      </v-main>
-    </div>
-
-    <div id="my_footer">
-      <footer-component></footer-component>
+      <div id="my_footer">
+        <!-- <footer-component></footer-component> -->
+      </div>
     </div>
   </v-app>
 </template>
@@ -46,6 +45,8 @@ import FooterComponent from './components/FooterComponent'
 // Modelos dinámicos
 import ModelosComponent from './components/ModelosComponent'
 import SociodemograficosComponent from './components/SociodemograficosComponent'
+import ComportamientoComponent from './components/ComportamientoComponent'
+import DatosComponent from './components/DatosComponent'
 
 export default {
   name: 'App',
@@ -57,11 +58,13 @@ export default {
     FooterComponent,
 
     ModelosComponent,
-    SociodemograficosComponent
+    SociodemograficosComponent,
+    ComportamientoComponent,
+    DatosComponent
   },
 
   created () {
-    this.currentStep = this.steps[1]
+    this.currentStep = this.steps[4]
   },
 
   computed: {
@@ -98,7 +101,10 @@ export default {
     nextStep () {
       //
       // Verifica si el siguiente es el último elemento
-      if (this.currentStep.number + 1 >= this.steps[this.steps.length - 1].number) {
+      if (
+        this.currentStep.number + 1 >=
+        this.steps[this.steps.length - 1].number
+      ) {
         return
       }
       this.currentStep = this.steps[this.currentStep.number]

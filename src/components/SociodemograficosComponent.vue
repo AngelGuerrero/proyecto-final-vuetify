@@ -1,12 +1,14 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      <h2 class="text-h6 text-md-h5">Categoría Sociodemográficos</h2>
+      <h1 class="text-center text-h4 text-md-h4">
+        Categoría Sociodemográficos
+      </h1>
     </v-card-title>
 
     <v-card-text>
       <v-container>
-        <p>
+        <p class="text-center">
           En esta categoria puedes filtrar por caracteristicas sociodemograficas
           del cliente. Ahora bien, si no lo requieres, pues dar clic en
           continuar.
@@ -20,10 +22,8 @@
         </v-card-title>
         <v-card-text>
           <v-container class="elevation-3 rounded">
-
-          <v-checkbox label="Hombre"></v-checkbox>
-          <v-checkbox label="Mujer"></v-checkbox>
-
+            <v-checkbox label="Hombre"></v-checkbox>
+            <v-checkbox label="Mujer"></v-checkbox>
           </v-container>
         </v-card-text>
       </v-card>
@@ -42,14 +42,16 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable multiple v-model="panels">
+              <v-expansion-panels focusable multiple v-model="edadPanels">
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
                     <h4>Manual</h4>
                   </v-expansion-panel-header>
 
-                  <v-expansion-panel-content panel></v-expansion-panel-content>
+                  <v-expansion-panel-content panel>
+                    <v-container>Sliders</v-container>
+                  </v-expansion-panel-content>
                 </v-expansion-panel>
 
                 <!-- Option 2 -->
@@ -256,7 +258,7 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable multiple v-model="panels">
+              <v-expansion-panels focusable multiple v-model="salarioPanels">
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
@@ -386,7 +388,8 @@ export default {
   name: 'SociodemograficosComponent',
 
   data: () => ({
-    panels: [0, 0, 2, 0]
+    edadPanels: [],
+    salarioPanels: []
   })
 }
 </script>
