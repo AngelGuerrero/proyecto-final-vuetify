@@ -68,7 +68,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[5]
+    this.currentStep = this.steps[3]
   },
 
   computed: {
