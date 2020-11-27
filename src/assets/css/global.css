@@ -3,17 +3,11 @@
   border: 1px dashed tomato;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 #wrapper {
-  min-height: 100vh;
-
   display: grid;
 
   grid-template-columns: auto;
-  grid-template-rows: auto 1fr minmax(70px, auto);
+  grid-template-rows: auto 1fr 30px;
 }
 
 #my_nav {
@@ -21,7 +15,6 @@ html {
 }
 #content {
   grid-row: 2/3;
-  height: 100%;
 }
 #my_footer {
   grid-row: 3/4;

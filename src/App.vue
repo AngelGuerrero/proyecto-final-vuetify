@@ -4,7 +4,7 @@
       <navbar-component></navbar-component>
     </div>
 
-    <div id="content" class="dev grey lighten-3">
+    <div id="content" class="grey lighten-3">
       <v-main>
         <v-container>
           <!-- Contiene la visualización de los pasos a seguir -->
@@ -19,18 +19,19 @@
           <v-card class="py-3 elevation-10">
             <component :is="getCurrentComponent"></component>
 
-              <!-- Controles para recorrer los pasos -->
-              <v-card-actions d-flex class="px-3">
-                <v-btn text color="secondary" @click="prevStep">Anterior</v-btn>
-                <v-btn text color="primary" @click="nextStep" class="ml-auto">Siguiente</v-btn>
-              </v-card-actions>
+            <!-- Controles para recorrer los pasos -->
+            <v-card-actions d-flex class="px-3">
+              <v-btn text color="secondary" @click="prevStep">Anterior</v-btn>
+              <v-btn text color="primary" @click="nextStep" class="ml-auto"
+                >Siguiente</v-btn
+              >
+            </v-card-actions>
           </v-card>
-
         </v-container>
       </v-main>
     </div>
 
-    <div id="my_footer" class="dev">
+    <div id="my_footer">
       <footer-component></footer-component>
     </div>
   </v-app>
@@ -44,6 +45,7 @@ import FooterComponent from './components/FooterComponent'
 
 // Modelos dinámicos
 import ModelosComponent from './components/ModelosComponent'
+import SociodemograficosComponent from './components/SociodemograficosComponent'
 
 export default {
   name: 'App',
@@ -53,11 +55,13 @@ export default {
     HeaderComponent,
     StepperComponent,
     FooterComponent,
-    ModelosComponent
+
+    ModelosComponent,
+    SociodemograficosComponent
   },
 
   created () {
-    this.currentStep = this.steps[0]
+    this.currentStep = this.steps[1]
   },
 
   computed: {
@@ -71,7 +75,11 @@ export default {
     steps: [
       { title: 'Modelos', number: 1, component: 'modelos' },
       { title: 'Sociodemográficos', number: 2, component: 'sociodemograficos' },
-      { title: 'Comportamiento del cliente', number: 3, component: 'comportamiento' },
+      {
+        title: 'Comportamiento del cliente',
+        number: 3,
+        component: 'comportamiento'
+      },
       { title: 'Geográficos', number: 4, component: 'geograficos' },
       { title: 'Datos', number: 5, component: 'datos' },
       { title: 'Formulario', number: 6, component: 'formulario' }
@@ -79,21 +87,21 @@ export default {
   }),
 
   watch: {
-    steps (val) {
-      if (this.currentStep > val) {
-        this.currentStep = val
-      }
-    }
+    // steps (val) {
+    //   if (this.currentStep > val) {
+    //     this.currentStep = val
+    //   }
+    // }
   },
 
   methods: {
     nextStep () {
       //
       // Verifica si el siguiente es el último elemento
-      if (this.currentStep + 1 >= this.steps[this.steps.length - 1].number) {
+      if (this.currentStep.number + 1 >= this.steps[this.steps.length - 1].number) {
         return
       }
-      this.currentStep = this.currentStep + 1
+      this.currentStep = this.steps[this.currentStep.number]
     },
 
     prevStep () {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      <h2>¿Qué tipo de modelo quieres utilizar?</h2>
+      <h2 class="text-h6 text-md-h5">¿Qué tipo de modelo quieres utilizar?</h2>
     </v-card-title>
 
     <v-card-text>
@@ -22,7 +22,7 @@
         multiple
         v-model="panels"
       >
-        <h1>Modelos de segmentación</h1>
+        <h1 class="text-center text-h4 text-md-h4">Modelos de segmentación</h1>
         <p class="my-3">
           Elige el modelo de segmentación de clientes que mas se ajuste a tus
           necesidades.
@@ -31,7 +31,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="mb-3">RFM por Categorias</h2>
+              <h2 class="text-h6 text-md-h5 mb-3">RFM por Categorias</h2>
               <p>
                 Consiste en clasificar a los clientes mediante tres variables
                 indicadoras:
@@ -121,7 +121,9 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="mb-3">SPC "Probabilidad de compra"</h2>
+              <h2 class="text-h6 text-md-h5 mb-3">
+                SPC "Probabilidad de compra"
+              </h2>
               <p>
                 Este modelo clasifica a los clientes acuerdo al número de
                 compras y tiempo transcurrido entre compras por medios digitales
@@ -141,21 +143,13 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <h3>Retencion del cliente</h3>
-                  <v-checkbox
-                    label=" Alta probabilidad de compra "
-                  ></v-checkbox>
-                  <v-checkbox
-                    label=" Baja probabilidad de compra "
-                  ></v-checkbox>
+                  <v-checkbox label="Alta probabilidad de compra"></v-checkbox>
+                  <v-checkbox label="Baja probabilidad de compra"></v-checkbox>
                 </v-col>
                 <v-col cols="12" md="6">
                   <h3>Recuperacion del cliente</h3>
-                  <v-checkbox
-                    label=" Alta probabilidad de compra "
-                  ></v-checkbox>
-                  <v-checkbox
-                    label=" Baja probabilidad de compra "
-                  ></v-checkbox>
+                  <v-checkbox label="Alta probabilidad de compra"></v-checkbox>
+                  <v-checkbox label="Baja probabilidad de compra"></v-checkbox>
                 </v-col>
               </v-row>
             </form>
@@ -166,7 +160,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="mb-3">Puntualidad "N"</h2>
+              <h2 class="text-h6 text-md-h5 mb-3">Puntualidad "N"</h2>
               <p>
                 Utiliza diversas variables económicas, demográficas y de perfil
                 digital que permite predecir la puntualidad de abono<br />
@@ -206,7 +200,7 @@
         multiple
         v-model="panels"
       >
-        <h1>Modelos de Recomendación</h1>
+        <h1 class="text-center text-h4 text-md-h4">Modelos de Recomendación</h1>
         <p class="my-3">
           Elige el modelo de recomendación de productos que mas se ajuste a tus
           necesidades.
@@ -215,8 +209,11 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
-              <h2 class="mb-3">Recomendar productos</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, laboriosam!</p>
+              <h2 class="text-h6 text-md-h5 mb-3">Recomendar productos</h2>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est,
+                laboriosam!
+              </p>
             </v-container>
           </v-expansion-panel-header>
 
