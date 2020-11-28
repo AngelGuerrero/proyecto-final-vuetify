@@ -42,7 +42,7 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable multiple v-model="edadPanels">
+              <v-expansion-panels accordion focusable v-model="edadPanels">
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
@@ -337,7 +337,7 @@
                 </v-expansion-panel>
 
                 <!-- Option 2 -->
-                <v-expansion-panel v-on:click="update">
+                <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
                     <v-container>
                       <h3>Ingreso promedio mensual</h3>
@@ -439,14 +439,21 @@ var $ = require('jquery')
 export default {
   name: 'SociodemograficosComponent',
 
-  mounted () {
-    this.update()
-  },
-
   data: () => ({
     edadPanels: [0],
     salarioPanels: [0, 0]
   }),
+
+  watch: {
+    edadPanels () {
+      this.update()
+    },
+
+    salarioPanels () {
+      this.update()
+    }
+  },
+
   methods: {
     update () {
       //

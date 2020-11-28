@@ -129,6 +129,7 @@ export default {
         return
       }
       this.currentStep = this.steps[this.currentStep.number]
+      window.scrollTo(0, 0)
     },
 
     prevStep () {
@@ -136,6 +137,7 @@ export default {
       // Verifica que no sea menor que el primer elemento
       if (this.currentStep.number - 1 <= 0) return
       this.currentStep = this.steps[this.currentStep.number - 2]
+      window.scrollTo(0, 0)
     }
   }
 }

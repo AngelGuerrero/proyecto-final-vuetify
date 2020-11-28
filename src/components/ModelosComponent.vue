@@ -21,7 +21,7 @@
       <v-expansion-panels
         v-show="selectedOption === 'Segmentar Clientes'"
         focusable
-        multiple
+        accordion
         v-model="panels"
       >
         <v-container>
@@ -207,7 +207,7 @@
       <v-expansion-panels
         v-show="selectedOption === 'Recomendar Productos'"
         focusable
-        multiple
+        accordion
         v-model="panels"
       >
         <v-container>
