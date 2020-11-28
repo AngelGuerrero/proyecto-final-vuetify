@@ -346,7 +346,7 @@ export default {
 
   computed: {
     getCalendarSize () {
-      const size = this.mobile ? 190 : window.outerWidth >= 1440 ? '100%' : 240
+      const size = this.mobile ? 180 : window.outerWidth >= 1440 ? '100%' : 240
       return size
     }
   },
