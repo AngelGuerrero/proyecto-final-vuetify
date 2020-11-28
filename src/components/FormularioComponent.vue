@@ -16,12 +16,12 @@
         <v-card-text>
           <form>
             <v-row>
-              <v-col cols="12" md="4"
-                ><v-subheader>Tu nombre</v-subheader></v-col
-              >
-              <v-col cols="12" md="8"
-                ><v-text-field label=""></v-text-field
-              ></v-col>
+              <v-col cols="12" md="4">
+                <v-subheader>Tu nombre</v-subheader>
+              </v-col>
+              <v-col cols="12" md="8">
+                <v-text-field label=""></v-text-field>
+              </v-col>
             </v-row>
 
             <v-row>
@@ -64,10 +64,9 @@
 
             <v-row>
               <v-col cols="12" md="4" class="d-flex align-center">
-                <v-subheader
-                  >¿Cual es la fecha de inicio de tu campaña o
-                  proyecto?</v-subheader
-                >
+                <v-subheader>
+                  ¿Cual es la fecha de inicio de tu campaña o proyecto?
+                </v-subheader>
               </v-col>
               <v-col cols="12" md="8">
                 <v-menu
@@ -80,7 +79,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="date"
+                      v-model="formatedDate"
                       label="Fecha de inicio"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -91,7 +90,6 @@
                   <v-date-picker
                     ref="picker"
                     v-model="date"
-                    :max="new Date().toISOString().substr(0, 10)"
                     min="1950-01-01"
                     @change="save"
                   ></v-date-picker>
@@ -101,9 +99,9 @@
 
             <v-row>
               <v-col cols="12" md="4">
-                <v-subheader
-                  >Correo electronico donde enviaremos tu archivo.</v-subheader
-                >
+                <v-subheader>
+                  Correo electronico donde enviaremos tu archivo.
+                </v-subheader>
               </v-col>
               <v-col cols="12" md="8">
                 <v-text-field></v-text-field>
@@ -128,6 +126,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'FormularioComponent',
 
@@ -135,13 +135,21 @@ export default {
     selectedOption: null,
     radioOptions: ['Email', 'SMS', 'Paid Medi', 'Venta por Telefono', 'Otro'],
     date: null,
+    formatedDate: null,
     menu: false
   }),
+
   watch: {
     menu (val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+
+    date (val) {
+      console.log(val)
+      this.formatedDate = moment(val).format('DD/MM/YYYY')
     }
   },
+
   methods: {
     save (date) {
       this.$refs.menu.save(date)

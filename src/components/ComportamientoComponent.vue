@@ -117,7 +117,6 @@
                       <v-row justify="center">
                         <v-date-picker
                           v-model="fechaUltimaActividadR"
-                          color="purple"
                           range
                         ></v-date-picker>
                       </v-row>
@@ -149,7 +148,6 @@
                     <v-card-text>
                       <v-row justify="center">
                         <v-date-picker
-                          color="orange"
                           v-model="fechaUltimaActividadT"
                           range
                         />
@@ -234,7 +232,6 @@
                             <v-row class="justify-center">
                               <v-date-picker
                                 v-model="fechaUltimoMovimientoA"
-                                color="indigo"
                                 range
                               ></v-date-picker>
                             </v-row>

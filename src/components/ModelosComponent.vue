@@ -187,17 +187,15 @@
             </p>
 
             <form>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <h3>Predicción de Puntualidad</h3>
+              <h3>Predicción de Puntualidad</h3>
 
-                  <v-checkbox label="Cliente A"></v-checkbox>
-                  <v-checkbox label="Cliente B"></v-checkbox>
-                  <v-checkbox label="Cliente C"></v-checkbox>
-                  <v-checkbox label="Cliente D"></v-checkbox>
-                  <v-checkbox label="Cliente Z"></v-checkbox>
-                </v-col>
-              </v-row>
+              <v-container class="d-flex flex-column flex-md-row">
+                <v-checkbox class="flex-grow-1" label="Cliente A"></v-checkbox>
+                <v-checkbox class="flex-grow-1" label="Cliente B"></v-checkbox>
+                <v-checkbox class="flex-grow-1" label="Cliente C"></v-checkbox>
+                <v-checkbox class="flex-grow-1" label="Cliente D"></v-checkbox>
+                <v-checkbox class="flex-grow-1" label="Cliente Z"></v-checkbox>
+              </v-container>
             </form>
           </v-expansion-panel-content>
         </v-expansion-panel>
