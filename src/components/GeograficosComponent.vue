@@ -2,7 +2,7 @@
   <div>
     <v-card-title class="justify-center"
       ><h1 class="text-center text-h4 text-md-h4">
-        Categoria Geograficos
+        Categoría Geográficos
       </h1></v-card-title
     >
     <v-card-text>
