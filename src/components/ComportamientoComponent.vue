@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      <h1 class="text-center text-h4 text-md-h4">
+      <h1 class="text-center subtitle-2 text-md-h4">
         Categoria Comportamiento del cliente
       </h1>
     </v-card-title>
@@ -24,7 +24,9 @@
               <v-row>
                 <v-col cols="12" md="4">
                   <v-card>
-                    <v-card-title><h5>Puntualidad</h5></v-card-title>
+                    <v-card-title>
+                      <h5>Puntualidad</h5>
+                    </v-card-title>
                     <v-card-text>
                       <v-checkbox label="Cliente A"></v-checkbox>
                       <v-checkbox label="Cliente B"></v-checkbox>
@@ -39,7 +41,9 @@
 
                 <v-col cols="12" md="4">
                   <v-card>
-                    <v-card-title><h5>Tipo de cliente</h5></v-card-title>
+                    <v-card-title>
+                      <h5>Tipo de cliente</h5>
+                    </v-card-title>
                     <v-card-text>
                       <v-checkbox label="Contado"></v-checkbox>
                       <v-checkbox label="Credito Titular"></v-checkbox>
@@ -54,7 +58,9 @@
 
                 <v-col cols="12" md="4">
                   <v-card>
-                    <v-card-title><h5>¿Es cliente?</h5></v-card-title>
+                    <v-card-title>
+                      <h5>¿Es cliente?</h5>
+                    </v-card-title>
                     <v-card-text>
                       <v-checkbox label="Si"></v-checkbox>
                       <v-checkbox label="No"></v-checkbox>
@@ -108,7 +114,7 @@
               </v-row>
 
               <v-row>
-                <v-col cols="12" md="6" lg="4">
+                <v-col cols="12" sm="6" md="4" lg="4">
                   <v-card>
                     <v-card-title class="justify-center">
                       <h5>Fecha de ultima actividad e R</h5>
@@ -118,13 +124,14 @@
                         <v-date-picker
                           v-model="fechaUltimaActividadR"
                           range
+                          :width="getCalendarSize"
                         ></v-date-picker>
                       </v-row>
                     </v-card-text>
                   </v-card>
                 </v-col>
 
-                <v-col cols="12" md="6" lg="4">
+                <v-col cols="12" sm="6" md="4" lg="4">
                   <v-card>
                     <v-card-title class="justify-center">
                       <h5>Fecha de ultima actividad e M</h5>
@@ -133,6 +140,7 @@
                       <v-row justify="center">
                         <v-date-picker
                           v-model="fechUltimaActividadM"
+                          :width="getCalendarSize"
                           range
                         ></v-date-picker>
                       </v-row>
@@ -140,7 +148,7 @@
                   </v-card>
                 </v-col>
 
-                <v-col cols="12" md="12" lg="4">
+                <v-col cols="12" sm="12" md="4" lg="4">
                   <v-card>
                     <v-card-title class="justify-center">
                       <h5>Fecha de ultima actividad e T</h5>
@@ -149,6 +157,7 @@
                       <v-row justify="center">
                         <v-date-picker
                           v-model="fechaUltimaActividadT"
+                          :width="getCalendarSize"
                           range
                         />
                       </v-row>
@@ -233,6 +242,7 @@
                               <v-date-picker
                                 v-model="fechaUltimoMovimientoA"
                                 range
+                                :width="getCalendarSize"
                               ></v-date-picker>
                             </v-row>
                           </v-card-text>
@@ -255,6 +265,11 @@ var $ = require('jquery')
 
 export default {
   name: 'ComportamientoComponent',
+
+  created () {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+  },
 
   mounted () {
     //
@@ -325,8 +340,22 @@ export default {
     fechaUltimaActividadR: [],
     fechUltimaActividadM: [],
     fechaUltimaActividadT: [],
-    fechaUltimoMovimientoA: []
-  })
+    fechaUltimoMovimientoA: [],
+    mobile: false
+  }),
+
+  computed: {
+    getCalendarSize () {
+      const size = this.mobile ? 190 : window.outerWidth >= 1440 ? '100%' : 240
+      return size
+    }
+  },
+
+  methods: {
+    onResize () {
+      this.mobile = window.outerWidth <= 320
+    }
+  }
 }
 </script>
 

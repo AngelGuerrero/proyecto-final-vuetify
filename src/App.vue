@@ -19,7 +19,7 @@
               <component :is="getCurrentComponent"></component>
 
               <!-- Controles para recorrer los pasos -->
-              <v-card-actions d-flex class="px-3">
+              <v-card-actions>
                 <v-btn v-if="!isFirst" color="secondary" @click="prevStep">
                   Anterior
                 </v-btn>
@@ -40,7 +40,7 @@
         </v-main>
       </div>
 
-      <div id="my_footer" class="dev d-flex justify-center align-center black">
+      <div id="my_footer" class="d-flex justify-center align-center black">
         <p class="white--text mb-0">
         © 2020 | Proyecto Final UAEM
         </p>

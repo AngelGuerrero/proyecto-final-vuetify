@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      <h1 class="text-center text-h4 text-md-h4">
+      <h1 class="text-center subtitle-1 text-sm-h4">
         Categoría Sociodemográficos
       </h1>
     </v-card-title>

@@ -4,7 +4,10 @@
   "singleQuote": true,
   "semi": false,
   "trailingComma": "none",
-  "jsxBracketSameLine": true,
   "bracketSpacing": true,
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsxBracketSameLine": true,
+  "jsxSingleQuote": true,
+  "arrowParens": "avoid",
+  "parser": "vue"
 }
