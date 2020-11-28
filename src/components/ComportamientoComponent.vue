@@ -228,7 +228,11 @@
                           </v-card-title>
                           <v-card-text>
                             <v-row class="justify-center">
-                              <v-date-picker v-model="fechaUltimoMovimientoA" color="indigo" range ></v-date-picker>
+                              <v-date-picker
+                                v-model="fechaUltimoMovimientoA"
+                                color="indigo"
+                                range
+                              ></v-date-picker>
                             </v-row>
                           </v-card-text>
                         </v-card>

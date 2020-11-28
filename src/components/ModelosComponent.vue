@@ -13,8 +13,9 @@
               :key="n"
               :label="`${n}`"
               :value="n"
-            ></v-radio> </v-radio-group
-        ></v-col>
+            ></v-radio>
+          </v-radio-group>
+        </v-col>
       </v-row>
 
       <v-expansion-panels
@@ -71,12 +72,14 @@
                 <v-col cols="12" md="4">
                   <h3>Categorias de productos</h3>
 
-                  <select id="inputState" class="form-control">
-                    <option>Zapato infantil</option>
-                    <option>Zapato dama</option>
-                    <option>Zapato caballero</option>
-                    <option>Transporte y movilidad</option>
-                  </select>
+                  <v-select
+                    :items="[
+                      'Zapato infantil',
+                      'Zapato dama',
+                      'Zapato caballero',
+                      'Transporte y movilidad'
+                    ]"
+                  ></v-select>
                 </v-col>
 
                 <v-col cols="12" md="4">
@@ -131,7 +134,8 @@
               <p class="my-3">
                 Este modelo clasifica a los clientes acuerdo al número de
                 compras y tiempo transcurrido entre compras por medios digitales
-                y los divide<br />
+                y los divide
+                <br />
                 por estrategia de comunicación y probabilidad de compra.
               </p>
             </v-container>
@@ -167,7 +171,8 @@
               <h3>Puntualidad "N"</h3>
               <p class="my-3">
                 Utiliza diversas variables económicas, demográficas y de perfil
-                digital que permite predecir la puntualidad de abono<br />
+                digital que permite predecir la puntualidad de abono
+                <br />
                 para Clientes clasificación "N" antes de que sus meses de
                 maduración permitan clasificarlos en algun tipo de puntualidad.
               </p>
