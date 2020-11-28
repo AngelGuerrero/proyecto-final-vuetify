@@ -1,4 +1,3 @@
-
 .dev {
   border: 1px dashed tomato;
 }
@@ -6,10 +5,9 @@
 #wrapper {
   min-height: 100vh;
   display: grid;
-  /* background-color: black; */
 
   grid-template-columns: auto;
-  grid-template-rows: auto 1fr minmax(50px, 100px);
+  grid-template-rows: auto 1fr 50px;
 }
 
 #my_nav {
@@ -17,7 +15,7 @@
 }
 #content {
   grid-row: 2/3;
-  /* background-color: pink; */
+  background-color: pink;
 }
 #my_footer {
   grid-row: 3/4;

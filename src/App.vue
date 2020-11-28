@@ -40,8 +40,10 @@
         </v-main>
       </div>
 
-      <div id="my_footer">
-        <footer-component></footer-component>
+      <div id="my_footer" class="dev d-flex justify-center align-center black">
+        <p class="white--text mb-0">
+        © 2020 | Proyecto Final UAEM
+        </p>
       </div>
     </div>
   </v-app>
@@ -51,7 +53,6 @@
 import HeaderComponent from './components/HeaderComponent'
 import NavbarComponent from './components/NavbarComponent'
 import StepperComponent from './components/StepperComponent'
-import FooterComponent from './components/FooterComponent'
 
 // Modelos dinámicos
 import ModelosComponent from './components/ModelosComponent'
@@ -68,7 +69,6 @@ export default {
     NavbarComponent,
     HeaderComponent,
     StepperComponent,
-    FooterComponent,
 
     ModelosComponent,
     SociodemograficosComponent,
