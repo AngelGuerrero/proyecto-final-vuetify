@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h3 class="text-center">Footer</h3>
+    <v-row class="justify-center">
+      <v-col cols="12" class="d-flex justify-center">
+        <img src="../assets/img/uaem.jpg" width="60" />
+      </v-col>
+      <v-col cols="12" class="d-flex justify-center">
+        <p class="my-1">
+          © 2020 | Proyecto Final UAEM
+        </p>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -10,6 +19,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

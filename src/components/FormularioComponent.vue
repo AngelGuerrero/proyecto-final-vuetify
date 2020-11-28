@@ -13,10 +13,6 @@
       </v-container>
 
       <v-card>
-        <!--
-          emmet
-          v-row>(v-col[cols md]>v-subheader)+v-col[cols md]>v-text-field
-          -->
         <v-card-text>
           <form>
             <v-row>

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <v-card-title class="justify-center"
-      ><h1 class="text-center text-h4 text-md-h4">
+    <v-card-title class="justify-center">
+      <h1 class="text-center text-h4 text-md-h4">
         Categoría Geográficos
-      </h1></v-card-title
-    >
+      </h1>
+    </v-card-title>
     <v-card-text>
-      <v-container
-        ><p>
+      <v-container>
+        <p>
           La categorias geograficas te permiten filtrar varias opciones de
           ubicacion del cliente. Ahora bien, si no lo requieres, pues dar clic
           en continuar.
-        </p></v-container
-      >
+        </p>
+      </v-container>
 
       <v-row>
         <v-col cols="12" md="6">
@@ -53,8 +53,7 @@
               'YUCATAN',
               'ZACATECAS'
             ]"
-          >
-          </v-select>
+          ></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <v-select
@@ -78,8 +77,7 @@
               'AXAPUSCO',
               'AYAPANGO'
             ]"
-          >
-          </v-select>
+          ></v-select>
         </v-col>
       </v-row>
 
@@ -107,14 +105,17 @@
                     vias de comunicación similares entre espacios urbanos y son
                     nombradas a razon de la ciudad principal.
                   </p>
-                  <select class="form-control">
-                    <option selected="selected">Clusters</option>
-                    <option value="1">opción 1</option>
-                    <option value="2">opción 2</option>
-                    <option value="3">opción 3</option>
-                    <option value="4">opción 4</option>
-                    <option value="5">opción 5</option>
-                  </select>
+                  <v-select
+                    label="Clústers"
+                    outlined
+                    :items="[
+                      'opción 1',
+                      'opción 2',
+                      'opción 3',
+                      'opción 4',
+                      'opción 5'
+                    ]"
+                  ></v-select>
                 </v-card-text>
               </v-card>
             </v-col>

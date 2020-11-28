@@ -3,6 +3,10 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import './assets/css/global.css'
 
+import './assets/css/rangeSlider.css'
+import './assets/css/rangeSliderSkin.css'
+import './assets/js/rangeSlider.js'
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -50,7 +50,50 @@
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
-                    <v-container>Sliders</v-container>
+                    <v-container>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-12">
+                            <p class="text-center">
+                              Elije los minimos y maximos de tu rango de edades
+                            </p>
+                            <div class="form-group row">
+                              <div class="col-12">
+                                <input
+                                  type="text"
+                                  name="rangeEdad_1"
+                                  id="rangeEdad_1"
+                                />
+                              </div>
+                            </div>
+
+                            <p class="text-center">
+                              ¿Necesitas un rango más?
+                            </p>
+                            <div class="form-group row">
+                              <div class="col-12">
+                                <input
+                                  type="text"
+                                  name="rangeEdad_2"
+                                  id="rangeEdad_2"
+                                />
+                              </div>
+                            </div>
+
+                            <p class="text-center">¿Otro?</p>
+                            <div class="form-group row">
+                              <div class="col-12">
+                                <input
+                                  type="text"
+                                  name="rangeEdad_3"
+                                  id="rangeEdad_3"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </v-container>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -216,11 +259,11 @@
               <div class="elevation-3 pa-3 rounded">
                 <h4>Integrantes del hogar</h4>
                 <div>
-                  <v-checkbox label="1 persona"> </v-checkbox>
-                  <v-checkbox label="2 personas"> </v-checkbox>
-                  <v-checkbox label="3 personas"> </v-checkbox>
-                  <v-checkbox label="4 personas"> </v-checkbox>
-                  <v-checkbox label="5 personas"> </v-checkbox>
+                  <v-checkbox label="1 persona"></v-checkbox>
+                  <v-checkbox label="2 personas"></v-checkbox>
+                  <v-checkbox label="3 personas"></v-checkbox>
+                  <v-checkbox label="4 personas"></v-checkbox>
+                  <v-checkbox label="5 personas"></v-checkbox>
                   <v-checkbox label="6 o más personas"></v-checkbox>
                   <v-checkbox label="Sin dato"></v-checkbox>
                 </div>
@@ -231,10 +274,10 @@
               <div class="elevation-3 pa-3 rounded">
                 <h4>Integrantes del hogar que trabajan</h4>
                 <div>
-                  <v-checkbox label="1 persona"> </v-checkbox>
-                  <v-checkbox label="2 personas"> </v-checkbox>
-                  <v-checkbox label="3 personas"> </v-checkbox>
-                  <v-checkbox label="4 personas"> </v-checkbox>
+                  <v-checkbox label="1 persona"></v-checkbox>
+                  <v-checkbox label="2 personas"></v-checkbox>
+                  <v-checkbox label="3 personas"></v-checkbox>
+                  <v-checkbox label="4 personas"></v-checkbox>
                   <v-checkbox label="5 o más personas"></v-checkbox>
                   <v-checkbox label="Sin dato"></v-checkbox>
                 </div>
@@ -258,7 +301,7 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable multiple v-model="salarioPanels">
+              <v-expansion-panels focusable v-model="salarioPanels">
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
@@ -294,7 +337,7 @@
                 </v-expansion-panel>
 
                 <!-- Option 2 -->
-                <v-expansion-panel>
+                <v-expansion-panel v-on:click="update">
                   <v-expansion-panel-header class="d-flex flex-row">
                     <v-container>
                       <h3>Ingreso promedio mensual</h3>
@@ -307,7 +350,14 @@
                   <v-expansion-panel-content panel>
                     <p class="my-3">Salario promedio mensual</p>
 
-                    Slider
+                    <v-row>
+                      <v-col cols="12">
+                        <input
+                          type="text"
+                          id="rangeSalarioPromedioMensual"
+                        />
+                      </v-col>
+                    </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -384,13 +434,55 @@
 </template>
 
 <script>
+var $ = require('jquery')
+
 export default {
   name: 'SociodemograficosComponent',
 
+  mounted () {
+    this.update()
+  },
+
   data: () => ({
-    edadPanels: [],
-    salarioPanels: []
-  })
+    edadPanels: [0],
+    salarioPanels: [0, 0]
+  }),
+  methods: {
+    update () {
+      //
+      // Para hacer un slider para un componente
+      // simplemente agregando la clase
+      //
+      $('.js-range-slider').ionRangeSlider()
+
+      //
+      // Rangos de la sección de: Manual -> edad
+      //
+      const ManualEdades = [
+        { type: 'double', grid: true, min: 0, max: 100, from: 30, to: 75 },
+        { type: 'double', grid: true, min: 0, max: 100, from: 25, to: 55 },
+        { type: 'double', grid: true, min: 0, max: 100, from: 20, to: 45 }
+      ]
+
+      $('#rangeEdad_1').ionRangeSlider(ManualEdades[0])
+      $('#rangeEdad_2').ionRangeSlider(ManualEdades[1])
+      $('#rangeEdad_3').ionRangeSlider(ManualEdades[2])
+
+      const rangeSalarioPromedioMensual = {
+        type: 'double',
+        grid: true,
+        min: 0,
+        max: 100000,
+        from: 15000,
+        to: 20000,
+        prefix: '$',
+        step: 5000
+      }
+      $('#rangeSalarioPromedioMensual').ionRangeSlider(
+        rangeSalarioPromedioMensual
+      )
+    }
+  }
 }
 </script>
 

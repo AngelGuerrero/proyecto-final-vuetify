@@ -6,12 +6,13 @@
       </nav>
 
       <div id="content" class="blue-grey lighten-5">
-        <v-main>
+        <v-main class="pb-9">
           <v-container>
             <!-- Contiene la visualización de los pasos a seguir -->
             <header-component
               :steps="steps"
               :currentStep="currentStep.number"
+              @onSelectStep="selectCurrentStep"
             ></header-component>
             <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
             <v-card class="py-3 elevation-10">
@@ -19,10 +20,20 @@
 
               <!-- Controles para recorrer los pasos -->
               <v-card-actions d-flex class="px-3">
-                <v-btn color="secondary" @click="prevStep">Anterior</v-btn>
-                <v-btn color="primary" @click="nextStep" class="ml-auto"
-                  >Siguiente</v-btn
+                <v-btn v-if="!isFirst" color="secondary" @click="prevStep">
+                  Anterior
+                </v-btn>
+                <v-btn
+                  v-if="!isLast"
+                  color="primary"
+                  @click="nextStep"
+                  class="ml-auto"
                 >
+                  Siguiente
+                </v-btn>
+                <v-btn v-if="isLast" color="success" class="ml-auto">
+                  Descargay y enviar
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-container>
@@ -68,12 +79,22 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[2]
+    this.currentStep = this.steps[0]
   },
 
   computed: {
     getCurrentComponent () {
       return this.currentStep.component + '-component'
+    },
+
+    isFirst () {
+      const first = this.steps[0]
+      return this.currentStep.number === first.number
+    },
+
+    isLast () {
+      const last = this.steps[this.steps.length - 1]
+      return this.currentStep.number === last.number
     }
   },
 
@@ -93,15 +114,11 @@ export default {
     ]
   }),
 
-  watch: {
-    // steps (val) {
-    //   if (this.currentStep > val) {
-    //     this.currentStep = val
-    //   }
-    // }
-  },
-
   methods: {
+    selectCurrentStep (step) {
+      this.currentStep = step
+    },
+
     nextStep () {
       //
       // Verifica si el siguiente es el último elemento

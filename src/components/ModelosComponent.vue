@@ -73,6 +73,7 @@
                   <h3>Categorias de productos</h3>
 
                   <v-select
+                    outlined
                     :items="[
                       'Zapato infantil',
                       'Zapato dama',

@@ -21,10 +21,6 @@
       <v-icon>mdi-home</v-icon>
       <span class="ml-2">Inicio</span>
     </v-btn>
-    <v-btn href="#" text>
-      <v-icon>mdi-information</v-icon>
-      <span class="ml-2">Instrucciones</span>
-    </v-btn>
   </v-app-bar>
 </template>
 

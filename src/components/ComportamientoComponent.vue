@@ -184,7 +184,9 @@
                             </p>
 
                             <v-row>
-                              <input type="text" id="rangeImporteAbonado" />
+                              <v-col cols="12">
+                                <input type="text" id="rangeImporteAbonado" />
+                              </v-col>
                             </v-row>
                           </v-card-text>
                         </v-card>
@@ -212,8 +214,10 @@
                             <h5 class="text-center">Linea de C</h5>
                           </v-card-title>
                           <v-card-text>
-                            <v-row class="justify-center">
-                              <input type="text" id="rangeLineaDeC" />
+                            <v-row>
+                              <v-col cols="12">
+                                <input type="text" id="rangeLineaDeC" />
+                              </v-col>
                             </v-row>
                           </v-card-text>
                         </v-card>
@@ -250,8 +254,75 @@
 </template>
 
 <script>
+var $ = require('jquery')
+
 export default {
   name: 'ComportamientoComponent',
+
+  mounted () {
+    //
+    // Para hacer un slider para un componente
+    // simplemente agregando la clase
+    //
+    // $('.js-range-slider').ionRangeSlider()
+
+    //
+    // Rangos de la sección del comportamiento del cliente
+    //
+    const rangeAntiguedadCliente = {
+      grid: true,
+      from: 3,
+      values: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
+    }
+    $('#rangeAntiguedadCliente').ionRangeSlider(rangeAntiguedadCliente)
+
+    const rangeClienteUltimaActividad = {
+      grid: true,
+      from: 3,
+      values: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
+    }
+    $('#rangeClienteUltimaActividad').ionRangeSlider(
+      rangeClienteUltimaActividad
+    )
+
+    const rangeImporteAbonado = {
+      type: 'double',
+      grid: true,
+      min: 0,
+      max: 100,
+      from: 20,
+      to: 45,
+      prefix: '$'
+    }
+    $('#rangeImporteAbonado').ionRangeSlider(rangeImporteAbonado)
+    $('#rangeLineaDeC').ionRangeSlider(rangeImporteAbonado)
+  },
 
   data: () => ({
     fechaUltimaActividadR: [],
