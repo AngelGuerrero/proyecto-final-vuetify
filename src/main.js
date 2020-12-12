@@ -7,6 +7,10 @@ import './assets/css/rangeSlider.css'
 import './assets/css/rangeSliderSkin.css'
 import './assets/js/rangeSlider.js'
 
+import VeeValidate from 'vee-validate'
+
+Vue.use(VeeValidate)
+
 Vue.config.productionTip = false
 
 new Vue({

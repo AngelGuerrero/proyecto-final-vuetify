@@ -20,10 +20,10 @@
       <v-icon>mdi-home</v-icon>
       <span class="ml-2">Inicio</span>
     </v-btn>
-    <v-btn href="#" text class="d-sm-flex">
+    <!-- <v-btn href="#" text class="d-sm-flex">
       <v-icon color="primary">mdi-information</v-icon>
       <span class="ml-2 d-none d-sm-block">Instrucciones</span>
-    </v-btn>
+    </v-btn> -->
   </v-app-bar>
 </template>
 
