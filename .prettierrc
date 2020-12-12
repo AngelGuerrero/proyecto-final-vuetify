@@ -9,5 +9,6 @@
   "jsxBracketSameLine": true,
   "jsxSingleQuote": true,
   "arrowParens": "avoid",
-  "parser": "vue"
+  "parser": "vue",
+  "printWidth": 90
 }

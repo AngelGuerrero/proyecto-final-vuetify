@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-container>
+    <!-- Alert -->
+    <v-container fluid>
       <v-alert v-if="alert.show" type="error" elevation="1">
         <div class="d-flex justify-center">
           {{ isValid.message }}
@@ -13,23 +14,18 @@
     </v-card-title>
 
     <v-card-text>
-      <!-- <v-container>
-        <h3>Modelos</h3>
-        <pre>
-          {{ $data.sections.modelos }}
-        </pre>
-      </v-container> -->
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <validation-provider rules="required" v-slot="{ validate }">
             <v-radio-group
               :error-messages="
-                sections.modelos.selectedOption
-                  ? []
-                  : sections.modelos.validation.message
+                sections.modelos.selectedOption ? [] : sections.modelos.validation.message
               "
               v-model="sections.modelos.selectedOption"
-              @change="sections.modelos.validation.valid = sections.modelos.selectedOption !== null"
+              @change="
+                sections.modelos.validation.valid =
+                  sections.modelos.selectedOption !== null
+              "
               row
             >
               <v-radio
@@ -42,30 +38,14 @@
               ></v-radio>
             </v-radio-group>
           </validation-provider>
-
-          <!-- <v-radio-group
-            v-model="sections.modelos.selectedOption"
-            :name="sections.modelos.name"
-            :error-messages="getSelectedModelErrorMessages"
-            row
-          >
-            <v-radio
-              v-for="item in sections.modelos.options"
-              :key="item.id"
-              :label="`${item}`"
-              :name="sections.modelos.name"
-              :value="item"
-              :error-messages="['error']"
-            ></v-radio>
-          </v-radio-group> -->
         </v-col>
       </v-row>
 
       <v-expansion-panels
         v-show="sections.modelos.selectedOption === 'Segmentar Clientes'"
         focusable
-        accordion
-        multiple
+        :accordion="isValid.value"
+        :multiple="!isValid.value"
         v-model="panels"
       >
         <v-container>
@@ -78,81 +58,56 @@
           </p>
         </v-container>
 
-        <!-- <validation-observer ref="observerModelosSegmentarClientes" tag="div"> -->
         <!-- Option 1 -->
         <v-expansion-panel>
           <v-expansion-panel-header class="d-flex flex-row">
             <v-container>
               <h3>RFM por Categorias</h3>
               <p class="my-3">
-                Consiste en clasificar a los clientes mediante tres variables
-                indicadoras:
+                Consiste en clasificar a los clientes mediante tres variables indicadoras:
               </p>
               <p class="ma-0 mb-1">
                 Recency (Tiempo transcurrido desde su ultima compra)
               </p>
               <p class="ma-0 mb-1">Frecuency (Numero de compras)</p>
               <p class="ma-0 mb-1">
-                Money (Valor de las compras totales del cliente).Este modelo
-                califica cada variable del 1 al 4, donde 4 es el valor mas alto.
+                Money (Valor de las compras totales del cliente).Este modelo califica cada
+                variable del 1 al 4, donde 4 es el valor mas alto.
               </p>
             </v-container>
           </v-expansion-panel-header>
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo RFM por Categorias mas adecuadas a
-              tu campaña.
+              Elije las variables del modelo RFM por Categorias mas adecuadas a tu
+              campaña.
             </p>
 
             <form>
               <v-row>
                 <v-col cols="12" md="4">
-                  <!-- <ValidationProvider
-                    rules="required"
-                    ref="area"
-                    v-slot="{ errors }"
-                  >
-                    <v-checkbox
-                      slot-scope="{ errors, valid }"
-                      v-model="payload.checkbox"
-                      :error-messages="errors"
-                      :success="valid"
-                      value="0"
-                      label="Ropa"
-                      type="checkbox"
-                      required
-                    ></v-checkbox>
-                  </ValidationProvider> -->
-
                   <h3>Area</h3>
 
                   <validate-checkbox
-                    :items="sections.area.options"
-                    :name="sections.area.name"
-                    :title="sections.area.title"
+                    :model="sections.area"
                     validation="one"
-                    @on-validate="sections.area.validation = $event"
-                    @on-change="sections.area.selectedOption = $event"
+                    :successStatus="true"
+                    @on-validate="mutateModel('area', 'validation', $event)"
+                    @on-change="mutateModel('area', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
                 <v-col cols="12" md="4">
                   <h3>Categorias de productos</h3>
 
-                  <validation-provider
-                    v-slot="{ validate, valid }"
-                    rules="required"
-                  >
+                  <validation-provider v-slot="{ validate, valid }" rules="required">
                     <v-select
                       outlined
-                      :items="sections.productos.options"
-                      v-model="sections.productos.selectedOption"
-                      :error-messages="
-                        valid ? [] : [sections.productos.validation.message]
-                      "
+                      :items="sections.productos.getItems()"
+                      v-model="sections.productos.vmodel"
+                      :error-messages="sections.productos.getErrorMessages()"
                       @change="validate()"
-                      @blur="sections.productos.validation.valid = valid"
+                      @blur="sections.productos.setValid(valid)"
                     ></v-select>
                   </validation-provider>
                 </v-col>
@@ -160,41 +115,47 @@
                 <v-col cols="12" md="4">
                   <h3>Tipo de compra</h3>
 
-                  <v-checkbox label="Crédito" type="checkbox"></v-checkbox>
-                  <v-checkbox label="Contado" type="checkbox"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.compra"
+                    validation="one"
+                    @on-validate="mutateModel('compra', 'validation', $event)"
+                    @on-change="mutateModel('compra', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col cols="12" md="4">
                   <h3>R=Recency</h3>
-
                   <p>Tiempo transcurrido desde su ultima compra</p>
-
-                  <v-checkbox label="4" type="checkbox"></v-checkbox>
-                  <v-checkbox label="3" type="checkbox"></v-checkbox>
-                  <v-checkbox label="2" type="checkbox"></v-checkbox>
-                  <v-checkbox label="1" type="checkbox"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.recency"
+                    validation="one"
+                    @on-validate="mutateModel('recency', 'validation', $event)"
+                    @on-change="mutateModel('recency', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
 
                 <v-col cols="12" md="4">
                   <h3>F=Frecuency</h3>
                   <p>Numero de compras</p>
-
-                  <v-checkbox label="4" type="checkbox"></v-checkbox>
-                  <v-checkbox label="3" type="checkbox"></v-checkbox>
-                  <v-checkbox label="2" type="checkbox"></v-checkbox>
-                  <v-checkbox label="1" type="checkbox"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.frecuency"
+                    validation="one"
+                    @on-validate="mutateModel('frecuency', 'validation', $event)"
+                    @on-change="mutateModel('frecuency', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
 
                 <v-col cols="12" md="4">
                   <h3>M=Money</h3>
                   <p>Valor de las compras totales del cliente</p>
-
-                  <v-checkbox label="4" type="checkbox"></v-checkbox>
-                  <v-checkbox label="3" type="checkbox"></v-checkbox>
-                  <v-checkbox label="2" type="checkbox"></v-checkbox>
-                  <v-checkbox label="1" type="checkbox"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.money"
+                    validation="one"
+                    @on-validate="mutateModel('money', 'validation', $event)"
+                    @on-change="mutateModel('money', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
               </v-row>
             </form>
@@ -207,9 +168,8 @@
             <v-container>
               <h3>SPC "Probabilidad de compra"</h3>
               <p class="my-3">
-                Este modelo clasifica a los clientes acuerdo al número de
-                compras y tiempo transcurrido entre compras por medios digitales
-                y los divide
+                Este modelo clasifica a los clientes acuerdo al número de compras y tiempo
+                transcurrido entre compras por medios digitales y los divide
                 <br />
                 por estrategia de comunicación y probabilidad de compra.
               </p>
@@ -218,21 +178,29 @@
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo SPC "Probabilidad de compra" mas
-              adecuadas a tu campaña.
+              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a
+              tu campaña.
             </p>
 
             <form>
               <v-row>
                 <v-col cols="12" md="6">
                   <h3>Retencion del cliente</h3>
-                  <v-checkbox label="Alta probabilidad de compra"></v-checkbox>
-                  <v-checkbox label="Baja probabilidad de compra"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.reteCliente"
+                    validation="one"
+                    @on-validate="mutateModel('reteCliente', 'validation', $event)"
+                    @on-change="mutateModel('reteCliente', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
                 <v-col cols="12" md="6">
                   <h3>Recuperacion del cliente</h3>
-                  <v-checkbox label="Alta probabilidad de compra"></v-checkbox>
-                  <v-checkbox label="Baja probabilidad de compra"></v-checkbox>
+                  <validate-checkbox
+                    :model="sections.recuCliente"
+                    validation="one"
+                    @on-validate="mutateModel('recuCliente', 'validation', $event)"
+                    @on-change="mutateModel('recuCliente', 'vmodel', $event)"
+                  ></validate-checkbox>
                 </v-col>
               </v-row>
             </form>
@@ -245,35 +213,36 @@
             <v-container>
               <h3>Puntualidad "N"</h3>
               <p class="my-3">
-                Utiliza diversas variables económicas, demográficas y de perfil
-                digital que permite predecir la puntualidad de abono
+                Utiliza diversas variables económicas, demográficas y de perfil digital
+                que permite predecir la puntualidad de abono
                 <br />
-                para Clientes clasificación "N" antes de que sus meses de
-                maduración permitan clasificarlos en algun tipo de puntualidad.
+                para Clientes clasificación "N" antes de que sus meses de maduración
+                permitan clasificarlos en algun tipo de puntualidad.
               </p>
             </v-container>
           </v-expansion-panel-header>
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo SPC "Probabilidad de compra" mas
-              adecuadas a tu campaña.
+              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a
+              tu campaña.
             </p>
 
             <form>
               <h3>Predicción de Puntualidad</h3>
 
-              <v-container class="d-flex flex-column flex-md-row">
-                <v-checkbox class="flex-grow-1" label="Cliente A"></v-checkbox>
-                <v-checkbox class="flex-grow-1" label="Cliente B"></v-checkbox>
-                <v-checkbox class="flex-grow-1" label="Cliente C"></v-checkbox>
-                <v-checkbox class="flex-grow-1" label="Cliente D"></v-checkbox>
-                <v-checkbox class="flex-grow-1" label="Cliente Z"></v-checkbox>
-              </v-container>
+              <validate-checkbox
+                :model="sections.puntualidad"
+                validation="one"
+                @on-validate="mutateModel('puntualidad', 'validation', $event)"
+                @on-change="mutateModel('puntualidad', 'vmodel', $event)"
+                headerClasses="text-center"
+                contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
+                itemsClasses="flex-grow-1"
+              ></validate-checkbox>
             </form>
           </v-expansion-panel-content>
         </v-expansion-panel>
-        <!-- </validation-observer> -->
       </v-expansion-panels>
 
       <!-- Modelos de recomendación -->
@@ -288,8 +257,8 @@
             Modelos de Recomendación
           </h1>
           <p class="text-center my-3">
-            Elige el modelo de recomendación de productos que mas se ajuste a
-            tus necesidades.
+            Elige el modelo de recomendación de productos que mas se ajuste a tus
+            necesidades.
           </p>
         </v-container>
         <!-- Option 1 -->
@@ -298,8 +267,7 @@
             <v-container>
               <h3>Recomendar productos</h3>
               <p class="my-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est,
-                laboriosam!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, laboriosam!
               </p>
             </v-container>
           </v-expansion-panel-header>
@@ -320,6 +288,8 @@
 <script>
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
+import Section from '../models/Section'
+import Checkbox from '../models/Checkbox'
 
 /**
  * Data
@@ -340,60 +310,92 @@ const sections = () => ({
       message: 'Debes seleccionar un tipo de modelo'
     },
     options: ['Segmentar Clientes', 'Recomendar Productos'],
+    // FIX: REGRESAR A NULL
     selectedOption: null
+    // selectedOption: 'Segmentar Clientes'
   },
 
   //
-  // Area Checkboxes
-  area: {
-    type: 'checkbox',
-    name: 'area',
-    title: 'Área',
-    validation: {
-      valid: false,
-      message: ''
-    },
-    options: [
+  // Area
+  area: new Section(
+    'area',
+    'Área',
+    [
       { group: 'area', slug: 'Muebles', checked: false },
       { group: 'area', slug: 'Ropa', checked: false }
+      // NOTA:
+      // Mensaje personnalizado para este componente
     ],
-    selectedOption: null
-  },
-
-  productos: {
-    type: 'select',
-    name: 'productos',
-    title: 'Productos',
-    validation: {
-      valid: false,
-      message: 'Se debe de seleccionar un producto'
-    },
-    options: [
-      'Zapato infantil',
-      'Zapato dama',
-      'Zapato caballero',
-      'Transporte y movilidad'
-    ],
-    selectedOption: null
-  }
+    'Selecciona al menos un área'
+  ),
 
   //
-  // Area compra
-  // compra: {
-  //   type: 'checkbox',
-  //   name: 'compra',
-  //   validation: {
-  //   valid: false,
-  //     message: ''
-  //   }
-  // }
+  // Productos
+  productos: new Section('productos', 'Productos', [
+    'Zapato infantil',
+    'Zapato dama',
+    'Zapato caballero',
+    'Transporte y movilidad'
+  ]),
+
+  //
+  // Compra
+  compra: new Section('compra', 'Compra', [
+    new Checkbox('compra', 'Crédito'),
+    new Checkbox('compra', 'Contado')
+  ]),
+
+  //
+  // Recency
+  recency: new Section('recency', 'Recency', [
+    new Checkbox('recency', '4'),
+    new Checkbox('recency', '3'),
+    new Checkbox('recency', '2'),
+    new Checkbox('recency', '1')
+  ]),
+  //
+  // Frecuency
+  frecuency: new Section('frecuency', 'Frecuency', [
+    new Checkbox('frecuency', '4'),
+    new Checkbox('frecuency', '3'),
+    new Checkbox('frecuency', '2'),
+    new Checkbox('frecuency', '1')
+  ]),
+  //
+  // Money
+  money: new Section('money', 'Money', [
+    new Checkbox('money', '4'),
+    new Checkbox('money', '3'),
+    new Checkbox('money', '2'),
+    new Checkbox('money', '1')
+  ]),
+  //
+  // Retención del cliente
+  reteCliente: new Section('reteCliente', 'Retención del cliente', [
+    new Checkbox('reteCliente', 'Alta probabilidad de compra'),
+    new Checkbox('reteCliente', 'Baja probabilidad de compra')
+  ]),
+  //
+  // Recuperación del cliente
+  recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
+    new Checkbox('recuCliente', 'Alta probabilidad de compra'),
+    new Checkbox('recuCliente', 'Baja probabilidad de compra')
+  ]),
+  //
+  // Puntualidad
+  puntualidad: new Section('puntualidad', 'Puntualidad', [
+    new Checkbox('puntualidad', 'Cliente A'),
+    new Checkbox('puntualidad', 'Cliente B'),
+    new Checkbox('puntualidad', 'Cliente C'),
+    new Checkbox('puntualidad', 'Cliente D'),
+    new Checkbox('puntualidad', 'Cliente Z')
+  ])
 })
 
 export default {
   name: 'ModelosComponent',
 
   components: {
-    // ValidationObserver,
     ValidationProvider,
     ValidateCheckbox
   },
@@ -416,11 +418,6 @@ export default {
     }
   },
 
-  mounted () {
-    // FIX: REMOVE NEXT LINE
-    this.collectSelectedData()
-  },
-
   data () {
     return {
       //
@@ -431,7 +428,9 @@ export default {
       },
       // ===========================
 
-      panels: [0],
+      panels: [],
+
+      panelsCount: 3,
 
       //
       // All the sections where contains the checkboxes
@@ -459,15 +458,11 @@ export default {
       return retval
     },
 
-    isModelValid () {
-      return this.isValid.valid
-    },
-
     //
     // isValid
     //
     // Computed property for let it know to parent
-    // if the component is valid or not
+    // if the all component sections are valid or not
     isValid () {
       let retval = { value: true, message: '', data: this.sections }
 
@@ -475,6 +470,7 @@ export default {
       console.log('=== Validando secciones del modelo ===')
 
       for (const [key, value] of Object.entries(this.sections)) {
+        debugger
         console.log('key :>> ', key)
         console.log('value.validation.valid :>> ', value.validation.valid)
 
@@ -498,21 +494,30 @@ export default {
   },
 
   methods: {
+    // Create an array the length of our panels
+    // with all values as true
+    openAllPanels () {
+      this.panels = [...Array(this.panelsCount).keys()].map((k, i) => i)
+    },
+
     //
     // Return selected data if there is no errors
     validateModel () {
-      console.log(`Validating model '${this.title}'`)
+      console.log(`~ Validating model '${this.title}' ~`)
+
+      if (!this.isValid.value) this.openAllPanels()
+
       return this.isValid
     },
 
-    collectSelectedData () {
+    getData () {
       console.log('')
       console.log('===== Select data for return ===== ')
 
       const retval = Object.entries(this.sections).map(item => {
         return {
           [item[0]]: {
-            selectedOption: this.sections[item[0]].selectedOption
+            selected: item[1].vmodel
           }
         }
       })
@@ -520,14 +525,16 @@ export default {
       console.log('===== End Select data for return ===== ')
       console.log('')
 
-      // console.log(retval)
-
       return retval
     },
 
     setMessage (show, message) {
       this.alert.show = show
       this.alert.message = show ? message : ''
+    },
+
+    mutateModel (model, property, data) {
+      this.sections[model][property] = data
     }
   }
 }
