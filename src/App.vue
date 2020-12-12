@@ -33,22 +33,22 @@
 
               <!-- FIX: REMOVE ON PROD -->
               <div v-if="!wqo64ijap1.xm2wgc167y">
-                <modelos-component
-                  v-show="currentStep.number === 1"
+                <component
+                  v-for="step in steps"
+                  :key="step.id"
+                  :is="step.component + '-component'"
+                  v-show="currentStep.number === step.number"
                   :ref="currentStep.component"
-                  :name="currentStep.component"
-                  :title="currentStep.title"
-                />
+                  :name="step.component"
+                  :title="step.title"
+                ></component>
 
-                <sociodemograficos-component v-show="currentStep.number === 2" />
-
-                <comportamiento-component v-show="currentStep.number === 3" />
-
-                <geograficos-component v-show="currentStep.number === 4" />
-
-                <datos-component v-show="currentStep.number === 5" />
-
-                <formulario-component v-show="currentStep.number === 6" />
+                <!-- <modelos-component v-show="currentStep.number === 1" :ref="currentStep.component" :name="currentStep.component" :title="currentStep.title" /> -->
+                <!-- <sociodemograficos-component v-show="currentStep.number === 2" /> -->
+                <!-- <comportamiento-component v-show="currentStep.number === 3" /> -->
+                <!-- <geograficos-component v-show="currentStep.number === 4" /> -->
+                <!-- <datos-component v-show="currentStep.number === 5" /> -->
+                <!-- <formulario-component v-show="currentStep.number === 6" /> -->
               </div>
 
               <!-- Controles para recorrer los pasos -->
@@ -112,7 +112,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[0]
+    this.currentStep = this.steps[1]
   },
 
   // FIX: REMOVE IN PROD
@@ -128,36 +128,31 @@ export default {
           title: 'Modelos',
           number: 1,
           component: 'modelos',
-          validated: false,
           data: null
         },
         {
           title: 'Sociodemográficos',
           number: 2,
           component: 'sociodemograficos',
-          validated: false,
           data: null
         },
         {
           title: 'Comportamiento del cliente',
           number: 3,
           component: 'comportamiento',
-          validated: false,
           data: null
         },
         {
           title: 'Geográficos',
           number: 4,
           component: 'geograficos',
-          validated: false,
           data: null
         },
-        { title: 'Datos', number: 5, component: 'datos', validated: false, data: null },
+        { title: 'Datos', number: 5, component: 'datos', data: null },
         {
           title: 'Formulario',
           number: 6,
           component: 'formulario',
-          validated: false,
           data: null
         }
       ],
@@ -241,7 +236,6 @@ export default {
 
       const index = this.steps.findIndex(item => item.number === this.currentStep.number)
 
-      this.steps[index].validated = true
       this.steps[index].data = getval
     },
 
