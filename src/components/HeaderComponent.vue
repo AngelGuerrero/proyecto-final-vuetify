@@ -1,7 +1,7 @@
 <template>
   <header class="mt-1 mb-3">
-    <!-- <h1 class="text-center text-h5 text-md-h4">Modelos de Segmentación</h1> -->
-    <!-- <h2 class="text-center text-h6 text-md-h5">Facultad Geografia</h2> -->
+    <h1 class="text-center text-h5 text-md-h4">Modelos de Segmentación</h1>
+    <h2 class="text-center text-h6 text-md-h5">Facultad Geografia</h2>
 
     <v-stepper v-model="currentStep" class="my-1 transparent elevation-0">
       <v-stepper-header>
@@ -11,7 +11,6 @@
             :complete="currentStep > step.number"
             :step="step.number"
             @click="selectStep(step)"
-            editable
           >
             {{ step.title }}
           </v-stepper-step>
@@ -44,7 +43,7 @@ export default {
 
   methods: {
     selectStep (step) {
-      this.$emit('onSelectStep', step)
+      // this.$emit('onSelectStep', step)
     }
   }
 }
