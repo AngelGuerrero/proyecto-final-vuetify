@@ -7,11 +7,11 @@
 
       <div id="content" class="blue-grey lighten-5">
         <v-main class="pb-9">
-          <v-container>
+          <v-container fluid>
             <!-- Contiene la visualización de los pasos a seguir -->
             <!-- FIX: REMOVE ON PROD -->
             <header-component
-              v-if="!licensed.show"
+              v-if="!wqo64ijap1.xm2wgc167y"
               :steps="steps"
               :currentStep="currentStep.number"
               @onSelectStep="selectCurrentStep"
@@ -19,27 +19,20 @@
 
             <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
             <v-card class="py-3 elevation-10">
-              <v-container v-if="licensed.show" class="px-3">
+              <v-container v-if="wqo64ijap1.xm2wgc167y" class="px-3">
                 <div class="red pa-3 rounded elevation-3">
                   <h3
                     class="text-center white--text"
                     background-color="error"
                     color="error"
                   >
-                    {{ licensed.message }}
+                    {{ wqo64ijap1.message }}
                   </h3>
                 </div>
               </v-container>
 
-              <!-- FIX: Consultar la mejor manera de mostrar este mensaje -->
-              <!-- <v-container>
-                <v-alert type="warning">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, quisquam?
-                </v-alert>
-              </v-container> -->
-
               <!-- FIX: REMOVE ON PROD -->
-              <div v-if="!licensed.show">
+              <div v-if="!wqo64ijap1.xm2wgc167y">
                 <modelos-component
                   v-show="currentStep.number === 1"
                   :ref="currentStep.component"
@@ -47,9 +40,7 @@
                   :title="currentStep.title"
                 />
 
-                <sociodemograficos-component
-                  v-show="currentStep.number === 2"
-                />
+                <sociodemograficos-component v-show="currentStep.number === 2" />
 
                 <comportamiento-component v-show="currentStep.number === 3" />
 
@@ -62,19 +53,18 @@
 
               <!-- Controles para recorrer los pasos -->
               <!-- FIX: REMOVE ON PROD -->
-              <v-card-actions>
+              <v-card-actions v-if="!wqo64ijap1.xm2wgc167y">
+                <!-- Prev step -->
                 <v-btn v-if="!isFirst" color="secondary" @click="prevStep">
                   Anterior
                 </v-btn>
 
-                <v-btn
-                  v-if="!isLast"
-                  color="primary"
-                  @click="nextStep"
-                  class="ml-auto"
-                >
+                <!-- Next step -->
+                <v-btn v-if="!isLast" color="primary" @click="nextStep" class="ml-auto">
                   Siguiente
                 </v-btn>
+
+                <!-- Download information -->
                 <v-btn v-if="isLast" color="success" class="ml-auto">
                   Descargay y enviar
                 </v-btn>
@@ -127,51 +117,62 @@ export default {
 
   // FIX: REMOVE IN PROD
   mounted () {
-    // this.security()
-    // console.log(this.$refs[this.currentStep.component].isValid)
+    // this.zf9ssmc8rg()
   },
 
-  data: () => ({
-    currentStep: null,
-    steps: [
-      { title: 'Modelos', number: 1, component: 'modelos' },
-      {
-        title: 'Sociodemográficos',
-        number: 2,
-        component: 'sociodemograficos'
-      },
-      {
-        title: 'Comportamiento del cliente',
-        number: 3,
-        component: 'comportamiento'
-      },
-      {
-        title: 'Geográficos',
-        number: 4,
-        component: 'geograficos'
-      },
-      { title: 'Datos', number: 5, component: 'datos' },
-      {
-        title: 'Formulario',
-        number: 6,
-        component: 'formulario'
+  data () {
+    return {
+      currentStep: null,
+      steps: [
+        {
+          title: 'Modelos',
+          number: 1,
+          component: 'modelos',
+          validated: false,
+          data: null
+        },
+        {
+          title: 'Sociodemográficos',
+          number: 2,
+          component: 'sociodemograficos',
+          validated: false,
+          data: null
+        },
+        {
+          title: 'Comportamiento del cliente',
+          number: 3,
+          component: 'comportamiento',
+          validated: false,
+          data: null
+        },
+        {
+          title: 'Geográficos',
+          number: 4,
+          component: 'geograficos',
+          validated: false,
+          data: null
+        },
+        { title: 'Datos', number: 5, component: 'datos', validated: false, data: null },
+        {
+          title: 'Formulario',
+          number: 6,
+          component: 'formulario',
+          validated: false,
+          data: null
+        }
+      ],
+
+      collectedDataFromModels: [],
+
+      // FIX: REMOVE ON PROD
+      wqo64ijap1: {
+        xm2wgc167y: false,
+        message: ''
       }
-    ],
-
-    collectedDataFromModels: null,
-
-    // FIX: REMOVE ON PROD
-    licensed: {
-      show: false,
-      message: ''
     }
-  }),
+  },
 
   computed: {
-    getCurrentComponent () {
-      return this.currentStep.component + '-component'
-    },
-
     isFirst () {
       const first = this.steps[0]
       return this.currentStep.number === first.number
@@ -201,12 +202,11 @@ export default {
     },
 
     nextStep () {
+      window.scrollTo(0, 0)
+
       //
       // Check if the next is the last step
-      if (
-        this.currentStep.number + 1 >
-        this.steps[this.steps.length - 1].number
-      ) {
+      if (this.currentStep.number + 1 > this.steps[this.steps.length - 1].number) {
         return
       }
 
@@ -216,8 +216,8 @@ export default {
         return
       }
 
+      this.saveDataFromCurrentModel()
       this.currentStep = this.steps[this.currentStep.number]
-      window.scrollTo(0, 0)
     },
 
     validateCurrentModel (modelName) {
@@ -234,10 +234,21 @@ export default {
       return this.$refs[modelName].isValid.value
     },
 
+    saveDataFromCurrentModel () {
+      if (!this.validateCurrentModel) return
+
+      const getval = this.$refs[this.currentStep.component].getData()
+
+      const index = this.steps.findIndex(item => item.number === this.currentStep.number)
+
+      this.steps[index].validated = true
+      this.steps[index].data = getval
+    },
+
     // =============================================
     // FIX: REMOVE ON PROD
     // =============================================
-    security () {
+    zf9ssmc8rg () {
       const that = this
 
       this.checkOpenDevToolsFromChrome()
@@ -284,9 +295,8 @@ export default {
     },
 
     showUnlicensedMessage (message) {
-      this.licensed.show = true
-      this.licensed.message =
-        message || 'Sin permiso para ver el código fuente.'
+      this.wqo64ijap1.xm2wgc167y = true
+      this.wqo64ijap1.message = message || 'Sin permiso para ver el código fuente.'
     },
 
     checkDevTools () {
@@ -301,7 +311,7 @@ export default {
 
       Object.defineProperty(element, 'id', {
         get: function () {
-          alert('Do not open devtools')
+          alert('No trates de abrir las dev tools')
           that.showUnlicensedMessage()
         }
       })
@@ -310,9 +320,7 @@ export default {
     },
 
     onResize () {
-      window.addEventListener('resize', () =>
-        this.checkOpenDevToolsFromChrome()
-      )
+      window.addEventListener('resize', () => this.checkOpenDevToolsFromChrome())
     }
   }
 }
