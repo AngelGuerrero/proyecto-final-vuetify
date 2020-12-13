@@ -63,7 +63,7 @@
                   :is="step.component + '-component'"
                   v-show="currentStep.number === step.number"
                   :ref="step.component"
-                  :stepInformation="step"
+                  :step="step"
                 ></component>
               </div>
 

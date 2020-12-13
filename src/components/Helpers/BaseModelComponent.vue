@@ -31,7 +31,7 @@
         </p>
       </v-container>
 
-      <slot :isValid="isValid" :mutateModel="mutateModel"></slot>
+      <slot :isValid="isValid" :mutate="mutate"></slot>
     </v-card-text>
   </div>
 </template>
@@ -42,14 +42,14 @@ export default {
 
   props: {
     /**
-     * propSections.
+     * propmodel.
      *
      * With this information the component
      * will do the validations, respectively,
-     * it will check if all required sections
+     * it will check if all required model
      * are valid or not.
      */
-    propSections: {
+    propmodel: {
       type: Object,
       required: true
     },
@@ -100,7 +100,7 @@ export default {
       //
       // Creates a copy from
       // props for mutate values.
-      sections: this.propSections
+      model: this.propmodel
     }
   },
 
@@ -109,14 +109,14 @@ export default {
      * isValid.
      *
      * Computed property for let it know to parent
-     * if all sections passed as prop are valid or not.
+     * if all model passed as prop are valid or not.
      */
     isValid () {
-      let retval = { value: true, message: '', data: this.sections }
+      let retval = { value: true, message: '', data: this.model }
 
       // console.clear()
-      console.group('=== 👾 Validating sections 🤞 ===')
-      for (const [key, value] of Object.entries(this.sections)) {
+      console.group('=== 👾 Validating model 🤞 ===')
+      for (const [key, value] of Object.entries(this.model)) {
         console.log(key, ' | valid :>> ', value.validation.valid)
 
         if (!value.validation.valid) {
@@ -149,7 +149,7 @@ export default {
     getData () {
       console.log('')
       console.group('===== Select data for return ===== ')
-      const retval = Object.entries(this.sections).map(item => {
+      const retval = Object.entries(this.model).map(item => {
         return {
           [item[0]]: {
             selected: item[1].vmodel
@@ -168,8 +168,8 @@ export default {
       this.alert.message = show ? message : ''
     },
 
-    mutateModel (model, property, data) {
-      this.sections[model][property] = data
+    mutate (model, property, data) {
+      this.model[model][property] = data
     }
   }
 }

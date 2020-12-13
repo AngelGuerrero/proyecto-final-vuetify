@@ -1,12 +1,12 @@
 <template>
   <base-component
     ref="base"
-    :propSections="sections"
-    :name="stepInformation.name"
-    :pageTitle="stepInformation.pageTitle"
-    :pageDescription="stepInformation.pageDescription"
+    :propmodel="model"
+    :name="step.name"
+    :pageTitle="step.pageTitle"
+    :pageDescription="step.pageDescription"
   >
-    <template #default="{ mutateModel }">
+    <template #default="{ mutate }">
       <!-- Género -->
       <v-card class="elevation-0 ma-0 pa-0">
         <v-card-title primary-title class="justify-center">
@@ -15,10 +15,10 @@
         <v-card-text>
           <div class="elevation-3 pa-3 rounded">
             <validate-checkbox
-              :model="sections.genero"
+              :model="model.genero"
               validation="one"
-              @on-validate="mutateModel('genero', 'validation', $event)"
-              @on-change="mutateModel('genero', 'vmodel', $event)"
+              @on-validate="mutate('genero', 'validation', $event)"
+              @on-change="mutate('genero', 'vmodel', $event)"
             ></validate-checkbox>
           </div>
         </v-card-text>
@@ -91,19 +91,18 @@
                       Selecciona los rangos de tu interes
                     </p>
 
-                      <!-- :items="sections.rang_edad.items" -->
                     <validate-checkbox
-                      customSlot
-                      :model="sections.rang_edad"
+                      custom
                       validation="one"
-                      @on-validate="mutateModel(sections.rang_edad.name, 'validation', $event)"
-                      @on-change="mutateModel(sections.rang_edad.name, 'vmodel', $event)"
+                      :model="model.edad"
+                      @on-change="mutate(model.edad.name, 'vmodel', $event)"
+                      @on-validate="mutate(model.edad.name, 'validation', $event)"
                     >
                       <template #default="{ results }">
                         <v-row>
-                          <v-col cols="12" md="3">
+                          <v-col cols="12" sm="6" md="3">
                             <v-checkbox
-                              v-for="(item, index) in getRangeOfItems(0, 4, sections.rang_edad.items)"
+                              v-for="(item, index) in fromTo(0, 4, model.edad.getItems())"
                               :key="index"
                               v-model="item.checked"
                               :value="item.checked"
@@ -112,9 +111,9 @@
                             ></v-checkbox>
                           </v-col>
 
-                          <v-col cols="12" md="3">
+                          <v-col cols="12" sm="6" md="3">
                             <v-checkbox
-                              v-for="(item, index) in getRangeOfItems(8, 12, sections.rang_edad.items)"
+                              v-for="(item, index) in fromTo(4, 8, model.edad.getItems())"
                               :key="index"
                               v-model="item.checked"
                               :value="item.checked"
@@ -122,9 +121,9 @@
                               :error="!results.valid"
                             ></v-checkbox>
                           </v-col>
-                          <v-col cols="12" md="3">
+                          <v-col cols="12" sm="6" md="3">
                             <v-checkbox
-                              v-for="(item, index) in getRangeOfItems(12, 16, sections.rang_edad.items)"
+                              v-for="(item, index) in fromTo(8, 12, model.edad.getItems())"
                               :key="index"
                               v-model="item.checked"
                               :value="item.checked"
@@ -132,9 +131,9 @@
                               :error="!results.valid"
                             ></v-checkbox>
                           </v-col>
-                          <v-col cols="12" md="3">
+                          <v-col cols="12" sm="6" md="3">
                             <v-checkbox
-                              v-for="(item, index) in getRangeOfItems(16, 19, sections.rang_edad.items)"
+                              v-for="(item, index) in fromTo(12, 16, model.edad.getItems())"
                               :key="index"
                               v-model="item.checked"
                               :value="item.checked"
@@ -232,10 +231,10 @@
             <div class="elevation-3 pa-3 rounded">
               <h4>Nivel de escolaridad</h4>
               <validate-checkbox
-                :model="sections.escolaridad"
+                :model="model.escolaridad"
                 validation="one"
-                @on-validate="mutateModel(sections.escolaridad.name, 'validation', $event)"
-                @on-change="mutateModel(sections.escolaridad.name, 'vmodel', $event)"
+                @on-validate="mutate(model.escolaridad.name, 'validation', $event)"
+                @on-change="mutate(model.escolaridad.name, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -246,10 +245,10 @@
               <h4>Estado Civil</h4>
               <div class="card-text">
                 <validate-checkbox
-                  :model="sections.e_civil"
+                  :model="model.e_civil"
                   validation="one"
-                  @on-validate="mutateModel(sections.e_civil.name, 'validation', $event)"
-                  @on-change="mutateModel(sections.e_civil.name, 'vmodel', $event)"
+                  @on-validate="mutate(model.e_civil.name, 'validation', $event)"
+                  @on-change="mutate(model.e_civil.name, 'vmodel', $event)"
                 ></validate-checkbox>
               </div>
             </div>
@@ -263,10 +262,10 @@
             <div class="elevation-3 pa-3 rounded">
               <h4>Integrantes del hogar</h4>
               <validate-checkbox
-                :model="sections.in_hogar"
+                :model="model.in_hogar"
                 validation="one"
-                @on-validate="mutateModel(sections.in_hogar.name, 'validation', $event)"
-                @on-change="mutateModel(sections.in_hogar.name, 'vmodel', $event)"
+                @on-validate="mutate(model.in_hogar.name, 'validation', $event)"
+                @on-change="mutate(model.in_hogar.name, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -275,10 +274,10 @@
             <div class="elevation-3 pa-3 rounded">
               <h4>Integrantes del hogar que trabajan</h4>
               <validate-checkbox
-                :model="sections.in_hogarTrabajan"
+                :model="model.in_hogarTrabajan"
                 validation="one"
-                @on-validate="mutateModel(sections.in_hogarTrabajan.name, 'validation', $event)"
-                @on-change="mutateModel(sections.in_hogarTrabajan.name, 'vmodel', $event)"
+                @on-validate="mutate(model.in_hogarTrabajan.name, 'validation', $event)"
+                @on-change="mutate(model.in_hogarTrabajan.name, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -306,69 +305,51 @@
                     <v-container>
                       <h3>Salarios minimos</h3>
                       <p class="my-3">
-                        Salario mínimo general vigente a partir del 1° de enero de 2020 corresponde a $123.22 pesos
+                        Salario mínimo general vigente a partir del 1° de enero de 2020 corresponde a $123.22
+                        pesos
                       </p>
                     </v-container>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
-                    <validate-checkbox customSlot tag="div" validation="one" title="Salarios mínimos">
-                      <template #default="{ results, validatePlainItems }">
+                    <validate-checkbox
+                      custom
+                      validation="one"
+                      :model="model.sal_min"
+                      @on-validate="mutate('sal_min', 'validation', $event)"
+                      @on-change="mutate('sal_min', 'vmodel', $event)"
+                    >
+                      <template #default="{ results }">
                         <v-row>
                           <v-col cols="12" md="4">
                             <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[0].value"
-                              :label="sections.sal_min.items[0].value"
+                              v-for="item in fromTo(0, 3, model.sal_min.getItems())"
+                              :key="item.id"
+                              v-model="item.checked"
+                              :value="item.checked"
+                              :label="item.value"
                               :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
                             ></v-checkbox>
-                            <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[1].value"
-                              :label="sections.sal_min.items[1].value"
-                              :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
-                            ></v-checkbox>
+                          </v-col>
 
+                          <v-col cols="12" md="4">
                             <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[2].value"
-                              :label="sections.sal_min.items[2].value"
+                              v-for="item in fromTo(3, 5, model.sal_min.getItems())"
+                              :key="item.id"
+                              v-model="item.checked"
+                              :value="item.checked"
+                              :label="item.value"
                               :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
                             ></v-checkbox>
                           </v-col>
                           <v-col cols="12" md="4">
                             <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[3].value"
-                              :label="sections.sal_min.items[3].value"
+                              v-for="item in fromTo(5, 7, model.sal_min.getItems())"
+                              :key="item.id"
+                              v-model="item.checked"
+                              :value="item.checked"
+                              :label="item.value"
                               :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
-                            ></v-checkbox>
-                            <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[4].value"
-                              :label="sections.sal_min.items[4].value"
-                              :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
-                            ></v-checkbox>
-                          </v-col>
-                          <v-col cols="12" md="4">
-                            <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[5].value"
-                              :label="sections.sal_min.items[5].value"
-                              :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
-                            ></v-checkbox>
-                            <v-checkbox
-                              v-model="sections.sal_min.vmodel"
-                              :value="sections.sal_min.items[6].value"
-                              :label="sections.sal_min.items[6].value"
-                              :error="!results.valid"
-                              @change="sections.sal_min.validation.valid = validatePlainItems(sections.sal_min.vmodel).valid"
                             ></v-checkbox>
                           </v-col>
                         </v-row>
@@ -479,37 +460,32 @@ var $ = require('jquery')
 //
 // Data
 //
-const sections = () => ({
+const model = () => ({
   //
   // Género
-  genero: new Section('genero', 'Género', [new Checkbox('genero', 'Hombre'), new Checkbox('genero', 'Mujer')]),
+  genero: new Section('genero', 'Género', [
+    new Checkbox('genero', 'Hombre'),
+    new Checkbox('genero', 'Mujer')
+  ]),
   //
   // Rangos de edad
-  rang_edad: new Section(
-    'rang_edad',
-    'Rangos de edad',
-    [
-      new Checkbox('rang_edad', ' 15 a 19 años '),
-      new Checkbox('rang_edad', ' 20 a 24 años '),
-      new Checkbox('rang_edad', ' 25 a 29 años '),
-      new Checkbox('rang_edad', ' 30 a 34 años '),
-      new Checkbox('rang_edad', ' 15 a 19 años '),
-      new Checkbox('rang_edad', ' 20 a 24 años '),
-      new Checkbox('rang_edad', ' 25 a 29 años '),
-      new Checkbox('rang_edad', ' 30 a 34 años '),
-      new Checkbox('rang_edad', ' 35 a 39 años '),
-      new Checkbox('rang_edad', ' 40 a 44 años '),
-      new Checkbox('rang_edad', ' 45 a 49 años '),
-      new Checkbox('rang_edad', ' 50 a 54 años '),
-      new Checkbox('rang_edad', ' 55 a 59 años '),
-      new Checkbox('rang_edad', ' 60 a 64 años '),
-      new Checkbox('rang_edad', ' 65 a 69 años '),
-      new Checkbox('rang_edad', ' 70 a 74 años '),
-      new Checkbox('rang_edad', ' 75 a 79 años '),
-      new Checkbox('rang_edad', ' 80 a 84 años '),
-      new Checkbox('rang_edad', ' 85 años o más ')
-    ]
-  ),
+  edad: new Section('edad', 'Rangos de edad', [
+    new Checkbox('edad', ' 15 a 19 años '),
+    new Checkbox('edad', ' 20 a 24 años '),
+    new Checkbox('edad', ' 25 a 29 años '),
+    new Checkbox('edad', ' 30 a 34 años '),
+    new Checkbox('edad', ' 35 a 39 años '),
+    new Checkbox('edad', ' 40 a 44 años '),
+    new Checkbox('edad', ' 45 a 49 años '),
+    new Checkbox('edad', ' 50 a 54 años '),
+    new Checkbox('edad', ' 55 a 59 años '),
+    new Checkbox('edad', ' 60 a 64 años '),
+    new Checkbox('edad', ' 65 a 69 años '),
+    new Checkbox('edad', ' 70 a 74 años '),
+    new Checkbox('edad', ' 75 a 79 años '),
+    new Checkbox('edad', ' 80 a 84 años '),
+    new Checkbox('edad', ' 85 años o más ')
+  ]),
   //
   // Nivel escolaridad
   escolaridad: new Section('escolaridad', 'Nivel de escolaridad', [
@@ -555,21 +531,15 @@ const sections = () => ({
   ]),
   //
   // Salarios mínimos
-  sal_min: new Section(
-    'sal_min',
-    'Salarios mínimos',
-    [
-      { group: 'sal_min', value: 'Menor o igual a 1 SM' },
-      { group: 'sal_min', value: 'Hasta 2 SM' },
-      { group: 'sal_min', value: 'Hasta 3 SM' },
-      { group: 'sal_min', value: 'Hasta 4 SM' },
-      { group: 'sal_min', value: 'De 5 a 10 SM' },
-      { group: 'sal_min', value: 'De 11 a 25 SM' },
-      { group: 'sal_min', value: 'Mayor a 25 SM' }
-    ],
-    null,
-    []
-  )
+  sal_min: new Section('sal_min', 'Salarios mínimos', [
+    new Checkbox('sal_min', 'Menor o igual a 1 SM'),
+    new Checkbox('sal_min', 'Hasta 2 SM'),
+    new Checkbox('sal_min', 'Hasta 3 SM'),
+    new Checkbox('sal_min', 'Hasta 4 SM'),
+    new Checkbox('sal_min', 'De 5 a 10 SM'),
+    new Checkbox('sal_min', 'De 11 a 25 SM'),
+    new Checkbox('sal_min', 'Mayor a 25 SM')
+  ])
 })
 
 export default {
@@ -581,14 +551,14 @@ export default {
   },
 
   props: {
-    stepInformation: {
+    step: {
       type: Object,
       required: true
     }
   },
 
   mounted () {
-    // this.getRangeOfItems(4, 8, this.sections.rang_edad.items)
+    // this.fromTo(4, 8, this.model.edad.items)
   },
 
   data () {
@@ -596,7 +566,7 @@ export default {
       edadPanels: [1, 2, 3, 4],
       salarioPanels: [0],
 
-      sections: sections()
+      model: model()
     }
   },
 
@@ -663,7 +633,7 @@ export default {
       $('#rangeSalarioPromedioMensual').ionRangeSlider(rangeSalarioPromedioMensual)
     },
 
-    getRangeOfItems (start, end, items) {
+    fromTo (start, end, items) {
       const newItems = items.slice(start, end)
       return newItems
     }

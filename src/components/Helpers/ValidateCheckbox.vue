@@ -2,7 +2,7 @@
   <component :is="wrapper" :class="wrapperClasses">
     <!--
         HEADER
-        Slot header. Injects results data of validations
+        custom header. Injects results data of validations
         to handle in parent component.
       -->
     <slot name="header" :results="results">
@@ -11,7 +11,7 @@
       </p>
     </slot>
 
-    <component v-if="!customSlot" :is="tag" :class="contentClasses">
+    <component v-if="!custom" :is="tag" :class="contentClasses">
       <v-checkbox
         v-for="item in localItems"
         :key="item.id"
@@ -26,7 +26,7 @@
       ></v-checkbox>
     </component>
 
-    <component :is="tag" :class="contentClasses" v-if="customSlot">
+    <component :is="tag" :class="contentClasses" v-if="custom">
       <!-- <pre>
         {{ $data }}
       </pre> -->
@@ -35,7 +35,7 @@
 
     <!--
         FOOTER
-        Slot footer. Injects results data of validations, and
+        custom footer. Injects results data of validations, and
         injects a validate function to perform from parent.
       -->
     <slot name="footer" :results="results" :validate="validate"></slot>
@@ -57,7 +57,7 @@ export default {
   name: 'ValidateCheckbox',
 
   props: {
-    customSlot: {
+    custom: {
       type: Boolean,
       required: false,
       default: false
@@ -148,6 +148,7 @@ export default {
   created () {
     this.localModel = this.model ? Section.getNewInstance(this.model) : null
     this.localItems = this.model ? this.localModel.getItems() : this.items ? this.items : []
+    debugger
 
     this.localMessage =
       this.message !== ''
@@ -182,7 +183,9 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
+        console.group('🌟⚡ Validando items ⚡🌟')
         this.validate(newValue)
+        console.groupEnd()
       }
     },
 
@@ -190,7 +193,9 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
+        console.group('🌟⚡ Validando local items ⚡🌟')
         this.validate(newValue)
+        console.groupEnd()
       }
     }
   },
@@ -205,7 +210,7 @@ export default {
       this.results = this.$_validateCheckboxes(this.validation, newValue)
 
       this.$_emitValidateOfCheckboxes(this.results)
-      this.$_emitChangeOfCheckboxes(this.localItems)
+      this.$_emitChangeOfCheckboxes(newValue)
     },
 
     // ==================
@@ -228,12 +233,14 @@ export default {
         // Case require at least some checkbox checked
         //
         case 'one':
+          console.log('🤞 Validating one item 🤞')
           retval = this.$_validateAtLeastOneCheckbox(items)
           break
         //
         // Case require all checkboxes checked
         //
         case 'all':
+          console.log('🤞 Validating all items 🤞')
           retval = this.$_validateAllCheckboxes(items)
           break
         //
@@ -281,7 +288,6 @@ export default {
       if (!valid) {
         retval.valid = false
         retval.message = this.localMessage
-        return retval
       }
 
       return retval

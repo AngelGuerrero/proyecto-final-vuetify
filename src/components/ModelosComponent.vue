@@ -1,30 +1,30 @@
 <template>
   <base-component
     ref="base"
-    :propSections="sections"
-    :name="stepInformation.name"
-    :pageTitle="stepInformation.pageTitle"
-    :pageDescription="stepInformation.pageDescription"
+    :propmodel="model"
+    :name="step.name"
+    :pageTitle="step.pageTitle"
+    :pageDescription="step.pageDescription"
   >
-    <template #default="{ isValid, mutateModel }">
+    <template #default="{ isValid, mutate }">
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <validation-provider rules="required" v-slot="{ validate }">
             <v-radio-group
               :error-messages="
-                sections.modelos.selectedOption ? [] : sections.modelos.validation.message
+                model.modelos.selectedOption ? [] : model.modelos.validation.message
               "
-              v-model="sections.modelos.selectedOption"
+              v-model="model.modelos.selectedOption"
               @change="
-                sections.modelos.validation.valid =
-                  sections.modelos.selectedOption !== null
+                model.modelos.validation.valid =
+                  model.modelos.selectedOption !== null
               "
               row
             >
               <v-radio
-                v-for="item in sections.modelos.options"
+                v-for="item in model.modelos.options"
                 :key="item.id"
-                :name="sections.modelos.name"
+                :name="model.modelos.name"
                 :label="`${item}`"
                 :value="item"
                 @change="validate"
@@ -35,7 +35,7 @@
       </v-row>
 
       <v-expansion-panels
-        v-show="sections.modelos.selectedOption === 'Segmentar Clientes'"
+        v-show="model.modelos.selectedOption === 'Segmentar Clientes'"
         focusable
         :accordion="isValid.value"
         :multiple="!isValid.value"
@@ -82,11 +82,11 @@
                   <h3>Area</h3>
 
                   <validate-checkbox
-                    :model="sections.area"
+                    :model="model.area"
                     validation="one"
                     :successStatus="true"
-                    @on-validate="mutateModel('area', 'validation', $event)"
-                    @on-change="mutateModel('area', 'vmodel', $event)"
+                    @on-validate="mutate('area', 'validation', $event)"
+                    @on-change="mutate('area', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -96,11 +96,11 @@
                   <validation-provider v-slot="{ validate, valid }" rules="required">
                     <v-select
                       outlined
-                      :items="sections.productos.getItems()"
-                      v-model="sections.productos.vmodel"
-                      :error-messages="sections.productos.getErrorMessages()"
+                      :items="model.productos.getItems()"
+                      v-model="model.productos.vmodel"
+                      :error-messages="model.productos.getErrorMessages()"
                       @change="validate()"
-                      @blur="sections.productos.setValid(valid)"
+                      @blur="model.productos.setValid(valid)"
                     ></v-select>
                   </validation-provider>
                 </v-col>
@@ -109,10 +109,10 @@
                   <h3>Tipo de compra</h3>
 
                   <validate-checkbox
-                    :model="sections.compra"
+                    :model="model.compra"
                     validation="one"
-                    @on-validate="mutateModel('compra', 'validation', $event)"
-                    @on-change="mutateModel('compra', 'vmodel', $event)"
+                    @on-validate="mutate('compra', 'validation', $event)"
+                    @on-change="mutate('compra', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -122,10 +122,10 @@
                   <h3>R=Recency</h3>
                   <p>Tiempo transcurrido desde su ultima compra</p>
                   <validate-checkbox
-                    :model="sections.recency"
+                    :model="model.recency"
                     validation="one"
-                    @on-validate="mutateModel('recency', 'validation', $event)"
-                    @on-change="mutateModel('recency', 'vmodel', $event)"
+                    @on-validate="mutate('recency', 'validation', $event)"
+                    @on-change="mutate('recency', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -133,10 +133,10 @@
                   <h3>F=Frecuency</h3>
                   <p>Numero de compras</p>
                   <validate-checkbox
-                    :model="sections.frecuency"
+                    :model="model.frecuency"
                     validation="one"
-                    @on-validate="mutateModel('frecuency', 'validation', $event)"
-                    @on-change="mutateModel('frecuency', 'vmodel', $event)"
+                    @on-validate="mutate('frecuency', 'validation', $event)"
+                    @on-change="mutate('frecuency', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -144,10 +144,10 @@
                   <h3>M=Money</h3>
                   <p>Valor de las compras totales del cliente</p>
                   <validate-checkbox
-                    :model="sections.money"
+                    :model="model.money"
                     validation="one"
-                    @on-validate="mutateModel('money', 'validation', $event)"
-                    @on-change="mutateModel('money', 'vmodel', $event)"
+                    @on-validate="mutate('money', 'validation', $event)"
+                    @on-change="mutate('money', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -180,19 +180,19 @@
                 <v-col cols="12" md="6">
                   <h3>Retencion del cliente</h3>
                   <validate-checkbox
-                    :model="sections.reteCliente"
+                    :model="model.reteCliente"
                     validation="one"
-                    @on-validate="mutateModel('reteCliente', 'validation', $event)"
-                    @on-change="mutateModel('reteCliente', 'vmodel', $event)"
+                    @on-validate="mutate('reteCliente', 'validation', $event)"
+                    @on-change="mutate('reteCliente', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
                 <v-col cols="12" md="6">
                   <h3>Recuperacion del cliente</h3>
                   <validate-checkbox
-                    :model="sections.recuCliente"
+                    :model="model.recuCliente"
                     validation="one"
-                    @on-validate="mutateModel('recuCliente', 'validation', $event)"
-                    @on-change="mutateModel('recuCliente', 'vmodel', $event)"
+                    @on-validate="mutate('recuCliente', 'validation', $event)"
+                    @on-change="mutate('recuCliente', 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -225,10 +225,10 @@
               <h3>Predicción de Puntualidad</h3>
 
               <validate-checkbox
-                :model="sections.puntualidad"
+                :model="model.puntualidad"
                 validation="one"
-                @on-validate="mutateModel('puntualidad', 'validation', $event)"
-                @on-change="mutateModel('puntualidad', 'vmodel', $event)"
+                @on-validate="mutate('puntualidad', 'validation', $event)"
+                @on-change="mutate('puntualidad', 'vmodel', $event)"
                 headerClasses="text-center"
                 contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
                 itemsClasses="flex-grow-1"
@@ -240,7 +240,7 @@
 
       <!-- Modelos de recomendación -->
       <v-expansion-panels
-        v-show="sections.modelos.selectedOption === 'Recomendar Productos'"
+        v-show="model.modelos.selectedOption === 'Recomendar Productos'"
         focusable
         accordion
         v-model="panels"
@@ -289,11 +289,11 @@ import Checkbox from '../models/Checkbox'
  * Data
  */
 //
-// Sections
+// model
 //
 // Contains all information data that will be rendered.
 //
-const sections = () => ({
+const model = () => ({
   //
   // Tipo de modelos
   modelos: {
@@ -392,7 +392,7 @@ export default {
   },
 
   props: {
-    stepInformation: {
+    step: {
       type: Object,
       required: true
     }
@@ -404,9 +404,9 @@ export default {
       panelsCount: 3,
 
       //
-      // All the sections where contains the checkboxes
+      // All the model where contains the checkboxes
       // information that will be rendered.
-      sections: sections()
+      model: model()
     }
   },
 
