@@ -1,6 +1,21 @@
 <template>
   <v-app id="vuetify-app">
     <div id="wrapper">
+      <!-- Show notification -->
+      <v-snackbar
+        v-model="notification.show"
+        :timeout="notification.timeout"
+        top
+        right
+        :color="notification.error ? 'error' : 'success'"
+        elevation="24"
+        class="white--text"
+      >
+        <h3>
+          {{ notification.message }}
+        </h3>
+      </v-snackbar>
+
       <nav id="my_nav">
         <navbar-component />
       </nav>
@@ -33,22 +48,23 @@
 
               <!-- FIX: REMOVE ON PROD -->
               <div v-if="!wqo64ijap1.xm2wgc167y">
+                <!-- FIX: TEST -->
+                <v-container fluid>
+                  <v-btn @click="setNotification('Prueba desde botón')" color="primary">
+                    <v-icon class="mr-2">mdi-alert-circle</v-icon>
+                    Test
+                  </v-btn>
+                </v-container>
+                <!-- FIX: TEST -->
+
                 <component
                   v-for="step in steps"
                   :key="step.id"
                   :is="step.component + '-component'"
                   v-show="currentStep.number === step.number"
-                  :ref="currentStep.component"
-                  :name="step.component"
-                  :title="step.title"
+                  :ref="step.component"
+                  :stepInformation="step"
                 ></component>
-
-                <!-- <modelos-component v-show="currentStep.number === 1" :ref="currentStep.component" :name="currentStep.component" :title="currentStep.title" /> -->
-                <!-- <sociodemograficos-component v-show="currentStep.number === 2" /> -->
-                <!-- <comportamiento-component v-show="currentStep.number === 3" /> -->
-                <!-- <geograficos-component v-show="currentStep.number === 4" /> -->
-                <!-- <datos-component v-show="currentStep.number === 5" /> -->
-                <!-- <formulario-component v-show="currentStep.number === 6" /> -->
               </div>
 
               <!-- Controles para recorrer los pasos -->
@@ -86,7 +102,6 @@
 <script>
 import HeaderComponent from './components/HeaderComponent'
 import NavbarComponent from './components/NavbarComponent'
-
 // Modelos dinámicos
 import ModelosComponent from './components/ModelosComponent'
 import SociodemograficosComponent from './components/SociodemograficosComponent'
@@ -94,7 +109,9 @@ import ComportamientoComponent from './components/ComportamientoComponent'
 import GeograficosComponent from './components/GeograficosComponent'
 import DatosComponent from './components/DatosComponent'
 import FormularioComponent from './components/FormularioComponent'
-
+// Models
+import Steps from './models/Steps'
+// Dev
 import devtools from 'devtools-detect'
 
 export default {
@@ -123,39 +140,14 @@ export default {
   data () {
     return {
       currentStep: null,
-      steps: [
-        {
-          title: 'Modelos',
-          number: 1,
-          component: 'modelos',
-          data: null
-        },
-        {
-          title: 'Sociodemográficos',
-          number: 2,
-          component: 'sociodemograficos',
-          data: null
-        },
-        {
-          title: 'Comportamiento del cliente',
-          number: 3,
-          component: 'comportamiento',
-          data: null
-        },
-        {
-          title: 'Geográficos',
-          number: 4,
-          component: 'geograficos',
-          data: null
-        },
-        { title: 'Datos', number: 5, component: 'datos', data: null },
-        {
-          title: 'Formulario',
-          number: 6,
-          component: 'formulario',
-          data: null
-        }
-      ],
+      steps: Steps,
+
+      notification: {
+        show: true,
+        timeout: 7000,
+        error: false,
+        message: ''
+      },
 
       collectedDataFromModels: [],
 
@@ -218,25 +210,34 @@ export default {
     validateCurrentModel (modelName) {
       //
       // Throw a validation method for current component
-      const { message, data } = this.$refs[modelName].validateModel()
+      const model = this.$refs[modelName][0]
 
-      console.log('message :>> ', message)
-      console.log('data :>> ', data)
+      model.validateModel()
 
       //
       // Return the value from a computed
       // property of the component
-      return this.$refs[modelName].isValid.value
+      return model.$refs.base.isValid.value
     },
 
     saveDataFromCurrentModel () {
       if (!this.validateCurrentModel) return
 
-      const getval = this.$refs[this.currentStep.component].getData()
+      const baseComponent = this.$refs[this.currentStep.component][0].$refs.base
+
+      const getval = baseComponent.getData()
 
       const index = this.steps.findIndex(item => item.number === this.currentStep.number)
 
       this.steps[index].data = getval
+
+      this.setNotification('¡Datos guardados correctamente!')
+    },
+
+    setNotification (message, error) {
+      this.notification.show = true
+      this.notification.error = error || false
+      this.notification.message = message
     },
 
     // =============================================

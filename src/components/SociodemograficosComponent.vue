@@ -1,30 +1,26 @@
 <template>
-  <div>
-    <v-card-title class="justify-center">
-      <h1 class="text-center subtitle-1 text-sm-h4">
-        Categoría Sociodemográficos
-      </h1>
-    </v-card-title>
-
-    <v-card-text>
-      <v-container>
-        <p class="text-center">
-          En esta categoria puedes filtrar por caracteristicas sociodemograficas
-          del cliente. Ahora bien, si no lo requieres, pues dar clic en
-          continuar.
-        </p>
-      </v-container>
-
+  <base-component
+    ref="base"
+    :propSections="sections"
+    :name="stepInformation.name"
+    :pageTitle="stepInformation.pageTitle"
+    :pageDescription="stepInformation.pageDescription"
+  >
+    <template #default="{ mutateModel }">
       <!-- Género -->
-      <v-card class="elevation-0">
+      <v-card class="elevation-0 ma-0 pa-0">
         <v-card-title primary-title class="justify-center">
           <h3>Género</h3>
         </v-card-title>
         <v-card-text>
-          <v-container class="elevation-3 rounded">
-            <v-checkbox label="Hombre"></v-checkbox>
-            <v-checkbox label="Mujer"></v-checkbox>
-          </v-container>
+          <div class="elevation-3 pa-3 rounded">
+            <validate-checkbox
+              :model="sections.genero"
+              validation="one"
+              @on-validate="mutateModel('genero', 'validation', $event)"
+              @on-change="mutateModel('genero', 'vmodel', $event)"
+            ></validate-checkbox>
+          </div>
         </v-card-text>
       </v-card>
 
@@ -37,8 +33,8 @@
             </v-card-title>
             <v-card-text>
               <p>
-                Elije el tipo de clasificación de edad del cliente que mas se
-                adecue a tus necesidades.
+                Elije el tipo de clasificación de edad del cliente que mas se adecue a tus
+                necesidades.
               </p>
 
               <!-- Panels -->
@@ -59,11 +55,7 @@
                             </p>
                             <div class="form-group row">
                               <div class="col-12">
-                                <input
-                                  type="text"
-                                  name="rangeEdad_1"
-                                  id="rangeEdad_1"
-                                />
+                                <input type="text" name="rangeEdad_1" id="rangeEdad_1" />
                               </div>
                             </div>
 
@@ -72,22 +64,14 @@
                             </p>
                             <div class="form-group row">
                               <div class="col-12">
-                                <input
-                                  type="text"
-                                  name="rangeEdad_2"
-                                  id="rangeEdad_2"
-                                />
+                                <input type="text" name="rangeEdad_2" id="rangeEdad_2" />
                               </div>
                             </div>
 
                             <p class="text-center">¿Otro?</p>
                             <div class="form-group row">
                               <div class="col-12">
-                                <input
-                                  type="text"
-                                  name="rangeEdad_3"
-                                  id="rangeEdad_3"
-                                />
+                                <input type="text" name="rangeEdad_3" id="rangeEdad_3" />
                               </div>
                             </div>
                           </div>
@@ -201,9 +185,7 @@
                           <v-checkbox label="Baby Boom"></v-checkbox>
                           <p>Clientes que nacieron entre 1945 y 1964</p>
 
-                          <v-checkbox
-                            label="Generación Silenciosa"
-                          ></v-checkbox>
+                          <v-checkbox label="Generación Silenciosa"></v-checkbox>
                           <p>Clientes que nacieron entre 1925 y 1944</p>
                         </v-col>
                       </v-row>
@@ -217,75 +199,69 @@
       </v-row>
 
       <!-- Sin clasificación -->
-      <v-container>
-        <form action="">
-          <v-row>
-            <!-- Nivel de escolaridad -->
-            <v-col cols="12" md="6">
-              <div class="elevation-3 pa-3 rounded">
-                <h4>Nivel de escolaridad</h4>
-                <div>
-                  <v-checkbox label="Sin estudios"></v-checkbox>
-                  <v-checkbox label="Primaria"></v-checkbox>
-                  <v-checkbox label="Secundaria"></v-checkbox>
-                  <v-checkbox label="Carrera Técnica"></v-checkbox>
-                  <v-checkbox label="Preparatoria"></v-checkbox>
-                  <v-checkbox label="Profesional"></v-checkbox>
-                  <v-checkbox label="No identificado"></v-checkbox>
-                </div>
-              </div>
-            </v-col>
-            <!-- Estado civil -->
-            <v-col cols="12" md="6">
-              <div class="elevation-3 pa-3 rounded">
-                <h4>Estado Civil</h4>
-                <div class="card-text">
-                  <v-checkbox label="Casado"></v-checkbox>
-                  <v-checkbox label="Soltero"></v-checkbox>
-                  <v-checkbox label="Union Libre"></v-checkbox>
-                  <v-checkbox label="Divorciado"></v-checkbox>
-                  <v-checkbox label="Viudo"></v-checkbox>
-                  <v-checkbox label="Profesional"></v-checkbox>
-                  <v-checkbox label="Sin Identifica"></v-checkbox>
-                </div>
-              </div>
-            </v-col>
-          </v-row>
+      <v-container fluid>
+        <v-row>
+          <!-- Nivel de escolaridad -->
+          <v-col cols="12" md="6">
+            <div class="elevation-3 pa-3 rounded">
+              <h4>Nivel de escolaridad</h4>
+              <validate-checkbox
+                :model="sections.escolaridad"
+                validation="one"
+                @on-validate="
+                  mutateModel(sections.escolaridad.name, 'validation', $event)
+                "
+                @on-change="mutateModel(sections.escolaridad.name, 'vmodel', $event)"
+              ></validate-checkbox>
+            </div>
+          </v-col>
 
-          <!---->
-          <v-row>
-            <!-- Integrantes del hogar -->
-            <v-col cols="12" md="6">
-              <div class="elevation-3 pa-3 rounded">
-                <h4>Integrantes del hogar</h4>
-                <div>
-                  <v-checkbox label="1 persona"></v-checkbox>
-                  <v-checkbox label="2 personas"></v-checkbox>
-                  <v-checkbox label="3 personas"></v-checkbox>
-                  <v-checkbox label="4 personas"></v-checkbox>
-                  <v-checkbox label="5 personas"></v-checkbox>
-                  <v-checkbox label="6 o más personas"></v-checkbox>
-                  <v-checkbox label="Sin dato"></v-checkbox>
-                </div>
+          <!-- Estado civil -->
+          <v-col cols="12" md="6">
+            <div class="elevation-3 pa-3 rounded">
+              <h4>Estado Civil</h4>
+              <div class="card-text">
+                <validate-checkbox
+                  :model="sections.e_civil"
+                  validation="one"
+                  @on-validate="mutateModel(sections.e_civil.name, 'validation', $event)"
+                  @on-change="mutateModel(sections.e_civil.name, 'vmodel', $event)"
+                ></validate-checkbox>
               </div>
-            </v-col>
-            <!-- Integrantes del hogar que trabajan -->
-            <v-col cols="12" md="6">
-              <div class="elevation-3 pa-3 rounded">
-                <h4>Integrantes del hogar que trabajan</h4>
-                <div>
-                  <v-checkbox label="1 persona"></v-checkbox>
-                  <v-checkbox label="2 personas"></v-checkbox>
-                  <v-checkbox label="3 personas"></v-checkbox>
-                  <v-checkbox label="4 personas"></v-checkbox>
-                  <v-checkbox label="5 o más personas"></v-checkbox>
-                  <v-checkbox label="Sin dato"></v-checkbox>
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-          <!---->
-        </form>
+            </div>
+          </v-col>
+        </v-row>
+
+        <!---->
+        <v-row>
+          <!-- Integrantes del hogar -->
+          <v-col cols="12" md="6">
+            <div class="elevation-3 pa-3 rounded">
+              <h4>Integrantes del hogar</h4>
+              <validate-checkbox
+                :model="sections.in_hogar"
+                validation="one"
+                @on-validate="mutateModel(sections.in_hogar.name, 'validation', $event)"
+                @on-change="mutateModel(sections.in_hogar.name, 'vmodel', $event)"
+              ></validate-checkbox>
+            </div>
+          </v-col>
+          <!-- Integrantes del hogar que trabajan -->
+          <v-col cols="12" md="6">
+            <div class="elevation-3 pa-3 rounded">
+              <h4>Integrantes del hogar que trabajan</h4>
+              <validate-checkbox
+                :model="sections.in_hogarTrabajan"
+                validation="one"
+                @on-validate="
+                  mutateModel(sections.in_hogarTrabajan.name, 'validation', $event)
+                "
+                @on-change="mutateModel(sections.in_hogarTrabajan.name, 'vmodel', $event)"
+              ></validate-checkbox>
+            </div>
+          </v-col>
+        </v-row>
+        <!---->
       </v-container>
 
       <!-- Salario -->
@@ -301,38 +277,115 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable v-model="salarioPanels">
+              <v-expansion-panels focusable multiple v-model="salarioPanels">
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
                     <v-container>
                       <h3>Salarios minimos</h3>
                       <p class="my-3">
-                        Salario mínimo general vigente a partir del 1° de enero
-                        de 2020 corresponde a $123.22 pesos
+                        Salario mínimo general vigente a partir del 1° de enero de 2020
+                        corresponde a $123.22 pesos
                       </p>
                     </v-container>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
-                    <p class="my-3">
-                      Selecciona los rangos de salario minimo requerido
-                    </p>
-                    <v-row>
-                      <v-col cols="12" md="4">
-                        <v-checkbox label="Menor o igual a 1 SM"></v-checkbox>
-                        <v-checkbox label="Hasta 2 SM"></v-checkbox>
-                        <v-checkbox label="Hasta 3 SM"></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-checkbox label="Hasta 4 SM"></v-checkbox>
-                        <v-checkbox label="De 5 a 10 SM"></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" md="4">
-                        <v-checkbox label="De 11 a 25 SM"></v-checkbox>
-                        <v-checkbox label="Mayor a 25 SM"></v-checkbox>
-                      </v-col>
-                    </v-row>
+                    <validate-checkbox
+                      customSlot
+                      tag="div"
+                      validation="one"
+                      title="Salarios mínimos"
+                    >
+                      <template #default="{ results, validatePlainItems }">
+                        <v-row>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[0].value"
+                              :label="sections.sal_min.items[0].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[1].value"
+                              :label="sections.sal_min.items[1].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[2].value"
+                              :label="sections.sal_min.items[2].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                          </v-col>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[3].value"
+                              :label="sections.sal_min.items[3].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[4].value"
+                              :label="sections.sal_min.items[4].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                          </v-col>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[5].value"
+                              :label="sections.sal_min.items[5].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                            <v-checkbox
+                              v-model="sections.sal_min.vmodel"
+                              :value="sections.sal_min.items[6].value"
+                              :label="sections.sal_min.items[6].value"
+                              :error="!results.valid"
+                              @change="
+                                sections.sal_min.validation.valid = validatePlainItems(
+                                  sections.sal_min.vmodel
+                                ).valid
+                              "
+                            ></v-checkbox>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </validate-checkbox>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -352,10 +405,7 @@
 
                     <v-row>
                       <v-col cols="12">
-                        <input
-                          type="text"
-                          id="rangeSalarioPromedioMensual"
-                        />
+                        <input type="text" id="rangeSalarioPromedioMensual" />
                       </v-col>
                     </v-row>
                   </v-expansion-panel-content>
@@ -367,16 +417,15 @@
                     <v-container>
                       <h3>Nivel socioeconómico</h3>
                       <p class="my-3">
-                        Selecciona el Nivel Socieconomico de tu interes. *Datos
-                        calculados al 2020
+                        Selecciona el Nivel Socieconomico de tu interes. *Datos calculados
+                        al 2020
                       </p>
                     </v-container>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
                     <p class="my-3">
-                      Selecciona los rangos de nivel socioeconómico de tu
-                      interes
+                      Selecciona los rangos de nivel socioeconómico de tu interes
                     </p>
 
                     <form>
@@ -429,20 +478,116 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-card-text>
-  </div>
+    </template>
+  </base-component>
 </template>
 
 <script>
+import BaseComponent from './Helpers/BaseModelComponent'
+import ValidateCheckbox from './Helpers/ValidateCheckbox'
+import Section from '../models/Section'
+import Checkbox from '../models/Checkbox'
 var $ = require('jquery')
+
+//
+// Data
+//
+const sections = () => ({
+  //
+  // Género
+  genero: new Section('genero', 'Género', [
+    new Checkbox('genero', 'Hombre'),
+    new Checkbox('genero', 'Mujer')
+  ]),
+  //
+  // Nivel escolaridad
+  escolaridad: new Section('escolaridad', 'Nivel de escolaridad', [
+    new Checkbox('escolaridad', 'Sin estudios'),
+    new Checkbox('escolaridad', 'Primaria'),
+    new Checkbox('escolaridad', 'Secundaria'),
+    new Checkbox('escolaridad', 'Carrera Técnica'),
+    new Checkbox('escolaridad', 'Preparatoria'),
+    new Checkbox('escolaridad', 'Profesional'),
+    new Checkbox('escolaridad', 'No identificado')
+  ]),
+  //
+  // Estado civil
+  e_civil: new Section('e_civil', 'Estado civil', [
+    new Checkbox('e_civil', 'Casado'),
+    new Checkbox('e_civil', 'Soltero'),
+    new Checkbox('e_civil', 'Union Libre'),
+    new Checkbox('e_civil', 'Divorciado'),
+    new Checkbox('e_civil', 'Viudo'),
+    new Checkbox('e_civil', 'Profesional'),
+    new Checkbox('e_civil', 'Sin Identifica')
+  ]),
+  //
+  // Integrantes del hogar
+  in_hogar: new Section('in_hogar', 'Ingregrantes del hogar', [
+    new Checkbox('in_hogar', '1 persona'),
+    new Checkbox('in_hogar', '2 personas'),
+    new Checkbox('in_hogar', '3 personas'),
+    new Checkbox('in_hogar', '4 personas'),
+    new Checkbox('in_hogar', '5 personas'),
+    new Checkbox('in_hogar', '6 o más personas'),
+    new Checkbox('in_hogar', 'Sin dato')
+  ]),
+  //
+  // Integrantes del hogar que trabajan
+  in_hogarTrabajan: new Section(
+    'in_hogarTrabajan',
+    'Integrantes del hogar que trabajan',
+    [
+      new Checkbox('in_hogarTrabajan', '1 persona'),
+      new Checkbox('in_hogarTrabajan', '2 personas'),
+      new Checkbox('in_hogarTrabajan', '3 personas'),
+      new Checkbox('in_hogarTrabajan', '4 personas'),
+      new Checkbox('in_hogarTrabajan', '5 o más personas'),
+      new Checkbox('in_hogarTrabajan', 'Sin dato')
+    ]
+  ),
+  //
+  // Salarios mínimos
+  sal_min: new Section(
+    'sal_min',
+    'Salarios mínimos',
+    [
+      { group: 'sal_min', value: 'Menor o igual a 1 SM' },
+      { group: 'sal_min', value: 'Hasta 2 SM' },
+      { group: 'sal_min', value: 'Hasta 3 SM' },
+      { group: 'sal_min', value: 'Hasta 4 SM' },
+      { group: 'sal_min', value: 'De 5 a 10 SM' },
+      { group: 'sal_min', value: 'De 11 a 25 SM' },
+      { group: 'sal_min', value: 'Mayor a 25 SM' }
+    ],
+    null,
+    []
+  )
+})
 
 export default {
   name: 'SociodemograficosComponent',
 
-  data: () => ({
-    edadPanels: [0],
-    salarioPanels: [0, 0]
-  }),
+  components: {
+    BaseComponent,
+    ValidateCheckbox
+  },
+
+  props: {
+    stepInformation: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data () {
+    return {
+      edadPanels: [0],
+      salarioPanels: [0],
+
+      sections: sections()
+    }
+  },
 
   watch: {
     edadPanels () {
@@ -455,6 +600,24 @@ export default {
   },
 
   methods: {
+    // ===========================================
+    // Region: Base component methods to call
+    // ===========================================
+    //
+    // Return selected data if there is no errors
+    validateModel () {
+      let retval
+
+      //
+      // Executes an action based in the response
+      this.$refs.base.validateModel(response => {
+        // if (!response.value) this.openAllPanels()
+
+        retval = response
+      })
+
+      return retval
+    },
     update () {
       //
       // Para hacer un slider para un componente
@@ -485,12 +648,8 @@ export default {
         prefix: '$',
         step: 5000
       }
-      $('#rangeSalarioPromedioMensual').ionRangeSlider(
-        rangeSalarioPromedioMensual
-      )
+      $('#rangeSalarioPromedioMensual').ionRangeSlider(rangeSalarioPromedioMensual)
     }
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

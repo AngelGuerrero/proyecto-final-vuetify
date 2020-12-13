@@ -11,7 +11,7 @@
       </p>
     </slot>
 
-    <component :is="tag" :class="contentClasses">
+    <component v-if="!customSlot" :is="tag" :class="contentClasses">
       <v-checkbox
         v-for="item in localItems"
         :key="item.id"
@@ -24,6 +24,10 @@
         :success="successStatus ? results.valid : null"
         :class="itemsClasses"
       ></v-checkbox>
+    </component>
+
+    <component :is="tag" :class="contentClasses" v-if="customSlot">
+      <slot :validatePlainItems="validatePlainItems" :results="results"></slot>
     </component>
 
     <!--
@@ -50,6 +54,12 @@ export default {
   name: 'ValidateCheckbox',
 
   props: {
+    customSlot: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     wrapper: {
       type: String,
       required: false,
@@ -91,7 +101,7 @@ export default {
     model: {
       type: Section,
       required: false,
-      default: () => ({})
+      default: () => new Section('', '', [])
     },
 
     items: {
@@ -133,10 +143,12 @@ export default {
   },
 
   created () {
-    if (this.model) {
-      this.localModel = Section.getNewInstance(this.model)
-      this.localItems = this.localModel.getItems()
-    }
+    this.localModel = this.model ? Section.getNewInstance(this.model) : null
+    this.localItems = this.model
+      ? this.localModel.getItems()
+      : this.items
+        ? this.items
+        : []
 
     this.localMessage = this.validation === 'all' && this.message ? this.message : null
   },
@@ -176,6 +188,25 @@ export default {
   methods: {
     validate () {
       this.$_validateCheckboxes(this.validation, this.items)
+    },
+
+    validatePlainItems (vmodel) {
+      const retval = { valid: true, message: '' }
+
+      const valid = vmodel.length >= 1
+
+      if (!valid) {
+        retval.valid = false
+        retval.message = this.localMessage
+          ? this.localMessage
+          : `Debes seleccionar un campo de ${this.localTitle}`
+      }
+
+      this.results = retval
+      this.$_emitValidateOfCheckboxes(this.results)
+      this.$_emitChangeOfCheckboxes(this.localItems)
+
+      return retval
     },
 
     // ==================

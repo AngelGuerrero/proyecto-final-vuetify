@@ -1,19 +1,12 @@
 <template>
-  <div>
-    <!-- Alert -->
-    <v-container fluid>
-      <v-alert v-if="alert.show" type="error" elevation="1">
-        <div class="d-flex justify-center">
-          {{ isValid.message }}
-        </div>
-      </v-alert>
-    </v-container>
-
-    <v-card-title class="justify-center">
-      <h2 class="text-h6 text-md-h5">¿Qué tipo de modelo quieres utilizar?</h2>
-    </v-card-title>
-
-    <v-card-text>
+  <base-component
+    ref="base"
+    :propSections="sections"
+    :name="stepInformation.name"
+    :pageTitle="stepInformation.pageTitle"
+    :pageDescription="stepInformation.pageDescription"
+  >
+    <template #default="{ isValid, mutateModel }">
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <validation-provider rules="required" v-slot="{ validate }">
@@ -281,13 +274,14 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-card-text>
-  </div>
+    </template>
+  </base-component>
 </template>
 
 <script>
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
+import BaseComponent from '../components/Helpers/BaseModelComponent'
 import Section from '../models/Section'
 import Checkbox from '../models/Checkbox'
 
@@ -303,7 +297,6 @@ const sections = () => ({
   //
   // Tipo de modelos
   modelos: {
-    type: 'radio',
     name: 'modelos',
     validation: {
       valid: false,
@@ -320,12 +313,9 @@ const sections = () => ({
   area: new Section(
     'area',
     'Área',
-    [
-      { group: 'area', slug: 'Muebles', checked: false },
-      { group: 'area', slug: 'Ropa', checked: false }
-      // NOTA:
-      // Mensaje personnalizado para este componente
-    ],
+    [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')],
+    // NOTA:
+    // Mensaje personnalizado para este componente
     'Selecciona al menos un área'
   ),
 
@@ -396,40 +386,21 @@ export default {
   name: 'ModelosComponent',
 
   components: {
+    BaseComponent,
     ValidationProvider,
     ValidateCheckbox
   },
 
   props: {
-    //
-    // Name of the component is required
-    // for debug purposes.
-    name: {
-      type: String,
-      required: true
-    },
-
-    //
-    // Title of the component.
-    // Is the name that will see the user.
-    title: {
-      type: String,
+    stepInformation: {
+      type: Object,
       required: true
     }
   },
 
   data () {
     return {
-      //
-      // Variables for change props
-      alert: {
-        show: false,
-        message: null
-      },
-      // ===========================
-
       panels: [],
-
       panelsCount: 3,
 
       //
@@ -439,102 +410,33 @@ export default {
     }
   },
 
-  watch: {
-    // 'sections.modelos.selectedOption' (newValue) {
-    //   this.sections.modelos.validation.valid = newValue !== null
-    // }
-  },
-
-  computed: {
+  methods: {
+    // ===========================================
+    // Region: Base component methods to call
+    // ===========================================
     //
-    // Return error messages if there is not a selected model
-    getSelectedModelErrorMessages () {
-      let retval = []
+    // Return selected data if there is no errors
+    validateModel () {
+      let retval
 
-      retval = this.sections.modelos.validation.valid
-        ? []
-        : [this.sections.modelos.validation.message]
+      //
+      // Executes an action based in the response
+      this.$refs.base.validateModel(response => {
+        if (!response.value) this.openAllPanels()
+
+        retval = response
+      })
 
       return retval
     },
 
-    //
-    // isValid
-    //
-    // Computed property for let it know to parent
-    // if the all component sections are valid or not
-    isValid () {
-      let retval = { value: true, message: '', data: this.sections }
-
-      console.log('')
-      console.log('=== Validando secciones del modelo ===')
-
-      for (const [key, value] of Object.entries(this.sections)) {
-        debugger
-        console.log('key :>> ', key)
-        console.log('value.validation.valid :>> ', value.validation.valid)
-
-        if (!value.validation.valid) {
-          retval = {
-            value: false,
-            message: `Debes completar todos los campos de '${this.title}'`,
-            data: null
-          }
-          break
-        }
-      }
-
-      console.log('=== Fin de las validaciones ===')
-      console.log('')
-
-      this.setMessage(!retval.value, retval.message)
-
-      return retval
-    }
-  },
-
-  methods: {
+    // ===========================================
+    // Region: Custom actions for this component
+    // ===========================================
     // Create an array the length of our panels
     // with all values as true
     openAllPanels () {
       this.panels = [...Array(this.panelsCount).keys()].map((k, i) => i)
-    },
-
-    //
-    // Return selected data if there is no errors
-    validateModel () {
-      console.log(`~ Validating model '${this.title}' ~`)
-
-      if (!this.isValid.value) this.openAllPanels()
-
-      return this.isValid
-    },
-
-    getData () {
-      console.log('')
-      console.log('===== Select data for return ===== ')
-
-      const retval = Object.entries(this.sections).map(item => {
-        return {
-          [item[0]]: {
-            selected: item[1].vmodel
-          }
-        }
-      })
-
-      console.log('===== End Select data for return ===== ')
-      console.log('')
-
-      return retval
-    },
-
-    setMessage (show, message) {
-      this.alert.show = show
-      this.alert.message = show ? message : ''
-    },
-
-    mutateModel (model, property, data) {
-      this.sections[model][property] = data
     }
   }
 }

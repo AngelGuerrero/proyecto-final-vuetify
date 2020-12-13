@@ -7,7 +7,7 @@ export default class Section {
   // Bind with vue controls
   vmodel = null
 
-  constructor (name, title, items, validationMessage) {
+  constructor (name, title, items, validationMessage, vmodel) {
     this.name = name
     this.title = title
 
@@ -16,6 +16,8 @@ export default class Section {
       message: validationMessage || `Selecciona una opción de '${this.title}'`
     }
     this.items = items
+
+    this.vmodel = vmodel
   }
 
   static getNewInstance (obj) {
