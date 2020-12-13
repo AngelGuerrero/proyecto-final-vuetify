@@ -27,7 +27,10 @@
     </component>
 
     <component :is="tag" :class="contentClasses" v-if="customSlot">
-      <slot :validatePlainItems="validatePlainItems" :results="results"></slot>
+      <!-- <pre>
+        {{ $data }}
+      </pre> -->
+      <slot :results="results"></slot>
     </component>
 
     <!--
@@ -99,9 +102,9 @@ export default {
     //
     // You can pass only class model Checkbox
     model: {
-      type: Section,
+      type: Object,
       required: false,
-      default: () => new Section('', '', [])
+      default: null
     },
 
     items: {
@@ -144,13 +147,20 @@ export default {
 
   created () {
     this.localModel = this.model ? Section.getNewInstance(this.model) : null
-    this.localItems = this.model
-      ? this.localModel.getItems()
-      : this.items
-        ? this.items
-        : []
+    this.localItems = this.model ? this.localModel.getItems() : this.items ? this.items : []
 
-    this.localMessage = this.validation === 'all' && this.message ? this.message : null
+    this.localMessage =
+      this.message !== ''
+        ? this.message
+        : this.validation === 'one'
+          ? `Debes seleccionar un campo ${this.model ? 'de ' + this.model.getTitle() : ''}`
+          : this.validation === 'all'
+            ? `Debes seleccionar todos los campos ${this.model ? 'de ' + this.model.getTitle() : ''}`
+            : ''
+  },
+
+  mounted () {
+    this.validate(this.localItems)
   },
 
   data () {
@@ -160,7 +170,7 @@ export default {
       localModel: null,
       localItems: this.items || [],
       localTitle: this.title || this.model.getTitle() || null,
-      localMessage: this.message || this.model.getErrorMessages() || null
+      localMessage: ''
     }
   },
 
@@ -168,45 +178,34 @@ export default {
     /**
      * Watch changes of items passed as prop
      */
+    items: {
+      deep: true,
+      immediate: true,
+      handler (newValue) {
+        this.validate(newValue)
+      }
+    },
+
     localItems: {
       deep: true,
       immediate: true,
       handler (newValue) {
-        //
-        // In every change perform validation
-        // and emit the result to parent,
-        // using a custom event.
-        //
-        this.results = this.$_validateCheckboxes(this.validation, newValue)
-
-        this.$_emitValidateOfCheckboxes(this.results)
-        this.$_emitChangeOfCheckboxes(this.localItems)
+        this.validate(newValue)
       }
     }
   },
 
   methods: {
-    validate () {
-      this.$_validateCheckboxes(this.validation, this.items)
-    },
+    validate (newValue) {
+      //
+      // In every change perform validation
+      // and emit the result to parent,
+      // using a custom event.
+      //
+      this.results = this.$_validateCheckboxes(this.validation, newValue)
 
-    validatePlainItems (vmodel) {
-      const retval = { valid: true, message: '' }
-
-      const valid = vmodel.length >= 1
-
-      if (!valid) {
-        retval.valid = false
-        retval.message = this.localMessage
-          ? this.localMessage
-          : `Debes seleccionar un campo de ${this.localTitle}`
-      }
-
-      this.results = retval
       this.$_emitValidateOfCheckboxes(this.results)
       this.$_emitChangeOfCheckboxes(this.localItems)
-
-      return retval
     },
 
     // ==================
@@ -264,9 +263,6 @@ export default {
       if (!valid) {
         retval.valid = false
         retval.message = this.localMessage
-          ? this.localMessage
-          : `Debes seleccionar un campo de ${this.localTitle}`
-        return retval
       }
 
       return retval
@@ -285,8 +281,6 @@ export default {
       if (!valid) {
         retval.valid = false
         retval.message = this.localMessage
-          ? this.localMessage
-          : `Debes seleccionar todos los campos de ${this.localTitle}.`
         return retval
       }
 
