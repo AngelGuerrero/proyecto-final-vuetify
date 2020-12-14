@@ -17,8 +17,8 @@
             <validate-checkbox
               :model="model.genero"
               validation="one"
-              @on-validate="mutate('genero', 'validation', $event)"
-              @on-change="mutate('genero', 'vmodel', $event)"
+              @on-validate="mutate(model.genero, 'validation', $event)"
+              @on-change="mutate(model.genero, 'vmodel', $event)"
             ></validate-checkbox>
           </div>
         </v-card-text>
@@ -95,8 +95,8 @@
                       custom
                       validation="one"
                       :model="model.edad"
-                      @on-change="mutate(model.edad.name, 'vmodel', $event)"
-                      @on-validate="mutate(model.edad.name, 'validation', $event)"
+                      @on-change="mutate(model.edad, 'vmodel', $event)"
+                      @on-validate="mutate(model.edad, 'validation', $event)"
                     >
                       <template #default="{ results }">
                         <v-row>
@@ -158,26 +158,54 @@
                       Selecciona la etapa de vida para tu análisis
                     </p>
 
-                    <form>
-                      <v-row>
-                        <v-col cols="12" md="3">
-                          <v-checkbox label=" Adolecentes "></v-checkbox>
-                          <p>edades entre 15 y 24 años.</p>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <v-checkbox label=" Adultos jovenes "></v-checkbox>
-                          <p>edades entre 25 y 39 años.</p>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <v-checkbox label=" Adultos "></v-checkbox>
-                          <p>edades entre 40 y 64 años.</p>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                          <v-checkbox label=" Jubilados "></v-checkbox>
-                          <p>65 años y más</p>
-                        </v-col>
-                      </v-row>
-                    </form>
+                    <validate-checkbox
+                      custom
+                      validation="one"
+                      :model="model.vida"
+                      @on-change="mutate(model.vida, 'vmodel', $event)"
+                      @on-validate="mutate(model.vida, 'validation', $event)"
+                    >
+                      <template #default="{ results }">
+                        <v-row>
+                          <v-col cols="12" md="3">
+                            <v-checkbox
+                              v-model="model.vida.items[0].checked"
+                              :value="model.vida.items[0].checked"
+                              :label="model.vida.items[0].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>edades entre 15 y 24 años.</p>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <v-checkbox
+                              v-model="model.vida.items[1].checked"
+                              :value="model.vida.items[1].checked"
+                              :label="model.vida.items[1].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>edades entre 25 y 39 años.</p>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <v-checkbox
+                              v-model="model.vida.items[2].checked"
+                              :value="model.vida.items[2].checked"
+                              :label="model.vida.items[2].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>edades entre 40 y 64 años.</p>
+                          </v-col>
+                          <v-col cols="12" md="3">
+                            <v-checkbox
+                              v-model="model.vida.items[3].checked"
+                              :value="model.vida.items[3].checked"
+                              :label="model.vida.items[3].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>65 años y más</p>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </validate-checkbox>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -192,29 +220,61 @@
                       Elije la generación adecuada a tu campaña
                     </p>
 
-                    <form>
-                      <v-row>
-                        <v-col cols="12" md="6">
-                          <v-checkbox label="Generación Z"></v-checkbox>
-                          <p>
-                            Clientes que nacieron en 1995 hasta el dia de hoy
-                          </p>
+                    <validate-checkbox
+                      custom
+                      validation="one"
+                      :model="model.generacion"
+                      @on-change="mutate(model.generacion, 'vmodel', $event)"
+                      @on-validate="mutate(model.generacion, 'validation', $event)"
+                    >
+                      <template #default="{ results }">
+                        <v-row>
+                          <v-col cols="12" md="6">
+                            <v-checkbox
+                              v-model="model.generacion.items[0].checked"
+                              :value="model.generacion.items[0].checked"
+                              :label="model.generacion.items[0].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>Clientes que nacieron en 1995 hasta el dia de hoy</p>
 
-                          <v-checkbox label="Millennials (Y)"></v-checkbox>
-                          <p>Clientes que nacieron entre 1982 y 1994</p>
+                            <v-checkbox
+                              v-model="model.generacion.items[1].checked"
+                              :value="model.generacion.items[1].checked"
+                              :label="model.generacion.items[1].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>Clientes que nacieron entre 1982 y 1994</p>
 
-                          <v-checkbox label="Generación X"></v-checkbox>
-                          <p>Clientes que nacieron entre 1965 y 1981</p>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <v-checkbox label="Baby Boom"></v-checkbox>
-                          <p>Clientes que nacieron entre 1945 y 1964</p>
+                            <v-checkbox
+                              v-model="model.generacion.items[2].checked"
+                              :value="model.generacion.items[2].checked"
+                              :label="model.generacion.items[2].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>Clientes que nacieron entre 1965 y 1981</p>
+                          </v-col>
 
-                          <v-checkbox label="Generación Silenciosa"></v-checkbox>
-                          <p>Clientes que nacieron entre 1925 y 1944</p>
-                        </v-col>
-                      </v-row>
-                    </form>
+                          <v-col cols="12" md="6">
+                            <v-checkbox
+                              v-model="model.generacion.items[3].checked"
+                              :value="model.generacion.items[3].checked"
+                              :label="model.generacion.items[3].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>Clientes que nacieron entre 1945 y 1964</p>
+
+                            <v-checkbox
+                              v-model="model.generacion.items[4].checked"
+                              :value="model.generacion.items[4].checked"
+                              :label="model.generacion.items[4].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p>Clientes que nacieron entre 1925 y 1944</p>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </validate-checkbox>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -233,8 +293,8 @@
               <validate-checkbox
                 :model="model.escolaridad"
                 validation="one"
-                @on-validate="mutate(model.escolaridad.name, 'validation', $event)"
-                @on-change="mutate(model.escolaridad.name, 'vmodel', $event)"
+                @on-validate="mutate(model.escolaridad, 'validation', $event)"
+                @on-change="mutate(model.escolaridad, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -247,8 +307,8 @@
                 <validate-checkbox
                   :model="model.e_civil"
                   validation="one"
-                  @on-validate="mutate(model.e_civil.name, 'validation', $event)"
-                  @on-change="mutate(model.e_civil.name, 'vmodel', $event)"
+                  @on-validate="mutate(model.e_civil, 'validation', $event)"
+                  @on-change="mutate(model.e_civil, 'vmodel', $event)"
                 ></validate-checkbox>
               </div>
             </div>
@@ -264,8 +324,8 @@
               <validate-checkbox
                 :model="model.in_hogar"
                 validation="one"
-                @on-validate="mutate(model.in_hogar.name, 'validation', $event)"
-                @on-change="mutate(model.in_hogar.name, 'vmodel', $event)"
+                @on-validate="mutate(model.in_hogar, 'validation', $event)"
+                @on-change="mutate(model.in_hogar, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -276,8 +336,8 @@
               <validate-checkbox
                 :model="model.in_hogarTrabajan"
                 validation="one"
-                @on-validate="mutate(model.in_hogarTrabajan.name, 'validation', $event)"
-                @on-change="mutate(model.in_hogarTrabajan.name, 'vmodel', $event)"
+                @on-validate="mutate(model.in_hogarTrabajan, 'validation', $event)"
+                @on-change="mutate(model.in_hogarTrabajan, 'vmodel', $event)"
               ></validate-checkbox>
             </div>
           </v-col>
@@ -316,8 +376,8 @@
                       custom
                       validation="one"
                       :model="model.sal_min"
-                      @on-validate="mutate('sal_min', 'validation', $event)"
-                      @on-change="mutate('sal_min', 'vmodel', $event)"
+                      @on-validate="mutate(model.sal_min, 'validation', $event)"
+                      @on-change="mutate(model.sal_min, 'vmodel', $event)"
                     >
                       <template #default="{ results }">
                         <v-row>
@@ -392,53 +452,92 @@
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content panel>
-                    <p class="my-3">
-                      Selecciona los rangos de nivel socioeconómico de tu interes
-                    </p>
+                    <validate-checkbox
+                      custom
+                      validation="one"
+                      :model="model.socioe"
+                      @on-change="mutate(model.socioe, 'vmodel', $event)"
+                      @on-validate="mutate(model.socioe, 'validation', $event)"
+                    >
+                      <template #default="{ results }">
+                        <v-row>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="model.socioe.items[0].checked"
+                              :value="model.socioe.items[0].checked"
+                              :label="model.socioe.items[0].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $94,864
+                            </p>
 
-                    <form>
-                      <v-row>
-                        <v-col cols="12" md="4">
-                          <v-checkbox label="A/B"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $94,864
-                          </p>
+                            <v-checkbox
+                              v-model="model.socioe.items[1].checked"
+                              :value="model.socioe.items[1].checked"
+                              :label="model.socioe.items[1].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $39,061
+                            </p>
 
-                          <v-checkbox label="C+"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $39,061
-                          </p>
+                            <v-checkbox
+                              v-model="model.socioe.items[2].checked"
+                              :value="model.socioe.items[2].checked"
+                              :label="model.socioe.items[2].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $22,205
+                            </p>
+                          </v-col>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="model.socioe.items[3].checked"
+                              :value="model.socioe.items[3].checked"
+                              :label="model.socioe.items[3].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $16,740
+                            </p>
 
-                          <v-checkbox label="C"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $22,205
-                          </p>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                          <v-checkbox label="C-"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $16,740
-                          </p>
+                            <v-checkbox
+                              v-model="model.socioe.items[4].checked"
+                              :value="model.socioe.items[4].checked"
+                              :label="model.socioe.items[4].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $12,945
+                            </p>
+                          </v-col>
 
-                          <v-checkbox label="D+"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $12,945
-                          </p>
-                        </v-col>
+                          <v-col cols="12" md="4">
+                            <v-checkbox
+                              v-model="model.socioe.items[5].checked"
+                              :value="model.socioe.items[5].checked"
+                              :label="model.socioe.items[5].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $7,833
+                            </p>
 
-                        <v-col cols="12" md="4">
-                          <v-checkbox label="D"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $7,833
-                          </p>
-
-                          <v-checkbox label="E"></v-checkbox>
-                          <p class="text-left">
-                            Ingreso promedio mensual $3,712
-                          </p>
-                        </v-col>
-                      </v-row>
-                    </form>
+                            <v-checkbox
+                              v-model="model.socioe.items[6].checked"
+                              :value="model.socioe.items[6].checked"
+                              :label="model.socioe.items[6].slug"
+                              :error="!results.valid"
+                            ></v-checkbox>
+                            <p class="text-left">
+                              Ingreso promedio mensual $3,712
+                            </p>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </validate-checkbox>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -485,6 +584,23 @@ const model = () => ({
     new Checkbox('edad', ' 75 a 79 años '),
     new Checkbox('edad', ' 80 a 84 años '),
     new Checkbox('edad', ' 85 años o más ')
+  ]),
+  //
+  // Etapas de vida
+  vida: new Section('vida', 'Etapas de vida', [
+    new Checkbox('vida', 'Adolecentes'),
+    new Checkbox('vida', 'Adultos jovenes'),
+    new Checkbox('vida', 'Adultos'),
+    new Checkbox('vida', 'Jubilados')
+  ]),
+  //
+  // Generación
+  generacion: new Section('generacion', 'Generación', [
+    new Checkbox('ancla', 'Generación Z'),
+    new Checkbox('ancla', 'Millennials (Y)'),
+    new Checkbox('ancla', 'Generación X'),
+    new Checkbox('ancla', 'Baby Boom'),
+    new Checkbox('ancla', 'Generación Silenciosa')
   ]),
   //
   // Nivel escolaridad
@@ -539,6 +655,17 @@ const model = () => ({
     new Checkbox('sal_min', 'De 5 a 10 SM'),
     new Checkbox('sal_min', 'De 11 a 25 SM'),
     new Checkbox('sal_min', 'Mayor a 25 SM')
+  ]),
+  //
+  // Nivel socioeconómico
+  socioe: new Section('socioe', 'Nivel socioeconómico', [
+    new Checkbox('ancla', 'A/B'),
+    new Checkbox('ancla', 'C+'),
+    new Checkbox('ancla', 'C'),
+    new Checkbox('ancla', 'C-'),
+    new Checkbox('ancla', 'D+'),
+    new Checkbox('ancla', 'D'),
+    new Checkbox('ancla', 'E')
   ])
 })
 

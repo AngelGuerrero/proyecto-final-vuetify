@@ -27,9 +27,6 @@
     </component>
 
     <component :is="tag" :class="contentClasses" v-if="custom">
-      <!-- <pre>
-        {{ $data }}
-      </pre> -->
       <slot :results="results"></slot>
     </component>
 
@@ -148,7 +145,6 @@ export default {
   created () {
     this.localModel = this.model ? Section.getNewInstance(this.model) : null
     this.localItems = this.model ? this.localModel.getItems() : this.items ? this.items : []
-    debugger
 
     this.localMessage =
       this.message !== ''
@@ -183,9 +179,9 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
-        console.group('🌟⚡ Validando items ⚡🌟')
+        // console.group('🌟⚡ Validando items ⚡🌟')
         this.validate(newValue)
-        console.groupEnd()
+        // console.groupEnd()
       }
     },
 
@@ -193,9 +189,9 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
-        console.group('🌟⚡ Validando local items ⚡🌟')
+        // console.group('🌟⚡ Validando local items ⚡🌟')
         this.validate(newValue)
-        console.groupEnd()
+        // console.groupEnd()
       }
     }
   },
@@ -233,14 +229,14 @@ export default {
         // Case require at least some checkbox checked
         //
         case 'one':
-          console.log('🤞 Validating one item 🤞')
+          // console.log('🤞 Validating one item 🤞')
           retval = this.$_validateAtLeastOneCheckbox(items)
           break
         //
         // Case require all checkboxes checked
         //
         case 'all':
-          console.log('🤞 Validating all items 🤞')
+          // console.log('🤞 Validating all items 🤞')
           retval = this.$_validateAllCheckboxes(items)
           break
         //

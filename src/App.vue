@@ -143,7 +143,7 @@ export default {
       steps: Steps,
 
       notification: {
-        show: true,
+        show: false,
         timeout: 7000,
         error: false,
         message: ''

@@ -85,8 +85,8 @@
                     :model="model.area"
                     validation="one"
                     :successStatus="true"
-                    @on-validate="mutate('area', 'validation', $event)"
-                    @on-change="mutate('area', 'vmodel', $event)"
+                    @on-validate="mutate(model.area, 'validation', $event)"
+                    @on-change="mutate(model.area, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -111,8 +111,8 @@
                   <validate-checkbox
                     :model="model.compra"
                     validation="one"
-                    @on-validate="mutate('compra', 'validation', $event)"
-                    @on-change="mutate('compra', 'vmodel', $event)"
+                    @on-validate="mutate(model.compra, 'validation', $event)"
+                    @on-change="mutate(model.compra, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -124,8 +124,8 @@
                   <validate-checkbox
                     :model="model.recency"
                     validation="one"
-                    @on-validate="mutate('recency', 'validation', $event)"
-                    @on-change="mutate('recency', 'vmodel', $event)"
+                    @on-validate="mutate(model.recency, 'validation', $event)"
+                    @on-change="mutate(model.recency, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -135,8 +135,8 @@
                   <validate-checkbox
                     :model="model.frecuency"
                     validation="one"
-                    @on-validate="mutate('frecuency', 'validation', $event)"
-                    @on-change="mutate('frecuency', 'vmodel', $event)"
+                    @on-validate="mutate(model.frecuency, 'validation', $event)"
+                    @on-change="mutate(model.frecuency, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -146,8 +146,8 @@
                   <validate-checkbox
                     :model="model.money"
                     validation="one"
-                    @on-validate="mutate('money', 'validation', $event)"
-                    @on-change="mutate('money', 'vmodel', $event)"
+                    @on-validate="mutate(model.money, 'validation', $event)"
+                    @on-change="mutate(model.money, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -182,8 +182,8 @@
                   <validate-checkbox
                     :model="model.reteCliente"
                     validation="one"
-                    @on-validate="mutate('reteCliente', 'validation', $event)"
-                    @on-change="mutate('reteCliente', 'vmodel', $event)"
+                    @on-validate="mutate(model.reteCliente, 'validation', $event)"
+                    @on-change="mutate(model.reteCliente, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -191,8 +191,8 @@
                   <validate-checkbox
                     :model="model.recuCliente"
                     validation="one"
-                    @on-validate="mutate('recuCliente', 'validation', $event)"
-                    @on-change="mutate('recuCliente', 'vmodel', $event)"
+                    @on-validate="mutate(model.recuCliente, 'validation', $event)"
+                    @on-change="mutate(model.recuCliente, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -227,8 +227,8 @@
               <validate-checkbox
                 :model="model.puntualidad"
                 validation="one"
-                @on-validate="mutate('puntualidad', 'validation', $event)"
-                @on-change="mutate('puntualidad', 'vmodel', $event)"
+                @on-validate="mutate(model.puntualidad, 'validation', $event)"
+                @on-change="mutate(model.puntualidad, 'vmodel', $event)"
                 headerClasses="text-center"
                 contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
                 itemsClasses="flex-grow-1"

@@ -169,7 +169,7 @@ export default {
     },
 
     mutate (model, property, data) {
-      this.model[model][property] = data
+      this.model[model.name][property] = data
     }
   }
 }
