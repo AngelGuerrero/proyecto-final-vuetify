@@ -26,8 +26,7 @@
           Description of the section.
         -->
       <v-container>
-        <p class="text-center">
-          {{ pageDescription }}
+        <p class="text-center" v-html="pageDescription">
         </p>
       </v-container>
 
@@ -38,18 +37,18 @@
 
 <script>
 export default {
-  name: 'ModelosComponent',
+  name: 'BaseModelComponent',
 
   props: {
     /**
-     * propmodel.
+     * model.
      *
      * With this information the component
      * will do the validations, respectively,
      * it will check if all required model
      * are valid or not.
      */
-    propmodel: {
+    model: {
       type: Object,
       required: true
     },
@@ -100,7 +99,7 @@ export default {
       //
       // Creates a copy from
       // props for mutate values.
-      model: this.propmodel
+      l_model: this.model
     }
   },
 
@@ -112,11 +111,11 @@ export default {
      * if all model passed as prop are valid or not.
      */
     isValid () {
-      let retval = { value: true, message: '', data: this.model }
+      let retval = { value: true, message: '', data: this.l_model }
 
       // console.clear()
       console.group('=== 👾 Validating model 🤞 ===')
-      for (const [key, value] of Object.entries(this.model)) {
+      for (const [key, value] of Object.entries(this.l_model)) {
         console.log(key, ' | valid :>> ', value.validation.valid)
 
         if (!value.validation.valid) {
@@ -149,7 +148,7 @@ export default {
     getData () {
       console.log('')
       console.group('===== Select data for return ===== ')
-      const retval = Object.entries(this.model).map(item => {
+      const retval = Object.entries(this.l_model).map(item => {
         return {
           [item[0]]: {
             selected: item[1].vmodel
@@ -169,7 +168,7 @@ export default {
     },
 
     mutate (model, property, data) {
-      this.model[model.name][property] = data
+      this.l_model[model.name][property] = data
     }
   }
 }

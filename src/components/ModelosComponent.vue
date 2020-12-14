@@ -1,7 +1,7 @@
 <template>
   <base-component
     ref="base"
-    :propmodel="model"
+    :model="model"
     :name="step.name"
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"

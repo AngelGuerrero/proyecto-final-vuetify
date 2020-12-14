@@ -33,7 +33,7 @@ const Steps = [
   },
   {
     pageTitle: 'Datos',
-    pageDescription: '',
+    pageDescription: '¡Ya casí terminas! <br /> Aquí deberas elegir la información del cliente que te es util para tu campaña o proyecto. El formato del archivo que se exportará es en .csv',
     number: 5,
     name: 'datos',
     component: 'datos',
