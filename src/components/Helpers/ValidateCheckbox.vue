@@ -2,7 +2,7 @@
   <component :is="wrapper" :class="wrapperClasses">
     <!--
         HEADER
-        Slot header. Injects results data of validations
+        custom header. Injects results data of validations
         to handle in parent component.
       -->
     <slot name="header" :results="results">
@@ -11,7 +11,7 @@
       </p>
     </slot>
 
-    <component :is="tag" :class="contentClasses">
+    <component v-if="!custom" :is="tag" :class="contentClasses">
       <v-checkbox
         v-for="item in localItems"
         :key="item.id"
@@ -26,9 +26,13 @@
       ></v-checkbox>
     </component>
 
+    <component :is="tag" :class="contentClasses" v-if="custom">
+      <slot :results="results"></slot>
+    </component>
+
     <!--
         FOOTER
-        Slot footer. Injects results data of validations, and
+        custom footer. Injects results data of validations, and
         injects a validate function to perform from parent.
       -->
     <slot name="footer" :results="results" :validate="validate"></slot>
@@ -50,6 +54,12 @@ export default {
   name: 'ValidateCheckbox',
 
   props: {
+    custom: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     wrapper: {
       type: String,
       required: false,
@@ -89,9 +99,9 @@ export default {
     //
     // You can pass only class model Checkbox
     model: {
-      type: Section,
+      type: Object,
       required: false,
-      default: () => ({})
+      default: null
     },
 
     items: {
@@ -133,12 +143,21 @@ export default {
   },
 
   created () {
-    if (this.model) {
-      this.localModel = Section.getNewInstance(this.model)
-      this.localItems = this.localModel.getItems()
-    }
+    this.localModel = this.model ? Section.getNewInstance(this.model) : null
+    this.localItems = this.model ? this.localModel.getItems() : this.items ? this.items : []
 
-    this.localMessage = this.validation === 'all' && this.message ? this.message : null
+    this.localMessage =
+      this.message !== ''
+        ? this.message
+        : this.validation === 'one'
+          ? `Debes seleccionar un campo ${this.model ? 'de ' + this.model.getTitle() : ''}`
+          : this.validation === 'all'
+            ? `Debes seleccionar todos los campos ${this.model ? 'de ' + this.model.getTitle() : ''}`
+            : ''
+  },
+
+  mounted () {
+    this.validate(this.localItems)
   },
 
   data () {
@@ -148,7 +167,7 @@ export default {
       localModel: null,
       localItems: this.items || [],
       localTitle: this.title || this.model.getTitle() || null,
-      localMessage: this.message || this.model.getErrorMessages() || null
+      localMessage: ''
     }
   },
 
@@ -156,26 +175,38 @@ export default {
     /**
      * Watch changes of items passed as prop
      */
+    items: {
+      deep: true,
+      immediate: true,
+      handler (newValue) {
+        // console.group('🌟⚡ Validando items ⚡🌟')
+        this.validate(newValue)
+        // console.groupEnd()
+      }
+    },
+
     localItems: {
       deep: true,
       immediate: true,
       handler (newValue) {
-        //
-        // In every change perform validation
-        // and emit the result to parent,
-        // using a custom event.
-        //
-        this.results = this.$_validateCheckboxes(this.validation, newValue)
-
-        this.$_emitValidateOfCheckboxes(this.results)
-        this.$_emitChangeOfCheckboxes(this.localItems)
+        // console.group('🌟⚡ Validando local items ⚡🌟')
+        this.validate(newValue)
+        // console.groupEnd()
       }
     }
   },
 
   methods: {
-    validate () {
-      this.$_validateCheckboxes(this.validation, this.items)
+    validate (newValue) {
+      //
+      // In every change perform validation
+      // and emit the result to parent,
+      // using a custom event.
+      //
+      this.results = this.$_validateCheckboxes(this.validation, newValue)
+
+      this.$_emitValidateOfCheckboxes(this.results)
+      this.$_emitChangeOfCheckboxes(newValue)
     },
 
     // ==================
@@ -198,12 +229,14 @@ export default {
         // Case require at least some checkbox checked
         //
         case 'one':
+          // console.log('🤞 Validating one item 🤞')
           retval = this.$_validateAtLeastOneCheckbox(items)
           break
         //
         // Case require all checkboxes checked
         //
         case 'all':
+          // console.log('🤞 Validating all items 🤞')
           retval = this.$_validateAllCheckboxes(items)
           break
         //
@@ -233,9 +266,6 @@ export default {
       if (!valid) {
         retval.valid = false
         retval.message = this.localMessage
-          ? this.localMessage
-          : `Debes seleccionar un campo de ${this.localTitle}`
-        return retval
       }
 
       return retval
@@ -254,9 +284,6 @@ export default {
       if (!valid) {
         retval.valid = false
         retval.message = this.localMessage
-          ? this.localMessage
-          : `Debes seleccionar todos los campos de ${this.localTitle}.`
-        return retval
       }
 
       return retval

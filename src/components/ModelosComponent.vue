@@ -1,37 +1,30 @@
 <template>
-  <div>
-    <!-- Alert -->
-    <v-container fluid>
-      <v-alert v-if="alert.show" type="error" elevation="1">
-        <div class="d-flex justify-center">
-          {{ isValid.message }}
-        </div>
-      </v-alert>
-    </v-container>
-
-    <v-card-title class="justify-center">
-      <h2 class="text-h6 text-md-h5">¿Qué tipo de modelo quieres utilizar?</h2>
-    </v-card-title>
-
-    <v-card-text>
+  <base-component
+    ref="base"
+    :propmodel="model"
+    :name="step.name"
+    :pageTitle="step.pageTitle"
+    :pageDescription="step.pageDescription"
+  >
+    <template #default="{ isValid, mutate }">
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <validation-provider rules="required" v-slot="{ validate }">
             <v-radio-group
               :error-messages="
-                sections.modelos.selectedOption ? [] : sections.modelos.validation.message
+                model.modelos.selectedOption ? [] : model.modelos.validation.message
               "
-              v-model="sections.modelos.selectedOption"
+              v-model="model.modelos.selectedOption"
               @change="
-                sections.modelos.validation.valid =
-                  sections.modelos.selectedOption !== null
+                model.modelos.validation.valid =
+                  model.modelos.selectedOption !== null
               "
               row
             >
               <v-radio
-                v-for="item in sections.modelos.options"
+                v-for="item in model.modelos.options"
                 :key="item.id"
-                :name="sections.modelos.name"
+                :name="model.modelos.name"
                 :label="`${item}`"
                 :value="item"
                 @change="validate"
@@ -42,7 +35,7 @@
       </v-row>
 
       <v-expansion-panels
-        v-show="sections.modelos.selectedOption === 'Segmentar Clientes'"
+        v-show="model.modelos.selectedOption === 'Segmentar Clientes'"
         focusable
         :accordion="isValid.value"
         :multiple="!isValid.value"
@@ -89,11 +82,11 @@
                   <h3>Area</h3>
 
                   <validate-checkbox
-                    :model="sections.area"
+                    :model="model.area"
                     validation="one"
                     :successStatus="true"
-                    @on-validate="mutateModel('area', 'validation', $event)"
-                    @on-change="mutateModel('area', 'vmodel', $event)"
+                    @on-validate="mutate(model.area, 'validation', $event)"
+                    @on-change="mutate(model.area, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -103,11 +96,11 @@
                   <validation-provider v-slot="{ validate, valid }" rules="required">
                     <v-select
                       outlined
-                      :items="sections.productos.getItems()"
-                      v-model="sections.productos.vmodel"
-                      :error-messages="sections.productos.getErrorMessages()"
+                      :items="model.productos.getItems()"
+                      v-model="model.productos.vmodel"
+                      :error-messages="model.productos.getErrorMessages()"
                       @change="validate()"
-                      @blur="sections.productos.setValid(valid)"
+                      @blur="model.productos.setValid(valid)"
                     ></v-select>
                   </validation-provider>
                 </v-col>
@@ -116,10 +109,10 @@
                   <h3>Tipo de compra</h3>
 
                   <validate-checkbox
-                    :model="sections.compra"
+                    :model="model.compra"
                     validation="one"
-                    @on-validate="mutateModel('compra', 'validation', $event)"
-                    @on-change="mutateModel('compra', 'vmodel', $event)"
+                    @on-validate="mutate(model.compra, 'validation', $event)"
+                    @on-change="mutate(model.compra, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -129,10 +122,10 @@
                   <h3>R=Recency</h3>
                   <p>Tiempo transcurrido desde su ultima compra</p>
                   <validate-checkbox
-                    :model="sections.recency"
+                    :model="model.recency"
                     validation="one"
-                    @on-validate="mutateModel('recency', 'validation', $event)"
-                    @on-change="mutateModel('recency', 'vmodel', $event)"
+                    @on-validate="mutate(model.recency, 'validation', $event)"
+                    @on-change="mutate(model.recency, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -140,10 +133,10 @@
                   <h3>F=Frecuency</h3>
                   <p>Numero de compras</p>
                   <validate-checkbox
-                    :model="sections.frecuency"
+                    :model="model.frecuency"
                     validation="one"
-                    @on-validate="mutateModel('frecuency', 'validation', $event)"
-                    @on-change="mutateModel('frecuency', 'vmodel', $event)"
+                    @on-validate="mutate(model.frecuency, 'validation', $event)"
+                    @on-change="mutate(model.frecuency, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
 
@@ -151,10 +144,10 @@
                   <h3>M=Money</h3>
                   <p>Valor de las compras totales del cliente</p>
                   <validate-checkbox
-                    :model="sections.money"
+                    :model="model.money"
                     validation="one"
-                    @on-validate="mutateModel('money', 'validation', $event)"
-                    @on-change="mutateModel('money', 'vmodel', $event)"
+                    @on-validate="mutate(model.money, 'validation', $event)"
+                    @on-change="mutate(model.money, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -187,19 +180,19 @@
                 <v-col cols="12" md="6">
                   <h3>Retencion del cliente</h3>
                   <validate-checkbox
-                    :model="sections.reteCliente"
+                    :model="model.reteCliente"
                     validation="one"
-                    @on-validate="mutateModel('reteCliente', 'validation', $event)"
-                    @on-change="mutateModel('reteCliente', 'vmodel', $event)"
+                    @on-validate="mutate(model.reteCliente, 'validation', $event)"
+                    @on-change="mutate(model.reteCliente, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
                 <v-col cols="12" md="6">
                   <h3>Recuperacion del cliente</h3>
                   <validate-checkbox
-                    :model="sections.recuCliente"
+                    :model="model.recuCliente"
                     validation="one"
-                    @on-validate="mutateModel('recuCliente', 'validation', $event)"
-                    @on-change="mutateModel('recuCliente', 'vmodel', $event)"
+                    @on-validate="mutate(model.recuCliente, 'validation', $event)"
+                    @on-change="mutate(model.recuCliente, 'vmodel', $event)"
                   ></validate-checkbox>
                 </v-col>
               </v-row>
@@ -232,10 +225,10 @@
               <h3>Predicción de Puntualidad</h3>
 
               <validate-checkbox
-                :model="sections.puntualidad"
+                :model="model.puntualidad"
                 validation="one"
-                @on-validate="mutateModel('puntualidad', 'validation', $event)"
-                @on-change="mutateModel('puntualidad', 'vmodel', $event)"
+                @on-validate="mutate(model.puntualidad, 'validation', $event)"
+                @on-change="mutate(model.puntualidad, 'vmodel', $event)"
                 headerClasses="text-center"
                 contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
                 itemsClasses="flex-grow-1"
@@ -247,7 +240,7 @@
 
       <!-- Modelos de recomendación -->
       <v-expansion-panels
-        v-show="sections.modelos.selectedOption === 'Recomendar Productos'"
+        v-show="model.modelos.selectedOption === 'Recomendar Productos'"
         focusable
         accordion
         v-model="panels"
@@ -281,13 +274,14 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-card-text>
-  </div>
+    </template>
+  </base-component>
 </template>
 
 <script>
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
+import BaseComponent from '../components/Helpers/BaseModelComponent'
 import Section from '../models/Section'
 import Checkbox from '../models/Checkbox'
 
@@ -295,15 +289,14 @@ import Checkbox from '../models/Checkbox'
  * Data
  */
 //
-// Sections
+// model
 //
 // Contains all information data that will be rendered.
 //
-const sections = () => ({
+const model = () => ({
   //
   // Tipo de modelos
   modelos: {
-    type: 'radio',
     name: 'modelos',
     validation: {
       valid: false,
@@ -320,12 +313,9 @@ const sections = () => ({
   area: new Section(
     'area',
     'Área',
-    [
-      { group: 'area', slug: 'Muebles', checked: false },
-      { group: 'area', slug: 'Ropa', checked: false }
-      // NOTA:
-      // Mensaje personnalizado para este componente
-    ],
+    [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')],
+    // NOTA:
+    // Mensaje personnalizado para este componente
     'Selecciona al menos un área'
   ),
 
@@ -396,145 +386,57 @@ export default {
   name: 'ModelosComponent',
 
   components: {
+    BaseComponent,
     ValidationProvider,
     ValidateCheckbox
   },
 
   props: {
-    //
-    // Name of the component is required
-    // for debug purposes.
-    name: {
-      type: String,
-      required: true
-    },
-
-    //
-    // Title of the component.
-    // Is the name that will see the user.
-    title: {
-      type: String,
+    step: {
+      type: Object,
       required: true
     }
   },
 
   data () {
     return {
-      //
-      // Variables for change props
-      alert: {
-        show: false,
-        message: null
-      },
-      // ===========================
-
       panels: [],
-
       panelsCount: 3,
 
       //
-      // All the sections where contains the checkboxes
+      // All the model where contains the checkboxes
       // information that will be rendered.
-      sections: sections()
-    }
-  },
-
-  watch: {
-    // 'sections.modelos.selectedOption' (newValue) {
-    //   this.sections.modelos.validation.valid = newValue !== null
-    // }
-  },
-
-  computed: {
-    //
-    // Return error messages if there is not a selected model
-    getSelectedModelErrorMessages () {
-      let retval = []
-
-      retval = this.sections.modelos.validation.valid
-        ? []
-        : [this.sections.modelos.validation.message]
-
-      return retval
-    },
-
-    //
-    // isValid
-    //
-    // Computed property for let it know to parent
-    // if the all component sections are valid or not
-    isValid () {
-      let retval = { value: true, message: '', data: this.sections }
-
-      console.log('')
-      console.log('=== Validando secciones del modelo ===')
-
-      for (const [key, value] of Object.entries(this.sections)) {
-        debugger
-        console.log('key :>> ', key)
-        console.log('value.validation.valid :>> ', value.validation.valid)
-
-        if (!value.validation.valid) {
-          retval = {
-            value: false,
-            message: `Debes completar todos los campos de '${this.title}'`,
-            data: null
-          }
-          break
-        }
-      }
-
-      console.log('=== Fin de las validaciones ===')
-      console.log('')
-
-      this.setMessage(!retval.value, retval.message)
-
-      return retval
+      model: model()
     }
   },
 
   methods: {
-    // Create an array the length of our panels
-    // with all values as true
-    openAllPanels () {
-      this.panels = [...Array(this.panelsCount).keys()].map((k, i) => i)
-    },
-
+    // ===========================================
+    // Region: Base component methods to call
+    // ===========================================
     //
     // Return selected data if there is no errors
     validateModel () {
-      console.log(`~ Validating model '${this.title}' ~`)
+      let retval
 
-      if (!this.isValid.value) this.openAllPanels()
+      //
+      // Executes an action based in the response
+      this.$refs.base.validateModel(response => {
+        if (!response.value) this.openAllPanels()
 
-      return this.isValid
-    },
-
-    getData () {
-      console.log('')
-      console.log('===== Select data for return ===== ')
-
-      const retval = Object.entries(this.sections).map(item => {
-        return {
-          [item[0]]: {
-            selected: item[1].vmodel
-          }
-        }
+        retval = response
       })
-
-      console.log('===== End Select data for return ===== ')
-      console.log('')
 
       return retval
     },
 
-    setMessage (show, message) {
-      this.alert.show = show
-      this.alert.message = show ? message : ''
-    },
-
-    mutateModel (model, property, data) {
-      this.sections[model][property] = data
+    // ===========================================
+    // Region: Custom actions for this component
+    // ===========================================
+    // Create an array the length of our panels
+    // with all values as true
+    openAllPanels () {
+      this.panels = [...Array(this.panelsCount).keys()].map((k, i) => i)
     }
   }
 }
