@@ -46,13 +46,16 @@
                 <v-card>
                   <v-card-title><h4>Tipo de ciudad</h4></v-card-title>
                   <v-card-text>
-                    <v-checkbox label="Zonas Metropolitanas"></v-checkbox>
-                    <v-checkbox label="Conurbacion"></v-checkbox>
-                    <v-checkbox label="Centros Urbanos"></v-checkbox>
-                    <v-checkbox label="n/a"></v-checkbox>
+                    <validate-checkbox
+                      :model="model.ciudad"
+                      validation="one"
+                      @on-change="mutate(model.ciudad, 'vmodel', $event)"
+                      @on-validate="mutate(model.ciudad, 'validation', $event)"
+                    ></validate-checkbox>
                   </v-card-text>
                 </v-card>
               </v-col>
+              <!-- Clústers de ciudades -->
               <v-col cols="12" md="6">
                 <v-card>
                   <v-card-title><h4>Clusters de Ciudades</h4></v-card-title>
@@ -62,11 +65,17 @@
                       demograficas, economicas, consumo y vias de comunicación similares entre espacios
                       urbanos y son nombradas a razon de la ciudad principal.
                     </p>
-                    <v-select
-                      label="Clústers"
-                      outlined
-                      :items="['opción 1', 'opción 2', 'opción 3', 'opción 4', 'opción 5']"
-                    ></v-select>
+                    <validation-provider v-slot="{ validate, valid }" rules="required">
+                      <v-select
+                        :items="model.cluster.getItems()"
+                        v-model="model.cluster.vmodel"
+                        outlined
+                        :label="model.cluster.title"
+                        :error-messages="model.cluster.getErrorMessages()"
+                        @change="validate()"
+                        @blur="model.cluster.setValid(valid)"
+                      ></v-select>
+                    </validation-provider>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -77,6 +86,7 @@
         <v-card class="mb-7">
           <v-card-text>
             <v-row>
+              <!-- División C -->
               <v-col cols="12" md="4">
                 <v-card>
                   <v-card-title><h5>Division C</h5></v-card-title>
@@ -84,11 +94,12 @@
                     <p>
                       Grandes extensiones territoriales en las que se divide e territorio nacional
                     </p>
-                    <v-checkbox label=" División I "></v-checkbox>
-                    <v-checkbox label=" División II "></v-checkbox>
-                    <v-checkbox label=" División III "></v-checkbox>
-                    <v-checkbox label=" División IV "></v-checkbox>
-                    <v-checkbox label=" División V "></v-checkbox>
+                    <validate-checkbox
+                      :model="model.div_c"
+                      validation="one"
+                      @on-change="mutate(model.div_c, 'vmodel', $event)"
+                      @on-validate="mutate(model.div_c, 'validation', $event)"
+                    ></validate-checkbox>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -100,11 +111,12 @@
                     <p>
                       Grandes extensiones territoriales en las que se divide e territorio nacional
                     </p>
-                    <v-checkbox label=" División I "></v-checkbox>
-                    <v-checkbox label=" División II "></v-checkbox>
-                    <v-checkbox label=" División III "></v-checkbox>
-                    <v-checkbox label=" División IV "></v-checkbox>
-                    <v-checkbox label=" División V "></v-checkbox>
+                    <validate-checkbox
+                      :model="model.nielsen"
+                      validation="one"
+                      @on-change="mutate(model.nielsen, 'vmodel', $event)"
+                      @on-validate="mutate(model.nielsen, 'validation', $event)"
+                    ></validate-checkbox>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -117,15 +129,12 @@
                       Grandes extensiones territoriales en las que se divide e territorio nacional para
                       analisis de mercado segun la Asocion de Internet de Mexico.
                     </p>
-                    <v-checkbox label="Centro Norte"></v-checkbox>
-                    <v-checkbox label="Centro Sur"></v-checkbox>
-                    <v-checkbox label="Este"></v-checkbox>
-                    <v-checkbox label="No identificado"></v-checkbox>
-                    <v-checkbox label="Noreste"></v-checkbox>
-                    <v-checkbox label="Noroeste"></v-checkbox>
-                    <v-checkbox label="Oeste"></v-checkbox>
-                    <v-checkbox label="Sureste"></v-checkbox>
-                    <v-checkbox label="Suroeste"></v-checkbox>
+                    <validate-checkbox
+                      :model="model.aim"
+                      validation="one"
+                      @on-change="mutate(model.aim, 'vmodel', $event)"
+                      @on-validate="mutate(model.aim, 'validation', $event)"
+                    ></validate-checkbox>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -154,7 +163,10 @@
 import BaseComponent from './Helpers/BaseModelComponent'
 import baseMixin from '@/mixins/baseMixin'
 import { ValidationProvider } from 'vee-validate'
+import ValidateCheckbox from './Helpers/ValidateCheckbox'
+// Models
 import Section from '@/models/Section'
+import Checkbox from '@/models/Checkbox'
 
 const model = () => ({
   //
@@ -212,6 +224,48 @@ const model = () => ({
     'ATLAUTLA',
     'AXAPUSCO',
     'AYAPANGO'
+  ]),
+  //
+  // Tipo de ciudad
+  ciudad: new Section('ciudad', 'Tipo de ciudad', [
+    new Checkbox('ciudad', 'Zonas Metropolitanas'),
+    new Checkbox('ciudad', 'Conurbacion'),
+    new Checkbox('ciudad', 'Centros Urbanos'),
+    new Checkbox('ciudad', 'n/a')
+  ]),
+  //
+  // Clústers
+  cluster: new Section('cluster', 'Clústers', ['opción 1', 'opción 2', 'opción 3', 'opción 4', 'opción 5']),
+  //
+  // División C
+  div_c: new Section('div_c', 'División C', [
+    new Checkbox('div_c', 'División I'),
+    new Checkbox('div_c', 'División II'),
+    new Checkbox('div_c', 'División III'),
+    new Checkbox('div_c', 'División IV'),
+    new Checkbox('div_c', 'División V')
+  ]),
+  //
+  // Regiones Nielsen
+  nielsen: new Section('nielsen', 'Regiones Nielsen', [
+    new Checkbox('nielsen', 'División I'),
+    new Checkbox('nielsen', 'División II'),
+    new Checkbox('nielsen', 'División III'),
+    new Checkbox('nielsen', 'División IV'),
+    new Checkbox('nielsen', 'División V')
+  ]),
+  //
+  // Regiones AIM
+  aim: new Section('aim', 'Regiones AIM', [
+    new Checkbox('aim', 'Centro Norte'),
+    new Checkbox('aim', 'Centro Sur'),
+    new Checkbox('aim', 'Este'),
+    new Checkbox('aim', 'No identificado'),
+    new Checkbox('aim', 'Noreste'),
+    new Checkbox('aim', 'Noroeste'),
+    new Checkbox('aim', 'Oeste'),
+    new Checkbox('aim', 'Sureste'),
+    new Checkbox('aim', 'Suroeste')
   ])
 })
 
@@ -222,6 +276,7 @@ export default {
 
   components: {
     BaseComponent,
+    ValidateCheckbox,
     ValidationProvider
   },
 
