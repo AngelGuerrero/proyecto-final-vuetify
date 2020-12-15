@@ -14,10 +14,11 @@ export default class Slider {
 
   grid = true
   type = 'double'
-  // prefix = null
-  // step = null
+  prefix = null
+  postfix = null
+  step = null
 
-  constructor (id, type, min, max, from, to) {
+  constructor (id, type, min, max, from, to, prefix = null, postfix = null, step = null) {
     console.log('Creating new slider')
 
     this.id = id
@@ -29,6 +30,12 @@ export default class Slider {
     this.to = to
 
     //
+    // Optional values
+    this.prefix = prefix
+    this.postfix = postfix
+    this.step = step
+
+    //
     // Without validation
     this.validation = {
       valid: true,
@@ -36,7 +43,7 @@ export default class Slider {
     }
   }
 
-  getData () {
+  getSliderOptions () {
     return {
       min: this.min,
       max: this.max,
@@ -44,7 +51,10 @@ export default class Slider {
       to: this.to,
 
       type: this.type,
-      grid: this.grid
+      grid: this.grid,
+      prefix: this.prefix,
+      postfix: this.postfix,
+      step: this.step
     }
   }
 

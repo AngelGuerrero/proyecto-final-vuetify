@@ -17,6 +17,12 @@ export default {
       console.groupEnd()
 
       return retval
+    },
+
+    openAllPanels (totalPanels) {
+      console.log('opening panels')
+      const panels = [...Array(totalPanels).keys()].map((k, i) => i)
+      return panels
     }
   }
 }
