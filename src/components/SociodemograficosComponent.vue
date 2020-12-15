@@ -6,7 +6,7 @@
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"
   >
-    <template #default="{ mutate }">
+    <template #default="{ mutate, isValid }">
       <!-- Género -->
       <v-card class="elevation-0 ma-0 pa-0">
         <v-card-title primary-title class="justify-center">
@@ -37,7 +37,12 @@
               </p>
 
               <!-- Panels -->
-              <v-expansion-panels focusable multiple v-model="edadPanels">
+              <v-expansion-panels
+                focusable
+                :accordion="isValid.value"
+                :multiple="!isValid.value"
+                v-model="edadPanels"
+              >
                 <!-- Option 1 -->
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex flex-row">
@@ -46,36 +51,41 @@
 
                   <v-expansion-panel-content panel>
                     <v-container>
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-12">
-                            <p class="text-center">
-                              Elije los minimos y maximos de tu rango de edades
-                            </p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_1" id="rangeEdad_1" />
-                              </div>
-                            </div>
+                      <v-row>
+                        <v-col cols="12">
+                          <p class="text-center">
+                            Elije los mínimos y máximos de tu rango de edades
+                          </p>
+                          <input
+                            :ref="model.s_edad_1.id"
+                            v-model="model.s_edad_1.vmodel"
+                            :name="model.s_edad_1.id"
+                            :id="model.s_edad_1.id"
+                          />
+                        </v-col>
 
-                            <p class="text-center">
-                              ¿Necesitas un rango más?
-                            </p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_2" id="rangeEdad_2" />
-                              </div>
-                            </div>
+                        <v-col cols="12">
+                          <p class="text-center">
+                            ¿Necesitas un rango más?
+                          </p>
+                          <input
+                            :ref="model.s_edad_2.id"
+                            v-model="model.s_edad_2.vmodel"
+                            :name="model.s_edad_2.id"
+                            :id="model.s_edad_2.id"
+                          />
+                        </v-col>
 
-                            <p class="text-center">¿Otro?</p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_3" id="rangeEdad_3" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        <v-col cols="12">
+                          <p class="text-center">¿Otro?</p>
+                          <input
+                            :ref="model.s_edad_3.id"
+                            v-model="model.s_edad_3.vmodel"
+                            :name="model.s_edad_3.id"
+                            :id="model.s_edad_3.id"
+                          />
+                        </v-col>
+                      </v-row>
                     </v-container>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -431,10 +441,14 @@
 
                   <v-expansion-panel-content panel>
                     <p class="my-3">Salario promedio mensual</p>
-
                     <v-row>
                       <v-col cols="12">
-                        <input type="text" id="rangeSalarioPromedioMensual" />
+                        <input
+                          :ref="model.in_mensual"
+                          v-model="model.in_mensual.vmodel"
+                          :name="model.in_mensual.id"
+                          :id="model.in_mensual.id"
+                        />
                       </v-col>
                     </v-row>
                   </v-expansion-panel-content>
@@ -552,8 +566,11 @@
 <script>
 import BaseComponent from './Helpers/BaseModelComponent'
 import ValidateCheckbox from './Helpers/ValidateCheckbox'
+import Slider from '../models/Slider'
 import Section from '../models/Section'
 import Checkbox from '../models/Checkbox'
+// Mixin
+import baseMixin from '@/mixins/baseMixin'
 var $ = require('jquery')
 
 //
@@ -566,6 +583,11 @@ const model = () => ({
     new Checkbox('genero', 'Hombre'),
     new Checkbox('genero', 'Mujer')
   ]),
+  //
+  // Sliders edad
+  s_edad_1: new Slider('s_edad_1', 'double', 0, 100, 10, 20, '', ' años'),
+  s_edad_2: new Slider('s_edad_2', 'double', 0, 110, 1, 10, '', ' años'),
+  s_edad_3: new Slider('s_edad_3', 'double', 0, 120, 40, 70, '', ' años'),
   //
   // Rangos de edad
   edad: new Section('edad', 'Rangos de edad', [
@@ -657,6 +679,9 @@ const model = () => ({
     new Checkbox('sal_min', 'Mayor a 25 SM')
   ]),
   //
+  // Ingreso promedio mensual
+  in_mensual: new Slider('in_mensual', 'double', 0, 100000, 120, 5000, '$', ' pesos', 5000),
+  //
   // Nivel socioeconómico
   socioe: new Section('socioe', 'Nivel socioeconómico', [
     new Checkbox('ancla', 'A/B'),
@@ -672,6 +697,8 @@ const model = () => ({
 export default {
   name: 'SociodemograficosComponent',
 
+  mixins: [baseMixin],
+
   components: {
     BaseComponent,
     ValidateCheckbox
@@ -685,25 +712,26 @@ export default {
   },
 
   mounted () {
-    // this.fromTo(4, 8, this.model.edad.items)
+    this.updateRenderSliders()
   },
 
   data () {
     return {
-      edadPanels: [1, 2, 3, 4],
-      salarioPanels: [0],
-
+      edadPanels: [],
+      edadPanelsTotal: 4,
+      salarioPanels: [],
+      salarioPanelsTotal: 3,
       model: model()
     }
   },
 
   watch: {
     edadPanels () {
-      this.update()
+      this.updateRenderSliders()
     },
 
     salarioPanels () {
-      this.update()
+      this.updateRenderSliders()
     }
   },
 
@@ -712,14 +740,17 @@ export default {
     // Region: Base component methods to call
     // ===========================================
     //
-    // Return selected data if there is no errors
+    // @Override mixin function
     validateModel () {
       let retval
 
-      //
       // Executes an action based in the response
       this.$refs.base.validateModel(response => {
-        // if (!response.value) this.openAllPanels()
+        if (!response.value) {
+          this.edadPanels = this.openAllPanels(this.edadPanelsTotal)
+          this.salarioPanels = this.openAllPanels(this.salarioPanelsTotal)
+          setTimeout(() => this.updateRenderSliders(), 1000)
+        }
 
         retval = response
       })
@@ -727,42 +758,77 @@ export default {
       return retval
     },
 
-    update () {
-      //
-      // Para hacer un slider para un componente
-      // simplemente agregando la clase
-      //
+    /**
+     * Must load jquery library and re-render sliders
+     * when expansion panels open.
+     */
+    updateRenderSliders () {
       $('.js-range-slider').ionRangeSlider()
-
       //
-      // Rangos de la sección de: Manual -> edad
+      // Sliders from the model
+      this.renderSlider(this.model.s_edad_1)
+      this.renderSlider(this.model.s_edad_2)
+      this.renderSlider(this.model.s_edad_3)
+      this.renderSlider(this.model.in_mensual)
+    },
+
+    renderSlider (slider) {
+      // Proxy
+      const that = this
+      const getSliderId = data => data.input[0].id
       //
-      const ManualEdades = [
-        { type: 'double', grid: true, min: 0, max: 100, from: 30, to: 75 },
-        { type: 'double', grid: true, min: 0, max: 100, from: 25, to: 55 },
-        { type: 'double', grid: true, min: 0, max: 100, from: 20, to: 45 }
-      ]
-
-      $('#rangeEdad_1').ionRangeSlider(ManualEdades[0])
-      $('#rangeEdad_2').ionRangeSlider(ManualEdades[1])
-      $('#rangeEdad_3').ionRangeSlider(ManualEdades[2])
-
-      const rangeSalarioPromedioMensual = {
-        type: 'double',
-        grid: true,
-        min: 0,
-        max: 100000,
-        from: 15000,
-        to: 20000,
-        prefix: '$',
-        step: 5000
+      // Start
+      const onStart = data => {
+        const id = getSliderId(data)
+        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
-      $('#rangeSalarioPromedioMensual').ionRangeSlider(rangeSalarioPromedioMensual)
+      //
+      // onChange
+      const onChange = data => {
+        const id = getSliderId(data)
+        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
+      }
+      //
+      // onFinish
+      const onFinish = data => {}
+      //
+      // onUpdate
+      const onUpdate = data => {}
+
+      //
+      // Slider options and listen events.
+      $(`#${slider.id}`).ionRangeSlider({
+        keyboard: true,
+        onStart: data => onStart(data),
+        onChange: data => onChange(data),
+        onFinish: data => onFinish(data),
+        onUpdate: data => onUpdate(data),
+        ...slider.getSliderOptions()
+      })
+    },
+
+    /**
+     * selectDataFromSlider
+     *
+     * Select and return an object
+     * from slider data.
+     */
+    selectDataFromSlider (data) {
+      return {
+        from: data.from,
+        to: data.to,
+        min: data.min,
+        max: data.max
+      }
     },
 
     fromTo (start, end, items) {
       const newItems = items.slice(start, end)
       return newItems
+    },
+
+    onChange (event) {
+      console.log(event)
     }
   }
 }
