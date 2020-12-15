@@ -121,7 +121,7 @@ export default {
         if (!value.validation.valid) {
           retval = {
             value: false,
-            message: `Debes completar todos los campos de '${this.name}'`,
+            message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
             data: null
           }
           break
