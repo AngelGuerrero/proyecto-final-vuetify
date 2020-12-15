@@ -9,15 +9,17 @@ const Steps = [
   },
   {
     pageTitle: 'Categoría Sociodemográficos',
-    pageDescription: 'En esta categoria puedes filtrar por caracteristicas sociodemograficas del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
+    pageDescription:
+      'En esta categoria puedes filtrar por caracteristicas sociodemograficas del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
     number: 2,
     name: 'sociodemograficos',
     component: 'sociodemograficos',
     data: null
   },
   {
-    pageTitle: 'Comportamiento del cliente',
-    pageDescription: '',
+    pageTitle: 'Categoría Comportamiento del cliente',
+    pageDescription:
+      'En Comportamiento del cliente puedes filtrar las caracteristacas del comportamiento de compra del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
     number: 3,
     name: 'comportamiento',
     component: 'comportamiento',
@@ -25,7 +27,8 @@ const Steps = [
   },
   {
     pageTitle: 'Categoría Geográficos',
-    pageDescription: 'La categorias geograficas te permiten filtrar varias opciones de ubicacion del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
+    pageDescription:
+      'La categorias geograficas te permiten filtrar varias opciones de ubicacion del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
     number: 4,
     name: 'geograficos',
     component: 'geograficos',
@@ -33,7 +36,8 @@ const Steps = [
   },
   {
     pageTitle: 'Datos',
-    pageDescription: '¡Ya casí terminas! <br /> Aquí deberas elegir la información del cliente que te es util para tu campaña o proyecto. El formato del archivo que se exportará es en .csv',
+    pageDescription:
+      '¡Ya casí terminas! <br /> Aquí deberas elegir la información del cliente que te es util para tu campaña o proyecto. El formato del archivo que se exportará es en .csv',
     number: 5,
     name: 'datos',
     component: 'datos',

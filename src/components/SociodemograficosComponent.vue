@@ -772,63 +772,9 @@ export default {
       this.renderSlider(this.model.in_mensual)
     },
 
-    renderSlider (slider) {
-      // Proxy
-      const that = this
-      const getSliderId = data => data.input[0].id
-      //
-      // Start
-      const onStart = data => {
-        const id = getSliderId(data)
-        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
-      }
-      //
-      // onChange
-      const onChange = data => {
-        const id = getSliderId(data)
-        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
-      }
-      //
-      // onFinish
-      const onFinish = data => {}
-      //
-      // onUpdate
-      const onUpdate = data => {}
-
-      //
-      // Slider options and listen events.
-      $(`#${slider.id}`).ionRangeSlider({
-        keyboard: true,
-        onStart: data => onStart(data),
-        onChange: data => onChange(data),
-        onFinish: data => onFinish(data),
-        onUpdate: data => onUpdate(data),
-        ...slider.getSliderOptions()
-      })
-    },
-
-    /**
-     * selectDataFromSlider
-     *
-     * Select and return an object
-     * from slider data.
-     */
-    selectDataFromSlider (data) {
-      return {
-        from: data.from,
-        to: data.to,
-        min: data.min,
-        max: data.max
-      }
-    },
-
     fromTo (start, end, items) {
       const newItems = items.slice(start, end)
       return newItems
-    },
-
-    onChange (event) {
-      console.log(event)
     }
   }
 }

@@ -19,8 +19,6 @@ export default class Slider {
   step = null
 
   constructor (id, type, min, max, from, to, prefix = null, postfix = null, step = null) {
-    console.log('Creating new slider')
-
     this.id = id
     this.name = id
     this.type = type
@@ -49,7 +47,6 @@ export default class Slider {
       max: this.max,
       from: this.from,
       to: this.to,
-
       type: this.type,
       grid: this.grid,
       prefix: this.prefix,

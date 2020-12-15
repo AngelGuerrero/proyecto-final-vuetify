@@ -129,7 +129,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[3]
+    this.currentStep = this.steps[2]
   },
 
   // FIX: REMOVE IN PROD
