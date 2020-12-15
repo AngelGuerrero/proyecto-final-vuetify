@@ -24,8 +24,8 @@ const Steps = [
     data: null
   },
   {
-    pageTitle: 'Geográficos',
-    pageDescription: '',
+    pageTitle: 'Categoría Geográficos',
+    pageDescription: 'La categorias geograficas te permiten filtrar varias opciones de ubicacion del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
     number: 4,
     name: 'geograficos',
     component: 'geograficos',
