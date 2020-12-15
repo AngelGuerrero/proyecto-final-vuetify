@@ -1,5 +1,9 @@
 export default {
   methods: {
+    mutate (model, property, data) {
+      this.model[model.name][property] = data
+    },
+
     validateModel () {
       console.group("🚧 Method called from 'base mixin' 🚧")
       let retval

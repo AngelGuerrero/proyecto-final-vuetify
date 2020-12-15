@@ -46,34 +46,58 @@
 
                   <v-expansion-panel-content panel>
                     <v-container>
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-12">
-                            <p class="text-center">
-                              Elije los minimos y maximos de tu rango de edades
-                            </p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_1" id="rangeEdad_1" />
-                              </div>
-                            </div>
+                      <v-container class="elevation-5 rounded">
+                        <v-row>
+                          <v-col md="4">
+                            <pre>
+                              {{ $data.model.s_edad_1 }}
+                            </pre>
+                          </v-col>
+                          <v-col md="4">
+                            <pre>
+                              {{ $data.model.s_edad_2 }}
+                            </pre>
+                          </v-col>
+                          <v-col md="4">
+                            <pre>
+                              {{ $data.model.s_edad_3 }}
+                            </pre>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="text-center">
+                            Elije los mínimos y máximos de tu rango de edades
+                          </p>
+                          <input
+                            :ref="model.s_edad_1.id"
+                            v-model="model.s_edad_1.vmodel"
+                            :name="model.s_edad_1.id"
+                            :id="model.s_edad_1.id"
+                          />
+                        </div>
 
-                            <p class="text-center">
-                              ¿Necesitas un rango más?
-                            </p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_2" id="rangeEdad_2" />
-                              </div>
-                            </div>
+                        <div class="col-12">
+                          <p class="text-center">
+                            ¿Necesitas un rango más?
+                          </p>
+                          <input
+                            :ref="model.s_edad_2.id"
+                            v-model="model.s_edad_2.vmodel"
+                            :name="model.s_edad_2.id"
+                            :id="model.s_edad_2.id"
+                          />
+                        </div>
 
-                            <p class="text-center">¿Otro?</p>
-                            <div class="form-group row">
-                              <div class="col-12">
-                                <input type="text" name="rangeEdad_3" id="rangeEdad_3" />
-                              </div>
-                            </div>
-                          </div>
+                        <div class="col-12">
+                          <p class="text-center">¿Otro?</p>
+                          <input
+                            :ref="model.s_edad_3.id"
+                            v-model="model.s_edad_3.vmodel"
+                            :name="model.s_edad_3.id"
+                            :id="model.s_edad_3.id"
+                          />
                         </div>
                       </div>
                     </v-container>
@@ -552,8 +576,11 @@
 <script>
 import BaseComponent from './Helpers/BaseModelComponent'
 import ValidateCheckbox from './Helpers/ValidateCheckbox'
+import Slider from '../models/Slider'
 import Section from '../models/Section'
 import Checkbox from '../models/Checkbox'
+// Mixin
+import baseMixin from '@/mixins/baseMixin'
 var $ = require('jquery')
 
 //
@@ -566,6 +593,11 @@ const model = () => ({
     new Checkbox('genero', 'Hombre'),
     new Checkbox('genero', 'Mujer')
   ]),
+  //
+  // Sliders edad
+  s_edad_1: new Slider('s_edad_1', 'double', 0, 100, 10, 20),
+  s_edad_2: new Slider('s_edad_2', 'double', 0, 110, 1, 10),
+  s_edad_3: new Slider('s_edad_3', 'double', 0, 120, 40, 70),
   //
   // Rangos de edad
   edad: new Section('edad', 'Rangos de edad', [
@@ -672,6 +704,8 @@ const model = () => ({
 export default {
   name: 'SociodemograficosComponent',
 
+  mixins: [baseMixin],
+
   components: {
     BaseComponent,
     ValidateCheckbox
@@ -685,12 +719,18 @@ export default {
   },
 
   mounted () {
-    // this.fromTo(4, 8, this.model.edad.items)
+    this.loadJqueryLibs()
+
+    //
+    // Load sliders from the model
+    this.renderSlider(this.model.s_edad_1)
+    this.renderSlider(this.model.s_edad_2)
+    this.renderSlider(this.model.s_edad_3)
   },
 
   data () {
     return {
-      edadPanels: [1, 2, 3, 4],
+      edadPanels: [0, 1, 2, 3, 4],
       salarioPanels: [0],
 
       model: model()
@@ -699,11 +739,11 @@ export default {
 
   watch: {
     edadPanels () {
-      this.update()
+      this.loadJqueryLibs()
     },
 
     salarioPanels () {
-      this.update()
+      this.loadJqueryLibs()
     }
   },
 
@@ -713,39 +753,29 @@ export default {
     // ===========================================
     //
     // Return selected data if there is no errors
-    validateModel () {
-      let retval
+    // validateModel () {
+    //   let retval
 
-      //
-      // Executes an action based in the response
-      this.$refs.base.validateModel(response => {
-        // if (!response.value) this.openAllPanels()
+    //   //
+    //   // Executes an action based in the response
+    //   this.$refs.base.validateModel(response => {
+    //     // if (!response.value) this.openAllPanels()
 
-        retval = response
-      })
+    //     retval = response
+    //   })
 
-      return retval
+    //   return retval
+    // },
+    test () {
+      console.log('test')
     },
 
-    update () {
+    loadJqueryLibs () {
       //
       // Para hacer un slider para un componente
       // simplemente agregando la clase
       //
       $('.js-range-slider').ionRangeSlider()
-
-      //
-      // Rangos de la sección de: Manual -> edad
-      //
-      const ManualEdades = [
-        { type: 'double', grid: true, min: 0, max: 100, from: 30, to: 75 },
-        { type: 'double', grid: true, min: 0, max: 100, from: 25, to: 55 },
-        { type: 'double', grid: true, min: 0, max: 100, from: 20, to: 45 }
-      ]
-
-      $('#rangeEdad_1').ionRangeSlider(ManualEdades[0])
-      $('#rangeEdad_2').ionRangeSlider(ManualEdades[1])
-      $('#rangeEdad_3').ionRangeSlider(ManualEdades[2])
 
       const rangeSalarioPromedioMensual = {
         type: 'double',
@@ -760,9 +790,63 @@ export default {
       $('#rangeSalarioPromedioMensual').ionRangeSlider(rangeSalarioPromedioMensual)
     },
 
+    renderSlider (slider) {
+      // Proxy
+      const that = this
+      const getSliderId = data => data.input[0].id
+      //
+      // Start
+      const onStart = data => {
+        const id = getSliderId(data)
+        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
+      }
+      //
+      // onChange
+      const onChange = data => {
+        const id = getSliderId(data)
+        that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
+      }
+      //
+      // onFinish
+      const onFinish = data => {}
+      //
+      // onUpdate
+      const onUpdate = data => {}
+
+      //
+      // Slider options and listen events.
+      $(`#${slider.id}`).ionRangeSlider({
+        keyboard: true,
+        onStart: data => onStart(data),
+        onChange: data => onChange(data),
+        onFinish: data => onFinish(data),
+        onUpdate: data => onUpdate(data),
+        ...slider.getData()
+      })
+    },
+
+    /**
+     * selectDataFromSlider
+     *
+     * Select and return an object
+     * from slider data.
+     */
+    selectDataFromSlider (data) {
+      return {
+        from: data.from,
+        to: data.to,
+        min: data.min,
+        max: data.max
+      }
+    },
+
     fromTo (start, end, items) {
       const newItems = items.slice(start, end)
       return newItems
+    },
+
+    onChange (event) {
+      console.log(event)
     }
   }
 }
