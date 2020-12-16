@@ -26,8 +26,7 @@
           Description of the section.
         -->
       <v-container>
-        <p class="text-center" v-html="pageDescription">
-        </p>
+        <p class="text-center" v-html="pageDescription"></p>
       </v-container>
 
       <slot :isValid="isValid" :mutate="mutate"></slot>
@@ -113,7 +112,6 @@ export default {
     isValid () {
       let retval = { value: true, message: '', data: this.l_model }
 
-      // console.clear()
       console.group('=== 👾 Validating model 🤞 ===')
       for (const [key, value] of Object.entries(this.l_model)) {
         console.log(key, ' | valid :>> ', value.validation.valid)

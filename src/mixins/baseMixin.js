@@ -22,7 +22,6 @@ export default {
     },
 
     openAllPanels (totalPanels) {
-      console.log('opening panels')
       const panels = [...Array(totalPanels).keys()].map((k, i) => i)
       return panels
     },
@@ -35,7 +34,6 @@ export default {
       // Start
       const onStart = data => {
         const id = getSliderId(data)
-        console.log(data)
         that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
       //
@@ -70,7 +68,6 @@ export default {
      * from slider data.
      */
     selectDataFromSlider (data) {
-      console.log(data)
       return {
         from: data.from,
         to: data.to,

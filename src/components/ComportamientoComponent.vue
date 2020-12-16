@@ -1,303 +1,442 @@
 <template>
   <base-component
+    ref="base"
     :model="model"
     :name="step.name"
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"
   >
     <template>
-      <v-card-title class="justify-center">
-        <h1 class="text-center subtitle-2 text-md-h4">
-          Categoria Comportamiento del cliente
-        </h1>
-      </v-card-title>
-
       <v-card-text>
-        <section>
-          <article>
-            <h3 class="text-center text-xl sm:text-2xl">
-              Categoria Comportamiento del cliente
-            </h3>
+        <v-card :class="getMobileClasses">
+          <v-card-text :class="getMobileClasses">
+            <v-row>
+              <!-- Puntualidad -->
+              <v-col cols="12" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Puntualidad</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-checkbox
+                      :model="model.com_puntualidad"
+                      validation="one"
+                      @on-change="mutate(model.com_puntualidad, 'vmodel', $event)"
+                      @on-validate="mutate(model.com_puntualidad, 'validation', $event)"
+                    ></validate-checkbox>
+                  </v-card-text>
+                </v-card>
+              </v-col>
 
-            <p class="text-center">
-              En Comportamiento del cliente puedes filtrar las caracteristacas del comportamiento de compra
-              del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.
-            </p>
+              <!-- Tipo de cliente -->
+              <v-col cols="12" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Tipo de cliente</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-checkbox
+                      :model="model.tipo_cliente"
+                      validation="one"
+                      @on-change="mutate(model.tipo_cliente, 'vmodel', $event)"
+                      @on-validate="mutate(model.tipo_cliente, 'validation', $event)"
+                    ></validate-checkbox>
+                  </v-card-text>
+                </v-card>
+              </v-col>
 
-            <v-card>
-              <v-card-text>
+              <!-- ¿Es cliente? -->
+              <v-col cols="12" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>¿Es cliente?</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-checkbox
+                      :model="model.es_cliente"
+                      validation="one"
+                      @on-change="mutate(model.es_cliente, 'vmodel', $event)"
+                      @on-validate="mutate(model.es_cliente, 'validation', $event)"
+                    ></validate-checkbox>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <!--
+              Sliders
+            -->
+            <v-row>
+              <!-- Antiguedad del cliente -->
+              <v-col cols="12" sm="12" lg="6" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Antiguedad del cliente</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <p class="text-center">
+                      Elije los minimos y maximos de años de antiguedad del cliente
+                    </p>
+
+                    <input
+                      :ref="model.antiguedad"
+                      v-model="model.antiguedad.vmodel"
+                      :name="model.antiguedad.id"
+                      :id="model.antiguedad.id"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+
+              <!-- Última actividad del cliente -->
+              <v-col cols="12" sm="12" lg="6" :class="getMobileClasses">
+                <v-card :class="!mobile && 'px-8'">
+                  <v-card-title class="justify-center">
+                    <h5 class="text-center">Ultima actividad</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <p class="text-center">
+                      Elije los minimos y maximos en meses de la ultima actividad de cliente
+                    </p>
+
+                    <input
+                      :ref="model.ultima_actividad"
+                      v-model="model.ultima_actividad.vmodel"
+                      :name="model.ultima_actividad.id"
+                      :id="model.ultima_actividad.id"
+                      type="text"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <!-- Fecha de última actividad de R -->
+              <v-col cols="12" sm="12" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Fecha de última actividad de R</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-calendar
+                      :model="model.actividad_r.items.vmodel"
+                      rules="required|range"
+                      :field="model.actividad_r.title"
+                      @on-change="
+                        model.actividad_r.vmodel = model.actividad_r.items.getRangeOfDatedPretty()
+                      "
+                      @on-validate="model.actividad_r.validation = $event"
+                      v-slot="{ results }"
+                    >
+                      <v-container>
+                        <p v-show="!results.valid" class="error--text">
+                          {{ results.message }}
+                        </p>
+                        <v-date-picker
+                          v-model="model.actividad_r.items.vmodel"
+                          range
+                          :locale="locale"
+                          full-width
+                          :color="results.valid ? 'blue' : 'error'"
+                          elevation="15"
+                        ></v-date-picker>
+                        <v-container v-show="results.valid">
+                          <p class="d-flex flex-column">
+                            <strong>
+                              Inicio:
+                              {{ model.actividad_r.items.getRangeOfDatedPretty()[0] }}
+                            </strong>
+                            <strong>
+                              Fin:
+                              {{ model.actividad_r.items.getRangeOfDatedPretty()[1] }}
+                            </strong>
+                            <v-btn
+                              color="default"
+                              class="my-3"
+                              @click="model.actividad_r.items.vmodel = []"
+                              small
+                            >
+                              Limpiar
+                            </v-btn>
+                          </p>
+                        </v-container>
+                      </v-container>
+                    </validate-calendar>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+
+              <!-- Fecha de última actividad de M -->
+              <v-col cols="12" sm="6" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Fecha de última actividad de M</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-calendar
+                      :model="model.actividad_m.items.vmodel"
+                      rules="required|range"
+                      :field="model.actividad_m.title"
+                      @on-change="
+                        model.actividad_m.vmodel = model.actividad_m.items.getRangeOfDatedPretty()
+                      "
+                      @on-validate="model.actividad_m.validation = $event"
+                      v-slot="{ results }"
+                    >
+                      <v-container>
+                        <p v-show="!results.valid" class="error--text">
+                          {{ results.message }}
+                        </p>
+                        <v-date-picker
+                          v-model="model.actividad_m.items.vmodel"
+                          range
+                          :locale="locale"
+                          full-width
+                          :class="mobile && 'elevation-1'"
+                          :color="results.valid ? 'blue' : 'error'"
+                          elevation="15"
+                        ></v-date-picker>
+                        <v-container v-show="results.valid">
+                          <p class="d-flex flex-column">
+                            <strong>
+                              Inicio:
+                              {{ model.actividad_m.items.getRangeOfDatedPretty()[0] }}
+                            </strong>
+                            <strong>
+                              Fin:
+                              {{ model.actividad_m.items.getRangeOfDatedPretty()[1] }}
+                            </strong>
+                            <v-btn
+                              color="default"
+                              class="my-3"
+                              @click="model.actividad_m.items.vmodel = []"
+                              small
+                            >
+                              Limpiar
+                            </v-btn>
+                          </p>
+                        </v-container>
+                      </v-container>
+                    </validate-calendar>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+
+              <!-- Fecha de última actividad de T -->
+              <v-col cols="12" sm="6" md="4" :class="getMobileClasses">
+                <v-card>
+                  <v-card-title class="justify-center">
+                    <h5>Fecha de última actividad de T</h5>
+                  </v-card-title>
+                  <v-card-text>
+                    <validate-calendar
+                      :model="model.actividad_t.items.vmodel"
+                      rules="required|range"
+                      :field="model.actividad_t.title"
+                      @on-change="
+                        model.actividad_t.vmodel = model.actividad_t.items.getRangeOfDatedPretty()
+                      "
+                      @on-validate="model.actividad_t.validation = $event"
+                      v-slot="{ results }"
+                    >
+                      <v-container>
+                        <p v-show="!results.valid" class="error--text">
+                          {{ results.message }}
+                        </p>
+                        <v-date-picker
+                          v-model="model.actividad_t.items.vmodel"
+                          range
+                          :locale="locale"
+                          full-width
+                          :class="mobile && 'elevation-1'"
+                          :color="results.valid ? 'blue' : 'error'"
+                          elevation="15"
+                        ></v-date-picker>
+                        <v-container v-show="results.valid">
+                          <p class="d-flex flex-column">
+                            <strong>
+                              Inicio:
+                              {{ model.actividad_t.items.getRangeOfDatedPretty()[0] }}
+                            </strong>
+                            <strong>
+                              Fin:
+                              {{ model.actividad_t.items.getRangeOfDatedPretty()[1] }}
+                            </strong>
+                            <v-btn
+                              color="default"
+                              class="my-3"
+                              @click="model.actividad_t.items.vmodel = []"
+                              small
+                            >
+                              Limpiar
+                            </v-btn>
+                          </p>
+                        </v-container>
+                      </v-container>
+                    </validate-calendar>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <v-card :class="getMobileClasses">
+              <v-card-title class="justify-center">
+                <h4 class="text-center">C y A del cliente</h4>
+              </v-card-title>
+
+              <v-card-text :class="getMobileClasses">
+                <p class="text-center">
+                  En esta sección podras seleccionar algunas de las carateristicas del C y a del
+                  cliente
+                </p>
+
                 <v-row>
-                  <v-col cols="12" md="4">
-                    <v-card>
-                      <v-card-title>
-                        <h5>Puntualidad</h5>
-                      </v-card-title>
-                      <v-card-text>
-                        <validate-checkbox
-                          :model="model.com_puntualidad"
-                          validation="one"
-                          @on-change="mutate(model.com_puntualidad, 'vmodel', $event)"
-                          @on-validate="mutate(model.com_puntualidad, 'validation', $event)"
-                        ></validate-checkbox>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-
-                  <v-col cols="12" md="4">
-                    <v-card>
-                      <v-card-title>
-                        <h5>Tipo de cliente</h5>
-                      </v-card-title>
-                      <v-card-text>
-                        <validate-checkbox
-                          :model="model.tipo_cliente"
-                          validation="one"
-                          @on-change="mutate(model.tipo_cliente, 'vmodel', $event)"
-                          @on-validate="mutate(model.tipo_cliente, 'validation', $event)"
-                        ></validate-checkbox>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-
-                  <v-col cols="12" md="4">
-                    <v-card>
-                      <v-card-title>
-                        <h5>¿Es cliente?</h5>
-                      </v-card-title>
-                      <v-card-text>
-                        <validate-checkbox
-                          :model="model.es_cliente"
-                          validation="one"
-                          @on-change="mutate(model.es_cliente, 'vmodel', $event)"
-                          @on-validate="mutate(model.es_cliente, 'validation', $event)"
-                        ></validate-checkbox>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <!-- Antiguedad del cliente -->
-                  <v-col cols="12" md="6">
+                  <!-- Importe abonado -->
+                  <v-col cols="12" md="6" :class="getMobileClasses">
                     <v-card>
                       <v-card-title class="justify-center">
-                        <h5 class="text-center">Antiguedad del cliente</h5>
+                        <h5 class="text-center">Importe Abonado</h5>
                       </v-card-title>
                       <v-card-text>
                         <p class="text-center">
-                          Elije los minimos y maximos de años de antiguedad del cliente
+                          Elije los minimos y maximos de la linea de credito otorgada al cliente
                         </p>
 
-                        <v-row>
-                          <v-col cols="12">
-                            <input
-                              :ref="model.antiguedad"
-                              v-model="model.antiguedad.vmodel"
-                              :name="model.antiguedad.id"
-                              :id="model.antiguedad.id"
-                            />
-                          </v-col>
-                        </v-row>
+                        <input
+                          :ref="model.importe_abonado"
+                          v-model="model.importe_abonado.vmodel"
+                          :name="model.importe_abonado.id"
+                          :id="model.importe_abonado.id"
+                        />
                       </v-card-text>
                     </v-card>
                   </v-col>
 
-                  <!-- Última actividad del cliente -->
-                  <v-col cols="12" md="6">
+                  <!-- Canal de abono -->
+                  <v-col cols="12" md="6" :class="getMobileClasses">
                     <v-card>
                       <v-card-title class="justify-center">
-                        <h5 class="text-center">Ultima actividad</h5>
+                        <h5 class="text-center">Canal de Abono</h5>
                       </v-card-title>
                       <v-card-text>
-                        <p class="text-center">
-                          Elije los minimos y maximos en meses de la ultima actividad de cliente
-                        </p>
-
-                        <v-row>
-                          <v-col cols="12">
-                            <input
-                              :ref="model.ultima_actividad"
-                              v-model="model.ultima_actividad.vmodel"
-                              :name="model.ultima_actividad.id"
-                              :id="model.ultima_actividad.id"
-                              type="text"
-                            />
-                          </v-col>
-                        </v-row>
+                        <validate-checkbox
+                          :model="model.abono"
+                          validation="one"
+                          @on-change="mutate(model.abono, 'vmodel', $event)"
+                          @on-validate="mutate(model.abono, 'validation', $event)"
+                        ></validate-checkbox>
                       </v-card-text>
                     </v-card>
                   </v-col>
                 </v-row>
 
                 <v-row>
-                  <v-col cols="12" sm="6" md="4" lg="4">
+                  <!-- Línea de C -->
+                  <v-col cols="12" md="6" :class="getMobileClasses">
                     <v-card>
                       <v-card-title class="justify-center">
-                        <h5>Fecha de ultima actividad e R</h5>
+                        <h5 class="text-center">Línea de C</h5>
                       </v-card-title>
                       <v-card-text>
-                        <v-row justify="center">
-                          <v-date-picker
-                            v-model="fechaUltimaActividadR"
-                            range
-                            :width="getCalendarSize"
-                          ></v-date-picker>
-                        </v-row>
+                        <input
+                          :ref="model.linea_c"
+                          v-model="model.linea_c.vmodel"
+                          :name="model.linea_c.id"
+                          :id="model.linea_c.id"
+                        />
                       </v-card-text>
                     </v-card>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="4" lg="4">
+                  <!-- Fecha de último movimiento de A -->
+                  <v-col cols="12" md="6" :class="getMobileClasses">
                     <v-card>
                       <v-card-title class="justify-center">
-                        <h5>Fecha de ultima actividad e M</h5>
+                        <h5 class="text-center">
+                          Fecha del último movimiento de A
+                        </h5>
                       </v-card-title>
                       <v-card-text>
-                        <v-row justify="center">
-                          <v-date-picker
-                            v-model="fechUltimaActividadM"
-                            :width="getCalendarSize"
-                            range
-                          ></v-date-picker>
-                        </v-row>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-
-                  <v-col cols="12" sm="12" md="4" lg="4">
-                    <v-card>
-                      <v-card-title class="justify-center">
-                        <h5>Fecha de ultima actividad e T</h5>
-                      </v-card-title>
-                      <v-card-text>
-                        <v-row justify="center">
-                          <v-date-picker v-model="fechaUltimaActividadT" :width="getCalendarSize" range />
-                        </v-row>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                </v-row>
-
-                <div>
-                  <v-card>
-                    <v-card-title class="justify-center">
-                      <h4 class="text-center">C y A del cliente</h4>
-                    </v-card-title>
-
-                    <v-card-text>
-                      <p class="text-center">
-                        En esta sección podras seleccionar algunas de las carateristicas del C y a del cliente
-                      </p>
-
-                      <v-row>
-                        <v-col cols="12" md="6">
-                          <v-card>
-                            <v-card-title class="justify-center">
-                              <h5 class="text-center">Importe Abonado</h5>
-                            </v-card-title>
-                            <v-card-text>
-                              <p class="text-center">
-                                Elije los minimos y maximos de la linea de credito otorgada al cliente
+                        <validate-calendar
+                          :model="model.movimiento_a.items.vmodel"
+                          rules="required|range"
+                          :field="model.movimiento_a.title"
+                          @on-change="
+                            model.movimiento_a.vmodel = model.movimiento_a.items.getRangeOfDatedPretty()
+                          "
+                          @on-validate="model.movimiento_a.validation = $event"
+                          v-slot="{ results }"
+                        >
+                          <v-container>
+                            <p v-show="!results.valid" class="error--text">
+                              {{ results.message }}
+                            </p>
+                            <v-date-picker
+                              v-model="model.movimiento_a.items.vmodel"
+                              range
+                              :locale="locale"
+                              full-width
+                              :class="mobile && 'elevation-1'"
+                              :color="results.valid ? 'blue' : 'error'"
+                              elevation="15"
+                            ></v-date-picker>
+                            <v-container v-show="results.valid">
+                              <p class="d-flex flex-column">
+                                <strong>
+                                  Inicio:
+                                  {{ model.movimiento_a.items.getRangeOfDatedPretty()[0] }}
+                                </strong>
+                                <strong>
+                                  Fin:
+                                  {{ model.movimiento_a.items.getRangeOfDatedPretty()[1] }}
+                                </strong>
+                                <v-btn
+                                  color="default"
+                                  class="my-3"
+                                  @click="model.movimiento_a.items.vmodel = []"
+                                  small
+                                >
+                                  Limpiar
+                                </v-btn>
                               </p>
-
-                              <v-row>
-                                <v-col cols="12">
-                                  <input
-                                    :ref="model.importe_abonado"
-                                    v-model="model.importe_abonado.vmodel"
-                                    :name="model.importe_abonado.id"
-                                    :id="model.importe_abonado.id"
-                                  />
-                                </v-col>
-                              </v-row>
-                            </v-card-text>
-                          </v-card>
-                        </v-col>
-
-                        <v-col cols="12" md="6">
-                          <v-card>
-                            <v-card-title class="justify-center">
-                              <h5 class="text-center">Canal de Abono</h5>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-checkbox label=" C "></v-checkbox>
-                              <v-checkbox label="A C"></v-checkbox>
-                              <v-checkbox label="W"></v-checkbox>
-                              <v-checkbox label="Sin identifica"></v-checkbox>
-                            </v-card-text>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-
-                      <v-row>
-                        <v-col cols="12" md="6">
-                          <v-card>
-                            <v-card-title class="justify-center">
-                              <h5 class="text-center">Linea de C</h5>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-row>
-                                <v-col cols="12">
-                                  <input
-                                    :ref="model.linea_c"
-                                    v-model="model.linea_c.vmodel"
-                                    :name="model.linea_c.id"
-                                    :id="model.linea_c.id"
-                                  />
-                                </v-col>
-                              </v-row>
-                            </v-card-text>
-                          </v-card>
-                        </v-col>
-
-                        <v-col cols="12" md="6">
-                          <v-card>
-                            <v-card-title class="justify-center">
-                              <h5 class="mb-3 text-center">
-                                Fecha del ultimo movimiento de A
-                              </h5>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-row class="justify-center">
-                                <v-date-picker
-                                  v-model="fechaUltimoMovimientoA"
-                                  range
-                                  :width="getCalendarSize"
-                                ></v-date-picker>
-                              </v-row>
-                            </v-card-text>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </div>
+                            </v-container>
+                          </v-container>
+                        </validate-calendar>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
               </v-card-text>
             </v-card>
-          </article>
-        </section>
+          </v-card-text>
+        </v-card>
       </v-card-text>
     </template>
   </base-component>
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
-import BaseComponent from './Helpers/BaseModelComponent'
 import baseMixin from '@/mixins/baseMixin'
+import BaseComponent from './Helpers/BaseModelComponent'
+import ValidateCalendar from './Helpers/ValidateCalendar'
 import ValidateCheckbox from './Helpers/ValidateCheckbox'
+//
 // Models
+import Slider from '../models/Slider'
 import Section from '@/models/Section'
 import Checkbox from '@/models/Checkbox'
-import Slider from '../models/Slider'
+import Calendar from '../models/Calendar'
 import SliderDate from '../models/SliderDate'
+//
+// External
 var $ = require('jquery')
 
 const model = () => ({
   //
   // Puntualidad
   // Prefix: com
-  // Hay otro dato con el mismo nombre
+  // There is another section with the same name
   com_puntualidad: new Section('com_puntualidad', 'Puntualidad', [
     new Checkbox('com_puntualidad', 'Cliente A'),
     new Checkbox('com_puntualidad', 'Cliente B'),
@@ -337,18 +476,53 @@ const model = () => ({
   ultima_actividad: new SliderDate('ultima_actividad'),
 
   //
+  // Fecha de última actividad de R
+  actividad_r: new Section(
+    'actividad_r',
+    'Fecha de última actividad de R',
+    new Calendar('actividad_r', [])
+  ),
+
+  //
+  // Fecha de última actividad de M
+  actividad_m: new Section(
+    'actividad_m',
+    'Fecha de última actividad de M',
+    new Calendar('actividad_m', [])
+  ),
+
+  //
+  // Fecha de última actividad de T
+  actividad_t: new Section(
+    'actividad_t',
+    'Fecha de última actividad de T',
+    new Calendar('actividad_t', [])
+  ),
+
+  //
   // Importe abonado
   importe_abonado: new Slider('importe_abonado', 'double', 0, 10000, 500, 2000, '$', '', 500),
 
   //
   // Canal de abono
-  ancla: new Section('ancla', 'Canal de abono', [
-
+  abono: new Section('abono', 'Canal de abono', [
+    new Checkbox('abono', ' C '),
+    new Checkbox('abono', 'A C'),
+    new Checkbox('abono', 'W'),
+    new Checkbox('abono', 'Sin identifica')
   ]),
 
   //
   // Línea C
-  linea_c: new Slider('linea_c', 'double', 0, 10000, 100, 2000, '$')
+  linea_c: new Slider('linea_c', 'double', 0, 10000, 100, 2000, '$'),
+
+  //
+  // Fecha del último movimiento de A
+  movimiento_a: new Section(
+    'movimiento_a',
+    'Fecha del último movimiento de A',
+    new Calendar('movimiento_a', [])
+  )
 })
 
 export default {
@@ -358,6 +532,8 @@ export default {
 
   components: {
     BaseComponent,
+    ValidateCalendar,
+    // ValidationProvider,
     ValidateCheckbox
   },
 
@@ -375,83 +551,20 @@ export default {
 
   mounted () {
     this.updateRenderSliders()
-    //
-    // Para hacer un slider para un componente
-    // simplemente agregando la clase
-    //
-    // $('.js-range-slider').ionRangeSlider()
-
-    //
-    // Rangos de la sección del comportamiento del cliente
-    //
-    const rangeAntiguedadCliente = {
-      grid: true,
-      from: 3,
-      values: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
-    }
-    $('#rangeAntiguedadCliente').ionRangeSlider(rangeAntiguedadCliente)
-
-    const rangeClienteUltimaActividad = {
-      grid: true,
-      from: 3,
-      values: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
-    }
-    $('#rangeClienteUltimaActividad').ionRangeSlider(rangeClienteUltimaActividad)
-
-    const rangeImporteAbonado = {
-      type: 'double',
-      grid: true,
-      min: 0,
-      max: 100,
-      from: 20,
-      to: 45,
-      prefix: '$'
-    }
-    $('#rangeImporteAbonado').ionRangeSlider(rangeImporteAbonado)
-    $('#rangeLineaDeC').ionRangeSlider(rangeImporteAbonado)
   },
 
   data () {
     return {
-      fechaUltimaActividadR: [],
-      fechUltimaActividadM: [],
-      fechaUltimaActividadT: [],
-      fechaUltimoMovimientoA: [],
+      locale: 'es-MX',
       mobile: false,
       model: model()
     }
   },
 
   computed: {
-    getCalendarSize () {
-      const size = this.mobile ? 180 : window.outerWidth >= 1440 ? '100%' : 240
-      return size
+    getMobileClasses () {
+      const retval = this.mobile ? 'pa-0 elevation-0 py-3' : 'my-2'
+      return retval
     }
   },
 
@@ -471,7 +584,12 @@ export default {
     },
 
     onResize () {
-      this.mobile = window.outerWidth <= 320
+      this.mobile = window.innerWidth <= 768
+    },
+
+    getCalendarSize () {
+      const size = this.mobile ? 180 : null
+      return size
     }
   }
 }
