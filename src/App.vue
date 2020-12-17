@@ -50,10 +50,12 @@
               <div v-if="!wqo64ijap1.xm2wgc167y">
                 <!-- FIX: TEST -->
                 <v-container fluid>
-                  <v-btn @click="setNotification('Prueba desde botón')" color="primary">
-                    <v-icon class="mr-2">mdi-alert-circle</v-icon>
+                  <pre>
+                    {{ $data }}
+                  </pre>
+                  <a class="btn" @click="test()">
                     Test
-                  </v-btn>
+                  </a>
                 </v-container>
                 <!-- FIX: TEST -->
 
@@ -71,17 +73,22 @@
               <!-- FIX: REMOVE ON PROD -->
               <v-card-actions v-if="!wqo64ijap1.xm2wgc167y">
                 <!-- Prev step -->
-                <v-btn v-if="!isFirst" color="secondary" @click="prevStep">
+                <v-btn v-if="!isFirst" @click="prevStep" color="secondary">
                   Anterior
                 </v-btn>
 
                 <!-- Next step -->
-                <v-btn v-if="!isLast" color="primary" @click="nextStep" class="ml-auto">
+                <v-btn v-if="!isLast" @click="nextStep" color="primary" class="ml-auto">
                   Siguiente
                 </v-btn>
 
                 <!-- Download information -->
-                <v-btn v-if="isLast" color="success" class="ml-auto">
+                <v-btn
+                  v-if="isLast"
+                  @click="saveDataFromCurrentModel"
+                  color="success"
+                  class="ml-auto"
+                >
                   Descargay y enviar
                 </v-btn>
               </v-card-actions>
@@ -129,7 +136,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[5]
+    this.currentStep = this.steps[0]
   },
 
   // FIX: REMOVE IN PROD
@@ -139,6 +146,9 @@ export default {
 
   data () {
     return {
+      url: '',
+      filename: '',
+
       currentStep: null,
       steps: Steps,
 
@@ -176,6 +186,42 @@ export default {
   },
 
   methods: {
+    test () {
+      const data = JSON.stringify(this.steps)
+      // const blob = new Blob([data], { type: 'text/plain' })
+
+      // this.filename = 'download.json'
+      // this.url = window.URL.createObjectURL(blob)
+
+      const blob = new Blob([data], { type: 'text/plain' })
+      const e = document.createEvent('MouseEvents')
+      const a = document.createElement('a')
+      a.download = 'test.json'
+      a.href = window.URL.createObjectURL(blob)
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+      e.initEvent(
+        'click',
+        true,
+        false,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      )
+      a.dispatchEvent(e)
+
+      // window.localStorage.setItem('data', data)
+      // console.log(JSON.parse(window.localStorage.getItem('data')))
+    },
+
     selectCurrentStep (step) {
       this.currentStep = step
     },
@@ -221,7 +267,7 @@ export default {
     },
 
     saveDataFromCurrentModel () {
-      if (!this.validateCurrentModel) return
+      if (!this.validateCurrentModel(this.currentStep.component)) return
 
       const baseComponent = this.$refs[this.currentStep.component][0].$refs.base
 

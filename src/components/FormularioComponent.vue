@@ -9,9 +9,6 @@
     <v-card-text>
       <v-card>
         <v-card-text>
-          <pre>
-            {{ $data.model }}
-          </pre>
           <form>
             <v-row>
               <v-col cols="12" md="4">
@@ -59,10 +56,6 @@
                 </v-subheader>
               </v-col>
               <v-col cols="12" md="6">
-                <v-container>
-                  <pre> {{ $data.model.canal }} </pre>
-                  <pre> {{ $data.model.canal_otro }} </pre>
-                </v-container>
                 <validation-provider rules="required" v-slot="{ validate }">
                   <v-radio-group
                     :error-messages="model.canal.vmodel ? [] : model.canal.validation.message"
@@ -211,6 +204,7 @@
 
 <script>
 import BaseComponent from './Helpers/BaseModelComponent'
+import baseMixin from '@/mixins/baseMixin'
 import moment from 'moment'
 import Section from '../models/Section'
 //
@@ -314,6 +308,8 @@ extend('max', {
 
 export default {
   name: 'FormularioComponent',
+
+  mixins: [baseMixin],
 
   components: {
     BaseComponent,
