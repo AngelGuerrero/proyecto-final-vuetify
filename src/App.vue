@@ -29,7 +29,7 @@
               v-if="!wqo64ijap1.xm2wgc167y"
               :steps="steps"
               :currentStep="currentStep.number"
-              @onSelectStep="selectCurrentStep"
+              @on-select-step="selectCurrentStep"
             ></header-component>
 
             <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
@@ -50,12 +50,7 @@
               <div v-if="!wqo64ijap1.xm2wgc167y">
                 <!-- FIX: TEST -->
                 <v-container fluid>
-                  <pre>
-                    {{ $data }}
-                  </pre>
-                  <a class="btn" @click="test()">
-                    Test
-                  </a>
+                  <v-btn color="black" dark @click="download">Download</v-btn>
                 </v-container>
                 <!-- FIX: TEST -->
 
@@ -146,11 +141,8 @@ export default {
 
   data () {
     return {
-      url: '',
-      filename: '',
-
-      currentStep: null,
       steps: Steps,
+      currentStep: null,
 
       notification: {
         show: false,
@@ -158,8 +150,6 @@ export default {
         error: false,
         message: ''
       },
-
-      collectedDataFromModels: [],
 
       // FIX: REMOVE ON PROD
       wqo64ijap1: {
@@ -186,42 +176,6 @@ export default {
   },
 
   methods: {
-    test () {
-      const data = JSON.stringify(this.steps)
-      // const blob = new Blob([data], { type: 'text/plain' })
-
-      // this.filename = 'download.json'
-      // this.url = window.URL.createObjectURL(blob)
-
-      const blob = new Blob([data], { type: 'text/plain' })
-      const e = document.createEvent('MouseEvents')
-      const a = document.createElement('a')
-      a.download = 'test.json'
-      a.href = window.URL.createObjectURL(blob)
-      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-      e.initEvent(
-        'click',
-        true,
-        false,
-        window,
-        0,
-        0,
-        0,
-        0,
-        0,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      )
-      a.dispatchEvent(e)
-
-      // window.localStorage.setItem('data', data)
-      // console.log(JSON.parse(window.localStorage.getItem('data')))
-    },
-
     selectCurrentStep (step) {
       this.currentStep = step
     },
@@ -284,6 +238,34 @@ export default {
       this.notification.show = true
       this.notification.error = error || false
       this.notification.message = message
+    },
+
+    download () {
+      const data = JSON.stringify(this.steps)
+      const blob = new Blob([data], { type: 'text/plain' })
+      const e = document.createEvent('MouseEvents')
+      const a = document.createElement('a')
+      a.download = 'test.json'
+      a.href = window.URL.createObjectURL(blob)
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+      e.initEvent(
+        'click',
+        true,
+        false,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      )
+      a.dispatchEvent(e)
     },
 
     // =============================================

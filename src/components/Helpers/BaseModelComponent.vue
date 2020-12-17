@@ -112,7 +112,7 @@ export default {
     isValid () {
       let retval = { value: true, message: '', data: this.l_model }
 
-      console.group('=== 👾 Validating model 🤞 ===')
+      console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
       for (const [key, value] of Object.entries(this.l_model)) {
         console.log(key, ' | valid :>> ', value.validation.valid)
 

@@ -10,9 +10,10 @@
             :key="`${step.number}-step`"
             :complete="currentStep > step.number"
             :step="step.number"
+            :editable="step.valid"
             @click="selectStep(step)"
           >
-            {{ step.title }}
+            {{ step.label }}
           </v-stepper-step>
 
           <v-divider
@@ -43,7 +44,8 @@ export default {
 
   methods: {
     selectStep (step) {
-      // this.$emit('onSelectStep', step)
+      if (!step.valid) return
+      this.$emit('on-select-step', step)
     }
   }
 }
