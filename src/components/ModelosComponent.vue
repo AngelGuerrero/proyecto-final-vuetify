@@ -11,21 +11,16 @@
         <v-col cols="12" class="d-flex justify-center">
           <validation-provider rules="required" v-slot="{ validate }">
             <v-radio-group
-              :error-messages="
-                model.modelos.selectedOption ? [] : model.modelos.validation.message
-              "
+              :error-messages="model.modelos.selectedOption ? [] : model.modelos.validation.message"
               v-model="model.modelos.selectedOption"
-              @change="
-                model.modelos.validation.valid =
-                  model.modelos.selectedOption !== null
-              "
+              @change="model.modelos.validation.valid = model.modelos.selectedOption !== null"
               row
             >
               <v-radio
                 v-for="item in model.modelos.options"
                 :key="item.id"
                 :name="model.modelos.name"
-                :label="`${item}`"
+                :label="item"
                 :value="item"
                 @change="validate"
               ></v-radio>
@@ -46,8 +41,7 @@
             Modelos de segmentación
           </h1>
           <p class="text-center my-3">
-            Elige el modelo de segmentación de clientes que mas se ajuste a tus
-            necesidades.
+            Elige el modelo de segmentación de clientes que mas se ajuste a tus necesidades.
           </p>
         </v-container>
 
@@ -64,16 +58,15 @@
               </p>
               <p class="ma-0 mb-1">Frecuency (Numero de compras)</p>
               <p class="ma-0 mb-1">
-                Money (Valor de las compras totales del cliente).Este modelo califica cada
-                variable del 1 al 4, donde 4 es el valor mas alto.
+                Money (Valor de las compras totales del cliente).Este modelo califica cada variable
+                del 1 al 4, donde 4 es el valor mas alto.
               </p>
             </v-container>
           </v-expansion-panel-header>
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo RFM por Categorias mas adecuadas a tu
-              campaña.
+              Elije las variables del modelo RFM por Categorias mas adecuadas a tu campaña.
             </p>
 
             <form>
@@ -171,8 +164,8 @@
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a
-              tu campaña.
+              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu
+              campaña.
             </p>
 
             <form>
@@ -206,19 +199,19 @@
             <v-container>
               <h3>Puntualidad "N"</h3>
               <p class="my-3">
-                Utiliza diversas variables económicas, demográficas y de perfil digital
-                que permite predecir la puntualidad de abono
+                Utiliza diversas variables económicas, demográficas y de perfil digital que permite
+                predecir la puntualidad de abono
                 <br />
-                para Clientes clasificación "N" antes de que sus meses de maduración
-                permitan clasificarlos en algun tipo de puntualidad.
+                para Clientes clasificación "N" antes de que sus meses de maduración permitan
+                clasificarlos en algun tipo de puntualidad.
               </p>
             </v-container>
           </v-expansion-panel-header>
 
           <v-expansion-panel-content panel>
             <p class="text-center my-4">
-              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a
-              tu campaña.
+              Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu
+              campaña.
             </p>
 
             <form>
@@ -250,8 +243,7 @@
             Modelos de Recomendación
           </h1>
           <p class="text-center my-3">
-            Elige el modelo de recomendación de productos que mas se ajuste a tus
-            necesidades.
+            Elige el modelo de recomendación de productos que mas se ajuste a tus necesidades.
           </p>
         </v-container>
         <!-- Option 1 -->
@@ -286,13 +278,10 @@ import Section from '../models/Section'
 import Checkbox from '../models/Checkbox'
 
 /**
- * Data
+ * Model
+ *
+ * Contains all information of controls.
  */
-//
-// model
-//
-// Contains all information data that will be rendered.
-//
 const model = () => ({
   //
   // Tipo de modelos
@@ -314,8 +303,8 @@ const model = () => ({
     'area',
     'Área',
     [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')],
-    // NOTA:
-    // Mensaje personnalizado para este componente
+    // EXAMPLE:
+    // Custom message for this control.
     'Selecciona al menos un área'
   ),
 

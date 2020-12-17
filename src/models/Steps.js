@@ -45,7 +45,7 @@ const Steps = [
   },
   {
     pageTitle: 'Formulario',
-    pageDescription: '',
+    pageDescription: 'Tu archivo está listo.<br /> Pero antes, apóyanos completando la siguiente información.',
     number: 6,
     name: 'formulario',
     component: 'formulario',
