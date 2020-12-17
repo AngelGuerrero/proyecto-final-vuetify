@@ -154,6 +154,7 @@ export default {
         }
       })
       console.table(retval)
+      console.log(JSON.stringify(retval, null, 4))
       console.groupEnd()
       console.log('')
 

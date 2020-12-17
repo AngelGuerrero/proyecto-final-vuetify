@@ -15,6 +15,7 @@ export default class Section {
       valid: false,
       message: validationMessage || `Selecciona una opción de '${this.title}'`
     }
+
     this.items = items
     this.vmodel = vmodel
   }

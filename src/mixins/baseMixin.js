@@ -7,13 +7,15 @@ export default {
     },
 
     validateModel () {
-      console.group("🚧 Method called from 'base mixin' 🚧")
       let retval
+
+      console.group("🚧 Method called from 'base mixin' 🚧")
 
       //
       // Executes an action based in the response
       this.$refs.base.validateModel(response => {
         retval = response
+        console.warn(`${retval.valid ? '' : 'Model has not passed validations'}`)
       })
 
       console.groupEnd()
