@@ -252,6 +252,8 @@ export default {
     },
 
     onDownload () {
+      if (!this.validateCurrentModel(this.currentStep.component)) return
+
       //
       // Mark current step as valid
       this.steps[this.currentStep.number - 1].valid = true
