@@ -36,11 +36,7 @@
             <v-card class="py-3 elevation-10">
               <v-container v-if="wqo64ijap1.xm2wgc167y" class="px-3">
                 <div class="red pa-3 rounded elevation-3">
-                  <h3
-                    class="text-center white--text"
-                    background-color="error"
-                    color="error"
-                  >
+                  <h3 class="text-center white--text" background-color="error" color="error">
                     {{ wqo64ijap1.message }}
                   </h3>
                 </div>
@@ -48,12 +44,6 @@
 
               <!-- FIX: REMOVE ON PROD -->
               <div v-if="!wqo64ijap1.xm2wgc167y">
-                <!-- FIX: TEST -->
-                <v-container fluid>
-                  <v-btn color="black" dark @click="test">Download</v-btn>
-                </v-container>
-                <!-- FIX: TEST -->
-
                 <component
                   v-for="step in steps"
                   :key="step.id"
@@ -61,6 +51,7 @@
                   v-show="currentStep.number === step.number"
                   :ref="step.component"
                   :step="step"
+                  :initialValidation="step.initialValidation"
                 ></component>
               </div>
 
@@ -78,12 +69,7 @@
                 </v-btn>
 
                 <!-- Download information -->
-                <v-btn
-                  v-if="isLast"
-                  @click="test"
-                  color="success"
-                  class="ml-auto"
-                >
+                <v-btn v-if="isLast" @click="onDownload" color="success" class="ml-auto">
                   Descargay y enviar
                 </v-btn>
               </v-card-actions>
@@ -102,6 +88,7 @@
 </template>
 
 <script>
+// import Vue from 'vue'
 import HeaderComponent from './components/HeaderComponent'
 import NavbarComponent from './components/NavbarComponent'
 // Modelos dinámicos
@@ -128,6 +115,12 @@ export default {
     GeograficosComponent,
     DatosComponent,
     FormularioComponent
+  },
+
+  provide () {
+    return {
+      $getInitialValidation: () => this.getInitialValidation
+    }
   },
 
   created () {
@@ -160,6 +153,14 @@ export default {
   },
 
   computed: {
+    getInitialValidation () {
+      if (!this.currentStep) {
+        return false
+      }
+
+      return this.currentStep.initialValidation
+    },
+
     isFirst () {
       const first = this.steps[0]
       return this.currentStep.number === first.number
@@ -203,24 +204,31 @@ export default {
         return
       }
 
+      //
+      // Mark current step as valid
+      this.steps[this.currentStep.number - 1].valid = true
+      // this.currentStep.initialValidation = true
+      // Save the data into data steps
       this.saveDataFromCurrentModel()
+
+      //
+      // Next step
       this.currentStep = this.steps[this.currentStep.number]
     },
 
     validateCurrentModel (modelName) {
       //
-      // Throw a validation method for current component
+      // Get the reference
       const model = this.$refs[modelName][0]
+
+      //
+      // Update its initial validation for this current step
+      this.steps[this.currentStep.number - 1].initialValidation = true
 
       //
       // Return the value from a computed
       // property of the component
       return model.$refs.base.isValid.value
-    },
-
-    test () {
-      const baseComponent = this.$refs[this.currentStep.component][0].$refs.base
-      baseComponent.getData()
     },
 
     saveDataFromCurrentModel () {
@@ -243,31 +251,28 @@ export default {
       this.notification.message = message
     },
 
+    onDownload () {
+      //
+      // Mark current step as valid
+      this.steps[this.currentStep.number - 1].valid = true
+
+      this.saveDataFromCurrentModel()
+
+      this.download()
+    },
+
     download () {
       const data = JSON.stringify(this.steps)
       const blob = new Blob([data], { type: 'text/plain' })
       const e = document.createEvent('MouseEvents')
       const a = document.createElement('a')
-      a.download = 'test.json'
+      //
+      // Change this for the name of the file
+      // requested at the end of the program.
+      a.download = 'mydata.json'
       a.href = window.URL.createObjectURL(blob)
       a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-      e.initEvent(
-        'click',
-        true,
-        false,
-        window,
-        0,
-        0,
-        0,
-        0,
-        0,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      )
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
       a.dispatchEvent(e)
     },
 

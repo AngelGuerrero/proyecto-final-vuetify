@@ -38,6 +38,8 @@
 export default {
   name: 'BaseModelComponent',
 
+  inject: ['$getInitialValidation'],
+
   props: {
     /**
      * model.
@@ -103,6 +105,10 @@ export default {
   },
 
   computed: {
+    getInitialValidation () {
+      return this.$getInitialValidation()
+    },
+
     /**
      * isValid.
      *
@@ -111,6 +117,15 @@ export default {
      */
     isValid () {
       let retval = { value: true, message: '', data: this.l_model }
+
+      if (!this.getInitialValidation) {
+        this.setMessage(false, '')
+        return {
+          value: false,
+          message: 'Validación inicial ignorada',
+          data: null
+        }
+      }
 
       console.log('')
       console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
@@ -123,6 +138,7 @@ export default {
             message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
             data: null
           }
+          this.setMessage(!retval.value, retval.message)
           break
         }
       }
@@ -133,7 +149,6 @@ export default {
       // Only log purposes
       if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
 
-      this.setMessage(!retval.value, retval.message)
       return retval
     }
   },
@@ -150,38 +165,22 @@ export default {
       console.log('')
       console.group('===== Select data for return ===== ')
 
-      // eslint-disable-next-line no-unused-vars
       const getchilds = items => {
         if (!items[0]) return {}
 
         const retval = []
 
-        // console.log('items :>> ', items)
-        // const entries = items
-
         for (const value of Object.values(items[0])) {
-          // debugger
-          // console.log('key :>> ', values[key])
-          // console.log('value :>> ', values[value])
-          // if (value) {
           retval.push({
             name: value.name,
             selected: value.vmodel
           })
-          // }
         }
-
-        // console.log('retval :>> ', retval)
 
         return retval
       }
 
       const retval = Object.entries(this.l_model).map(item => {
-        // if (item.hasChilds) {
-        // console.log('tiene hijos')
-        // }
-        // console.log('item[0] :>> ', item[1].hasChilds)
-
         const data = {
           [item[0]]: {
             selected: item[1].vmodel,
@@ -190,27 +189,14 @@ export default {
         }
 
         if (item[1].hasChilds) {
-          // data[item[0]] = {
-          //   childs: getchilds(item[1].items)
-          // }
-
           data[item[0]].childs.push(getchilds(item[1].items))
-          // console.log('getchilds(item[1]) :>> ', getchilds(item[1].items))
-
-          debugger
-          // return {
-          //   [item[0]]: {
-          //     selected: item[1].vmodel,
-          //     childs: {}
-          //   }
-          // }
         }
 
         return data
       })
 
-      console.table(retval)
-      console.log(JSON.stringify(retval, null, 4))
+      // console.table(retval)
+      // console.log(JSON.stringify(retval, null, 4))
       console.groupEnd()
       console.log('')
 

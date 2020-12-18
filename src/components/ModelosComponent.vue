@@ -32,14 +32,6 @@
       </v-container>
     </v-row>
 
-    <v-row>
-      <v-container>
-        <pre>
-          {{ relevant }}
-        </pre>
-      </v-container>
-    </v-row>
-
     <!-- Segmentar Clientes -->
     <v-expansion-panels
       v-show="model.modelos.vmodel === 'segmentar'"
@@ -77,34 +69,33 @@
               <h3>Area</h3>
               <validate-checkbox
                 :model="model.segmentar.getItems()[0].area"
-                validation="one"
+                validation="none"
                 @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].area, $event)"
                 @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].area, $event.valid)"
               ></validate-checkbox>
-              <!-- @on-validate="model.area.setValid($event.valid)" -->
             </v-col>
 
-            <!-- <v-col cols="12" md="4">
-                <h3>Categorias de productos</h3>
+            <v-col cols="12" md="4">
+              <h3>Categorias de productos</h3>
 
-                <validation-provider v-slot="{ validate, valid }" rules="required">
-                  <v-select
-                    outlined
-                    :items="model.productos.getItems()"
-                    v-model="model.productos.vmodel"
-                    :error-messages="model.productos.getErrorMessages()"
-                    @change="validate()"
-                    @blur="model.productos.setValid(valid)"
-                  ></v-select>
-                </validation-provider>
-              </v-col> -->
+              <validation-provider v-slot="{ validate, valid }" rules="required">
+                <v-select
+                  outlined
+                  :items="model.segmentar.getItems()[0].productos.getItems()"
+                  v-model="model.segmentar.getItems()[0].productos.vmodel"
+                  :error-messages="model.segmentar.getItems()[0].productos.getErrorMessages()"
+                  @change="validate()"
+                  @blur="model.segmentar.getItems()[0].productos.setValid(valid)"
+                ></v-select>
+              </validation-provider>
+            </v-col>
 
             <v-col cols="12" md="4">
               <h3>Tipo de compra</h3>
 
               <validate-checkbox
                 :model="model.segmentar.getItems()[0].compra"
-                validation="one"
+                validation="none"
                 @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].compra, $event)"
                 @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].compra, $event.valid)"
               ></validate-checkbox>
@@ -112,50 +103,50 @@
           </v-row>
 
           <v-row>
-            <!-- <v-col cols="12" md="4">
-                <h3>R=Recency</h3>
-                <p>Tiempo transcurrido desde su ultima compra</p>
-                <validate-checkbox
-                  :model="model.recency"
-                  validation="one"
-                  @on-change="model.recency.setVmodel($event)"
-                  @on-validate="model.recency.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col> -->
+            <v-col cols="12" md="4">
+              <h3>R=Recency</h3>
+              <p>Tiempo transcurrido desde su ultima compra</p>
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].recency"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recency, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recency, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
 
-            <!-- <v-col cols="12" md="4">
-                <h3>F=Frecuency</h3>
-                <p>Numero de compras</p>
-                <validate-checkbox
-                  :model="model.frecuency"
-                  validation="one"
-                  @on-change="model.frecuency.setVmodel($event)"
-                  @on-validate="model.frecuency.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col> -->
+            <v-col cols="12" md="4">
+              <h3>F=Frecuency</h3>
+              <p>Numero de compras</p>
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].frecuency"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].frecuency, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].frecuency, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
 
-            <!-- <v-col cols="12" md="4">
-                <h3>M=Money</h3>
-                <p>Valor de las compras totales del cliente</p>
-                <validate-checkbox
-                  :model="model.money"
-                  validation="one"
-                  @on-change="model.money.setVmodel($event)"
-                  @on-validate="model.money.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col> -->
+            <v-col cols="12" md="4">
+              <h3>M=Money</h3>
+              <p>Valor de las compras totales del cliente</p>
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].money"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].money, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].money, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
           </v-row>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
       <!-- Option 2 -->
-      <!-- <v-expansion-panel>
+      <v-expansion-panel>
         <v-expansion-panel-header class="d-flex flex-row">
           <v-container>
             <h3>SPC "Probabilidad de compra"</h3>
             <p class="my-3">
-              Este modelo clasifica a los clientes acuerdo al número de compras y tiempo
-              transcurrido entre compras por medios digitales y los divide
+              Este modelo clasifica a los clientes acuerdo al número de compras y tiempo transcurrido entre compras por
+              medios digitales y los divide
               <br />
               por estrategia de comunicación y probabilidad de compra.
             </p>
@@ -164,71 +155,67 @@
 
         <v-expansion-panel-content panel>
           <p class="text-center my-4">
-            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu
-            campaña.
+            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu campaña.
           </p>
 
-          <form>
-            <v-row>
-              <v-col cols="12" md="6">
-                <h3>Retencion del cliente</h3>
-                <validate-checkbox
-                  :model="model.reteCliente"
-                  validation="one"
-                  @on-change="model.reteCliente.setVmodel($event)"
-                  @on-validate="model.reteCliente.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col>
-              <v-col cols="12" md="6">
-                <h3>Recuperacion del cliente</h3>
-                <validate-checkbox
-                  :model="model.recuCliente"
-                  validation="one"
-                  @on-change="model.recuCliente.setVmodel($event)"
-                  @on-validate="model.recuCliente.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col>
-            </v-row>
-          </form>
+          <v-row>
+            <v-col cols="12" md="6">
+              <h3>Retencion del cliente</h3>
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].reteCliente"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].reteCliente, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].reteCliente, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
+            <v-col cols="12" md="6">
+              <h3>Recuperacion del cliente</h3>
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].recuCliente"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recuCliente, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recuCliente, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
+          </v-row>
         </v-expansion-panel-content>
-      </v-expansion-panel> -->
+      </v-expansion-panel>
 
       <!-- Option 3 -->
-      <!-- <v-expansion-panel>
+      <v-expansion-panel>
         <v-expansion-panel-header class="d-flex flex-row">
           <v-container>
             <h3>Puntualidad "N"</h3>
             <p class="my-3">
-              Utiliza diversas variables económicas, demográficas y de perfil digital que
-              permite predecir la puntualidad de abono
+              Utiliza diversas variables económicas, demográficas y de perfil digital que permite predecir la
+              puntualidad de abono
               <br />
-              para Clientes clasificación "N" antes de que sus meses de maduración
-              permitan clasificarlos en algun tipo de puntualidad.
+              para Clientes clasificación "N" antes de que sus meses de maduración permitan clasificarlos en algun tipo
+              de puntualidad.
             </p>
           </v-container>
         </v-expansion-panel-header>
 
         <v-expansion-panel-content panel>
           <p class="text-center my-4">
-            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu
-            campaña.
+            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu campaña.
           </p>
 
           <form>
             <h3>Predicción de Puntualidad</h3>
 
             <validate-checkbox
-              :model="model.puntualidad"
+              :model="model.segmentar.getItems()[0].puntualidad"
               validation="one"
-              @on-change="model.puntualidad.setVmodel($event)"
-              @on-validate="model.puntualidad.setValid($event.valid)"
+              @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].puntualidad, $event)"
+              @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].puntualidad, $event.valid)"
               headerClasses="text-center"
               contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
               itemsClasses="flex-grow-1"
             ></validate-checkbox>
           </form>
         </v-expansion-panel-content>
-      </v-expansion-panel> -->
+      </v-expansion-panel>
     </v-expansion-panels>
 
     <!-- Modelos de recomendación -->
@@ -302,67 +289,67 @@ const model = () => ({
 
         //
         // Productos
-        // productos: new Section('productos', 'Productos', [
-        //   'Zapato infantil',
-        //   'Zapato dama',
-        //   'Zapato caballero',
-        //   'Transporte y movilidad'
-        // ]),
+        productos: new Section('productos', 'Productos', [
+          'Zapato infantil',
+          'Zapato dama',
+          'Zapato caballero',
+          'Transporte y movilidad'
+        ]),
 
-        // //
-        // // Compra
-        compra: new Section('compra', 'Compra', [new Checkbox('compra', 'Crédito'), new Checkbox('compra', 'Contado')])
+        //
+        // Compra
+        compra: new Section('compra', 'Compra', [new Checkbox('compra', 'Crédito'), new Checkbox('compra', 'Contado')]),
 
-        // //
-        // // Recency
-        // recency: new Section('recency', 'Recency', [
-        //   new Checkbox('recency', '4'),
-        //   new Checkbox('recency', '3'),
-        //   new Checkbox('recency', '2'),
-        //   new Checkbox('recency', '1')
-        // ]),
+        //
+        // Recency
+        recency: new Section('recency', 'Recency', [
+          new Checkbox('recency', '4'),
+          new Checkbox('recency', '3'),
+          new Checkbox('recency', '2'),
+          new Checkbox('recency', '1')
+        ]),
 
-        // //
-        // // Frecuency
-        // frecuency: new Section('frecuency', 'Frecuency', [
-        //   new Checkbox('frecuency', '4'),
-        //   new Checkbox('frecuency', '3'),
-        //   new Checkbox('frecuency', '2'),
-        //   new Checkbox('frecuency', '1')
-        // ]),
+        //
+        // Frecuency
+        frecuency: new Section('frecuency', 'Frecuency', [
+          new Checkbox('frecuency', '4'),
+          new Checkbox('frecuency', '3'),
+          new Checkbox('frecuency', '2'),
+          new Checkbox('frecuency', '1')
+        ]),
 
-        // //
-        // // Money
-        // money: new Section('money', 'Money', [
-        //   new Checkbox('money', '4'),
-        //   new Checkbox('money', '3'),
-        //   new Checkbox('money', '2'),
-        //   new Checkbox('money', '1')
-        // ]),
+        //
+        // Money
+        money: new Section('money', 'Money', [
+          new Checkbox('money', '4'),
+          new Checkbox('money', '3'),
+          new Checkbox('money', '2'),
+          new Checkbox('money', '1')
+        ]),
 
-        // //
-        // // Retención del cliente
-        // reteCliente: new Section('reteCliente', 'Retención del cliente', [
-        //   new Checkbox('reteCliente', 'Alta probabilidad de compra'),
-        //   new Checkbox('reteCliente', 'Baja probabilidad de compra')
-        // ]),
+        //
+        // Retención del cliente
+        reteCliente: new Section('reteCliente', 'Retención del cliente', [
+          new Checkbox('reteCliente', 'Alta probabilidad de compra'),
+          new Checkbox('reteCliente', 'Baja probabilidad de compra')
+        ]),
 
-        // //
-        // // Recuperación del cliente
-        // recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
-        //   new Checkbox('recuCliente', 'Alta probabilidad de compra'),
-        //   new Checkbox('recuCliente', 'Baja probabilidad de compra')
-        // ]),
+        //
+        // Recuperación del cliente
+        recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
+          new Checkbox('recuCliente', 'Alta probabilidad de compra'),
+          new Checkbox('recuCliente', 'Baja probabilidad de compra')
+        ]),
 
-        // //
-        // // Puntualidad
-        // puntualidad: new Section('puntualidad', 'Puntualidad', [
-        //   new Checkbox('puntualidad', 'Cliente A'),
-        //   new Checkbox('puntualidad', 'Cliente B'),
-        //   new Checkbox('puntualidad', 'Cliente C'),
-        //   new Checkbox('puntualidad', 'Cliente D'),
-        //   new Checkbox('puntualidad', 'Cliente Z')
-        // ])
+        //
+        // Puntualidad
+        puntualidad: new Section('puntualidad', 'Puntualidad', [
+          new Checkbox('puntualidad', 'Cliente A'),
+          new Checkbox('puntualidad', 'Cliente B'),
+          new Checkbox('puntualidad', 'Cliente C'),
+          new Checkbox('puntualidad', 'Cliente D'),
+          new Checkbox('puntualidad', 'Cliente Z')
+        ])
       }
     ],
     null,
@@ -406,9 +393,7 @@ export default {
       model: null,
 
       panels: [0],
-      panelsCount: 3,
-
-      variable: 'model'
+      panelsCount: 3
     }
   },
 
@@ -431,12 +416,6 @@ export default {
     }
   },
 
-  computed: {
-    relevant () {
-      return [this.model.modelos]
-    }
-  },
-
   methods: {
     /**
      * validateModel
@@ -445,21 +424,13 @@ export default {
      * its functionality to perform custom actions
      * in this component, based on response.
      */
-    // validateModel () {
-    //   let retval
+    validateModel () {
+      if (!this.model.modelos.vmodel) return { value: false, message: 'No se ha seleccionado ninguna opción' }
 
-    //   //
-    //   // Perform an action based in the response
-    //   this.$refs.base.validateModel(response => {
-    //     if (!response.value) {
-    //       this.panels = this.openAllPanels(this.panelsCount)
-    //     }
+      const selected = this.model.modelos.vmodel
 
-    //     retval = response
-    //   })
-
-    //   return retval
-    // },
+      return this.$_validateModelPriv(this.model[selected].getItems()[0])
+    },
 
     toggleChildsValid (items, selected) {
       const validItems = items.filter(item => item.name !== selected)
@@ -474,14 +445,6 @@ export default {
       //
       // Set invalid item
       this.model[invalidItem.name].setValid(false)
-    },
-
-    validateModel () {
-      if (!this.model.modelos.vmodel) return { value: false, message: 'No se ha seleccionado ninguna opción' }
-
-      const selected = this.model.modelos.vmodel
-
-      return this.$_validateModelPriv(this.model[selected].getItems()[0])
     },
 
     $_validateModelPriv (items) {

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <pre>
-      {{ $data }}
-    </pre>
     <slot :results="results"></slot>
   </div>
 </template>

@@ -7,7 +7,8 @@ const Steps = [
     name: 'modelos',
     component: 'modelos',
     data: null,
-    valid: true
+    valid: false,
+    initialValidation: false
   },
   {
     pageTitle: 'Categoría Sociodemográficos',
@@ -18,7 +19,8 @@ const Steps = [
     name: 'sociodemograficos',
     component: 'sociodemograficos',
     data: null,
-    valid: false
+    valid: false,
+    initialValidation: false
   },
   {
     pageTitle: 'Categoría Comportamiento del cliente',
@@ -29,7 +31,8 @@ const Steps = [
     name: 'comportamiento',
     component: 'comportamiento',
     data: null,
-    valid: false
+    valid: false,
+    initialValidation: false
   },
   {
     pageTitle: 'Categoría Geográficos',
@@ -40,7 +43,8 @@ const Steps = [
     name: 'geograficos',
     component: 'geograficos',
     data: null,
-    valid: false
+    valid: false,
+    initialValidation: false
   },
   {
     pageTitle: 'Datos',
@@ -51,7 +55,8 @@ const Steps = [
     name: 'datos',
     component: 'datos',
     data: null,
-    valid: false
+    valid: false,
+    initialValidation: false
   },
   {
     pageTitle: 'Formulario',
@@ -62,7 +67,8 @@ const Steps = [
     name: 'formulario',
     component: 'formulario',
     data: null,
-    valid: false
+    valid: false,
+    initialValidation: false
   }
 ]
 

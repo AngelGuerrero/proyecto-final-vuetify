@@ -5,7 +5,7 @@
 
     <v-stepper v-model="currentStep" class="my-1 transparent elevation-0">
       <v-stepper-header>
-        <template v-for="step in steps">
+        <template v-for="step in l_steps">
           <v-stepper-step
             :key="`${step.number}-step`"
             :complete="currentStep > step.number"
@@ -16,10 +16,7 @@
             {{ step.label }}
           </v-stepper-step>
 
-          <v-divider
-            v-if="step.number !== steps.length"
-            :key="step.id"
-          ></v-divider>
+          <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>
         </template>
       </v-stepper-header>
     </v-stepper>
@@ -39,6 +36,24 @@ export default {
     currentStep: {
       type: Number,
       required: true
+    }
+  },
+
+  created () {
+    this.l_steps = this.steps
+  },
+
+  data () {
+    return {
+      l_steps: null
+    }
+  },
+
+  watch: {
+    steps: {
+      immediate: true,
+      deep: true,
+      handler (newVal) { this.l_steps = newVal }
     }
   },
 
