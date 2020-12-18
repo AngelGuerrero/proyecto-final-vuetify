@@ -3,6 +3,32 @@
     <h1 class="text-center text-h5 text-md-h4">Modelos de Segmentación</h1>
     <h2 class="text-center text-h6 text-md-h5">Facultad Geografia</h2>
 
+    <v-row justify="center" class="mt-2">
+      <v-dialog v-model="dialog" max-width="690">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" text dark v-bind="attrs" v-on="on">
+            Da clic y lee las instrucciones
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="headline">Instrucciones</v-card-title>
+          <v-card-text class="text-subtitle-1">
+            <p class="mb-0">1.- Elije el tipo de Modelo que requieres para tu campaña o prueba.</p>
+            <p class="mb-0">2.- Lee las descripciones de cada Modelo y selecciona el que mas se ajuste a tus necesidades.</p>
+            <p class="mb-0">3.- Escoje las caracteristicas mas apropiadas.</p>
+            <p class="mb-0">4.- Puedes filtrar los resultados de tu Modelo en combinación con otras categorias.</p>
+            <p class="mb-0">5.- Selecciona el formato y datos de salida de tu segmento o recomendación.</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="dialog = false">
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
     <v-stepper v-model="currentStep" class="my-1 transparent elevation-0">
       <v-stepper-header>
         <template v-for="step in l_steps">
@@ -45,7 +71,8 @@ export default {
 
   data () {
     return {
-      l_steps: null
+      l_steps: null,
+      dialog: false
     }
   },
 
@@ -53,7 +80,9 @@ export default {
     steps: {
       immediate: true,
       deep: true,
-      handler (newVal) { this.l_steps = newVal }
+      handler (newVal) {
+        this.l_steps = newVal
+      }
     }
   },
 
