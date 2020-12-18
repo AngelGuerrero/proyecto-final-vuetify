@@ -24,9 +24,7 @@
         <v-main class="pb-9">
           <v-container fluid>
             <!-- Contiene la visualización de los pasos a seguir -->
-            <!-- FIX: REMOVE ON PROD -->
             <header-component
-              v-if="!wqo64ijap1.xm2wgc167y"
               :steps="steps"
               :currentStep="currentStep.number"
               @on-select-step="selectCurrentStep"
@@ -34,16 +32,7 @@
 
             <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
             <v-card class="py-3 elevation-10">
-              <v-container v-if="wqo64ijap1.xm2wgc167y" class="px-3">
-                <div class="red pa-3 rounded elevation-3">
-                  <h3 class="text-center white--text" background-color="error" color="error">
-                    {{ wqo64ijap1.message }}
-                  </h3>
-                </div>
-              </v-container>
-
-              <!-- FIX: REMOVE ON PROD -->
-              <div v-if="!wqo64ijap1.xm2wgc167y">
+              <div>
                 <component
                   v-for="step in steps"
                   :key="step.id"
@@ -56,8 +45,7 @@
               </div>
 
               <!-- Controles para recorrer los pasos -->
-              <!-- FIX: REMOVE ON PROD -->
-              <v-card-actions v-if="!wqo64ijap1.xm2wgc167y">
+              <v-card-actions>
                 <!-- Prev step -->
                 <v-btn v-if="!isFirst" @click="prevStep" color="secondary">
                   Anterior
@@ -100,8 +88,6 @@ import DatosComponent from './components/DatosComponent'
 import FormularioComponent from './components/FormularioComponent'
 // Models
 import Steps from './models/Steps'
-// Dev
-import devtools from 'devtools-detect'
 
 export default {
   name: 'App',
@@ -127,11 +113,6 @@ export default {
     this.currentStep = this.steps[0]
   },
 
-  // FIX: REMOVE IN PROD
-  mounted () {
-    // this.zf9ssmc8rg()
-  },
-
   data () {
     return {
       steps: Steps,
@@ -141,12 +122,6 @@ export default {
         show: false,
         timeout: 7000,
         error: false,
-        message: ''
-      },
-
-      // FIX: REMOVE ON PROD
-      wqo64ijap1: {
-        xm2wgc167y: false,
         message: ''
       }
     }
@@ -271,89 +246,11 @@ export default {
       //
       // Change this for the name of the file
       // requested at the end of the program.
-      a.download = 'mydata.json'
+      a.download = 'mydata.json' // <--
       a.href = window.URL.createObjectURL(blob)
       a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
       e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
       a.dispatchEvent(e)
-    },
-
-    // =============================================
-    // FIX: REMOVE ON PROD
-    // =============================================
-    zf9ssmc8rg () {
-      const that = this
-
-      this.checkOpenDevToolsFromChrome()
-
-      this.checkDevTools()
-
-      this.onResize()
-
-      const body = document.getElementsByTagName('body')[0]
-      body.addEventListener('contextmenu', e => {
-        that.showUnlicensedMessage()
-        e.preventDefault()
-      })
-
-      document.onkeydown = function (e) {
-        // prevent key CTRL + U
-        if (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0)) {
-          return false
-        }
-        // prevent key F12
-        if (event.keyCode === 123) {
-          that.showUnlicensedMessage()
-          return false
-        }
-
-        // prevent CTRL + Shift + I
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 'I'.charCodeAt(0)) {
-          that.showUnlicensedMessage()
-          return false
-        }
-
-        // prevent CTRL + Shift + J
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 'J'.charCodeAt(0)) {
-          that.showUnlicensedMessage()
-          return false
-        }
-
-        // prevent CTRL + S
-        if (e.ctrlKey && e.keyCode === 'S'.charCodeAt(0)) {
-          that.showUnlicensedMessage('Aún no es posible guardar el proyecto.')
-          return false
-        }
-      }
-    },
-
-    showUnlicensedMessage (message) {
-      this.wqo64ijap1.xm2wgc167y = true
-      this.wqo64ijap1.message = message || 'Sin permiso para ver el código fuente.'
-    },
-
-    checkDevTools () {
-      if (devtools.isOpen) {
-        this.showUnlicensedMessage()
-      }
-    },
-
-    checkOpenDevToolsFromChrome () {
-      const that = this
-      const element = new Image()
-
-      Object.defineProperty(element, 'id', {
-        get: function () {
-          alert('No trates de abrir las dev tools')
-          that.showUnlicensedMessage()
-        }
-      })
-
-      console.log('%c', element)
-    },
-
-    onResize () {
-      window.addEventListener('resize', () => this.checkOpenDevToolsFromChrome())
     }
   }
 }

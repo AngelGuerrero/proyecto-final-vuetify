@@ -201,19 +201,17 @@
             Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu campaña.
           </p>
 
-          <form>
-            <h3>Predicción de Puntualidad</h3>
+          <h3>Predicción de Puntualidad</h3>
 
-            <validate-checkbox
-              :model="model.segmentar.getItems()[0].puntualidad"
-              validation="one"
-              @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].puntualidad, $event)"
-              @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].puntualidad, $event.valid)"
-              headerClasses="text-center"
-              contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
-              itemsClasses="flex-grow-1"
-            ></validate-checkbox>
-          </form>
+          <validate-checkbox
+            :model="model.segmentar.getItems()[0].puntualidad"
+            validation="one"
+            @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].puntualidad, $event)"
+            @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].puntualidad, $event.valid)"
+            headerClasses="text-center"
+            contentClasses="pa-0 ma-0 d-flex flex-column flex-md-row"
+            itemsClasses="flex-grow-1"
+          ></validate-checkbox>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -234,17 +232,17 @@
           <v-container>
             <h3>Recomendar productos</h3>
             <p class="my-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, laboriosam!
+              Esta sección estará validada pero como no hay de momento controles que se validen, no avanzará a la siguiente sección.
+
+              Se podría generar un control en esta vista o hacer que la sección por defecto esté validada, eso desde el modelo de datos de nombre "recomendado".
             </p>
           </v-container>
         </v-expansion-panel-header>
 
         <v-expansion-panel-content panel>
-          <form action="">
-            <v-row>
-              <v-col><h3>Ejemplo</h3></v-col>
-            </v-row>
-          </form>
+          <v-row>
+            <v-col><h3>Ejemplo</h3></v-col>
+          </v-row>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

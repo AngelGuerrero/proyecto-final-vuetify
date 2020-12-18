@@ -81,6 +81,9 @@ export default class Section {
    * @param {*} vmodel Initialize vmodel with type or value.
    * @param {Boolean} initialValidation Perform the initial validation of this section,
    *                                    occurs when the component is mounted.
+   * @param {Boolean} hasChilds This is a flag to know if this section contains other sections.
+   *                            If contains other sections, when collect the data, you need look inside
+   *                            these childs and get the entered information.
    * @param {Boolean} valid Initialize validation value of this section.
    */
   constructor (
