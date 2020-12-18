@@ -13,7 +13,7 @@
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
     "rangeslider.js": "^2.3.3",
-    "vee-validate": "^<=3.0.0",
+    "vee-validate": "3.0.0",
     "vue": "^2.6.11",
     "vuetify": "^2.2.11"
   },
