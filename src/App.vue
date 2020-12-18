@@ -50,7 +50,7 @@
               <div v-if="!wqo64ijap1.xm2wgc167y">
                 <!-- FIX: TEST -->
                 <v-container fluid>
-                  <v-btn color="black" dark @click="download">Download</v-btn>
+                  <v-btn color="black" dark @click="test">Download</v-btn>
                 </v-container>
                 <!-- FIX: TEST -->
 
@@ -80,7 +80,7 @@
                 <!-- Download information -->
                 <v-btn
                   v-if="isLast"
-                  @click="saveDataFromCurrentModel"
+                  @click="test"
                   color="success"
                   class="ml-auto"
                 >
@@ -216,6 +216,11 @@ export default {
       // Return the value from a computed
       // property of the component
       return model.$refs.base.isValid.value
+    },
+
+    test () {
+      const baseComponent = this.$refs[this.currentStep.component][0].$refs.base
+      baseComponent.getData()
     },
 
     saveDataFromCurrentModel () {

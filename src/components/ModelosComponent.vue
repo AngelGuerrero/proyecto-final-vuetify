@@ -41,8 +41,13 @@
     </v-row>
 
     <!-- Segmentar Clientes -->
-    <!-- v-show="model.modelos.vmodel === 'Segmentar Clientes'" -->
-    <v-expansion-panels focusable :accordion="isValid.value" :multiple="!isValid.value" v-model="panels">
+    <v-expansion-panels
+      v-show="model.modelos.vmodel === 'segmentar'"
+      focusable
+      :accordion="isValid.value"
+      :multiple="!isValid.value"
+      v-model="panels"
+    >
       <!-- Option 1 -->
       <v-expansion-panel>
         <v-expansion-panel-header class="d-flex flex-row">
@@ -94,20 +99,20 @@
                 </validation-provider>
               </v-col> -->
 
-            <!-- <v-col cols="12" md="4">
-                <h3>Tipo de compra</h3>
+            <v-col cols="12" md="4">
+              <h3>Tipo de compra</h3>
 
-                <validate-checkbox
-                  :model="model.compra"
-                  validation="one"
-                  @on-change="model.compra.setVmodel($event)"
-                  @on-validate="model.compra.setValid($event.valid)"
-                ></validate-checkbox>
-              </v-col> -->
+              <validate-checkbox
+                :model="model.segmentar.getItems()[0].compra"
+                validation="one"
+                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].compra, $event)"
+                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].compra, $event.valid)"
+              ></validate-checkbox>
+            </v-col>
           </v-row>
 
-          <!-- <v-row>
-              <v-col cols="12" md="4">
+          <v-row>
+            <!-- <v-col cols="12" md="4">
                 <h3>R=Recency</h3>
                 <p>Tiempo transcurrido desde su ultima compra</p>
                 <validate-checkbox
@@ -116,9 +121,9 @@
                   @on-change="model.recency.setVmodel($event)"
                   @on-validate="model.recency.setValid($event.valid)"
                 ></validate-checkbox>
-              </v-col>
+              </v-col> -->
 
-              <v-col cols="12" md="4">
+            <!-- <v-col cols="12" md="4">
                 <h3>F=Frecuency</h3>
                 <p>Numero de compras</p>
                 <validate-checkbox
@@ -127,9 +132,9 @@
                   @on-change="model.frecuency.setVmodel($event)"
                   @on-validate="model.frecuency.setValid($event.valid)"
                 ></validate-checkbox>
-              </v-col>
+              </v-col> -->
 
-              <v-col cols="12" md="4">
+            <!-- <v-col cols="12" md="4">
                 <h3>M=Money</h3>
                 <p>Valor de las compras totales del cliente</p>
                 <validate-checkbox
@@ -138,8 +143,8 @@
                   @on-change="model.money.setVmodel($event)"
                   @on-validate="model.money.setValid($event.valid)"
                 ></validate-checkbox>
-              </v-col>
-            </v-row> -->
+              </v-col> -->
+          </v-row>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
@@ -227,8 +232,7 @@
     </v-expansion-panels>
 
     <!-- Modelos de recomendación -->
-    <!-- v-show="model.modelos.vmodel === 'Recomendar Productos'" -->
-    <v-expansion-panels focusable accordion v-model="panels">
+    <v-expansion-panels v-show="model.modelos.vmodel === 'recomendar'" focusable accordion v-model="panels">
       <v-container>
         <h1 class="text-center text-h4 text-md-h4">
           Modelos de Recomendación
@@ -287,84 +291,89 @@ const model = () => ({
 
   //
   // Segmentar clientes
-  segmentar: new Section('segmentar', 'Segmentar Clientes', [
-    {
-      //
-      // Area
-      area: new Section('area', 'Área', [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')])
+  segmentar: new Section(
+    'segmentar',
+    'Segmentar Clientes',
+    [
+      {
+        //
+        // Area
+        area: new Section('area', 'Área', [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')]),
 
-      //
-      // Productos
-      // productos: new Section('productos', 'Productos', [
-      //   'Zapato infantil',
-      //   'Zapato dama',
-      //   'Zapato caballero',
-      //   'Transporte y movilidad'
-      // ]),
+        //
+        // Productos
+        // productos: new Section('productos', 'Productos', [
+        //   'Zapato infantil',
+        //   'Zapato dama',
+        //   'Zapato caballero',
+        //   'Transporte y movilidad'
+        // ]),
 
-      // //
-      // // Compra
-      // compra: new Section('compra', 'Compra', [
-      //   new Checkbox('compra', 'Crédito'),
-      //   new Checkbox('compra', 'Contado')
-      // ]),
+        // //
+        // // Compra
+        compra: new Section('compra', 'Compra', [new Checkbox('compra', 'Crédito'), new Checkbox('compra', 'Contado')])
 
-      // //
-      // // Recency
-      // recency: new Section('recency', 'Recency', [
-      //   new Checkbox('recency', '4'),
-      //   new Checkbox('recency', '3'),
-      //   new Checkbox('recency', '2'),
-      //   new Checkbox('recency', '1')
-      // ]),
+        // //
+        // // Recency
+        // recency: new Section('recency', 'Recency', [
+        //   new Checkbox('recency', '4'),
+        //   new Checkbox('recency', '3'),
+        //   new Checkbox('recency', '2'),
+        //   new Checkbox('recency', '1')
+        // ]),
 
-      // //
-      // // Frecuency
-      // frecuency: new Section('frecuency', 'Frecuency', [
-      //   new Checkbox('frecuency', '4'),
-      //   new Checkbox('frecuency', '3'),
-      //   new Checkbox('frecuency', '2'),
-      //   new Checkbox('frecuency', '1')
-      // ]),
+        // //
+        // // Frecuency
+        // frecuency: new Section('frecuency', 'Frecuency', [
+        //   new Checkbox('frecuency', '4'),
+        //   new Checkbox('frecuency', '3'),
+        //   new Checkbox('frecuency', '2'),
+        //   new Checkbox('frecuency', '1')
+        // ]),
 
-      // //
-      // // Money
-      // money: new Section('money', 'Money', [
-      //   new Checkbox('money', '4'),
-      //   new Checkbox('money', '3'),
-      //   new Checkbox('money', '2'),
-      //   new Checkbox('money', '1')
-      // ]),
+        // //
+        // // Money
+        // money: new Section('money', 'Money', [
+        //   new Checkbox('money', '4'),
+        //   new Checkbox('money', '3'),
+        //   new Checkbox('money', '2'),
+        //   new Checkbox('money', '1')
+        // ]),
 
-      // //
-      // // Retención del cliente
-      // reteCliente: new Section('reteCliente', 'Retención del cliente', [
-      //   new Checkbox('reteCliente', 'Alta probabilidad de compra'),
-      //   new Checkbox('reteCliente', 'Baja probabilidad de compra')
-      // ]),
+        // //
+        // // Retención del cliente
+        // reteCliente: new Section('reteCliente', 'Retención del cliente', [
+        //   new Checkbox('reteCliente', 'Alta probabilidad de compra'),
+        //   new Checkbox('reteCliente', 'Baja probabilidad de compra')
+        // ]),
 
-      // //
-      // // Recuperación del cliente
-      // recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
-      //   new Checkbox('recuCliente', 'Alta probabilidad de compra'),
-      //   new Checkbox('recuCliente', 'Baja probabilidad de compra')
-      // ]),
+        // //
+        // // Recuperación del cliente
+        // recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
+        //   new Checkbox('recuCliente', 'Alta probabilidad de compra'),
+        //   new Checkbox('recuCliente', 'Baja probabilidad de compra')
+        // ]),
 
-      // //
-      // // Puntualidad
-      // puntualidad: new Section('puntualidad', 'Puntualidad', [
-      //   new Checkbox('puntualidad', 'Cliente A'),
-      //   new Checkbox('puntualidad', 'Cliente B'),
-      //   new Checkbox('puntualidad', 'Cliente C'),
-      //   new Checkbox('puntualidad', 'Cliente D'),
-      //   new Checkbox('puntualidad', 'Cliente Z')
-      // ])
-    }
-  ]),
+        // //
+        // // Puntualidad
+        // puntualidad: new Section('puntualidad', 'Puntualidad', [
+        //   new Checkbox('puntualidad', 'Cliente A'),
+        //   new Checkbox('puntualidad', 'Cliente B'),
+        //   new Checkbox('puntualidad', 'Cliente C'),
+        //   new Checkbox('puntualidad', 'Cliente D'),
+        //   new Checkbox('puntualidad', 'Cliente Z')
+        // ])
+      }
+    ],
+    null,
+    null,
+    false,
+    true
+  ),
 
   //
   // Recomendar productos
-  recomendar: new Section('recomendar', 'Recomendar Productos', [])
+  recomendar: new Section('recomendar', 'Recomendar Productos', [], null, null, false, true)
 })
 
 export default {
@@ -424,7 +433,7 @@ export default {
 
   computed: {
     relevant () {
-      return [this.model.segmentar.validation, this.model.recomendar.validation]
+      return [this.model.modelos]
     }
   },
 
@@ -497,7 +506,7 @@ export default {
       }
       //
       // Only log purposes
-      if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
+      if (retval.value) console.log('🎉🎉🎉 Inner valid! 🎉🎉🎉')
 
       return retval
     }

@@ -48,6 +48,14 @@ export default class Section {
   initialValidation = false
 
   /**
+   * hasChilds
+   *
+   * This is a flag to use when collecting all the Information
+   * and also its childs.
+   */
+  hasChilds = false
+
+  /**
    * vmodel
    *
    * This variable is very important.
@@ -82,6 +90,7 @@ export default class Section {
     message = null,
     vmodel = null,
     initialValidation = false,
+    hasChilds = false,
     valid = false
   ) {
     this.name = name
@@ -91,6 +100,8 @@ export default class Section {
     this.items = items
 
     this.initialValidation = initialValidation
+
+    this.hasChilds = hasChilds
 
     this.vmodel = vmodel
 
