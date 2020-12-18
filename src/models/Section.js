@@ -40,6 +40,14 @@ export default class Section {
   items = []
 
   /**
+   * initialValidation
+   *
+   * This instruction is used to tell the validations
+   * when validate the current section.
+   */
+  initialValidation = false
+
+  /**
    * vmodel
    *
    * This variable is very important.
@@ -63,6 +71,8 @@ export default class Section {
    * @param {Array|String} items Child elements of this section.
    * @param {String} message Error message that will be displayed when error occurs.
    * @param {*} vmodel Initialize vmodel with type or value.
+   * @param {Boolean} initialValidation Perform the initial validation of this section,
+   *                                    occurs when the component is mounted.
    * @param {Boolean} valid Initialize validation value of this section.
    */
   constructor (
@@ -71,6 +81,7 @@ export default class Section {
     items = null,
     message = null,
     vmodel = null,
+    initialValidation = false,
     valid = false
   ) {
     this.name = name
@@ -78,6 +89,8 @@ export default class Section {
     this.title = title
 
     this.items = items
+
+    this.initialValidation = initialValidation
 
     this.vmodel = vmodel
 
@@ -143,11 +156,23 @@ export default class Section {
   // =========================================================================
   // Set
   // =========================================================================
+  setInitialValidation (value) {
+    this.initialValidation = value
+  }
+
   setValid (value) {
     this.validation.valid = value
   }
 
   setVmodel (value) {
     this.vmodel = value
+  }
+
+  setChildValid (child, valid) {
+    this.items[0][child.name].setValid(valid)
+  }
+
+  setChildVmodel (child, value) {
+    this.items[0][child.name].setVmodel(value)
   }
 }

@@ -212,8 +212,6 @@ export default {
       // Throw a validation method for current component
       const model = this.$refs[modelName][0]
 
-      model.validateModel()
-
       //
       // Return the value from a computed
       // property of the component
