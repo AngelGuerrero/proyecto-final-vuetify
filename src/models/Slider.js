@@ -54,8 +54,4 @@ export default class Slider {
       step: this.step
     }
   }
-
-  setVmodel (data) {
-    this.vmodel = data
-  }
 }

@@ -38,6 +38,8 @@
 export default {
   name: 'BaseModelComponent',
 
+  inject: ['$getInitialValidation'],
+
   props: {
     /**
      * model.
@@ -103,6 +105,10 @@ export default {
   },
 
   computed: {
+    getInitialValidation () {
+      return this.$getInitialValidation()
+    },
+
     /**
      * isValid.
      *
@@ -112,7 +118,17 @@ export default {
     isValid () {
       let retval = { value: true, message: '', data: this.l_model }
 
-      console.group('=== 👾 Validating model 🤞 ===')
+      if (!this.getInitialValidation) {
+        this.setMessage(false, '')
+        return {
+          value: false,
+          message: 'Validación inicial ignorada',
+          data: null
+        }
+      }
+
+      console.log('')
+      console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
       for (const [key, value] of Object.entries(this.l_model)) {
         console.log(key, ' | valid :>> ', value.validation.valid)
 
@@ -122,15 +138,17 @@ export default {
             message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
             data: null
           }
+          this.setMessage(!retval.value, retval.message)
           break
         }
       }
+      console.groupEnd()
+      console.log('')
+
       //
       // Only log purposes
       if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
-      console.groupEnd()
 
-      this.setMessage(!retval.value, retval.message)
       return retval
     }
   },
@@ -146,15 +164,39 @@ export default {
     getData () {
       console.log('')
       console.group('===== Select data for return ===== ')
+
+      const getchilds = items => {
+        if (!items[0]) return {}
+
+        const retval = []
+
+        for (const value of Object.values(items[0])) {
+          retval.push({
+            name: value.name,
+            selected: value.vmodel
+          })
+        }
+
+        return retval
+      }
+
       const retval = Object.entries(this.l_model).map(item => {
-        return {
+        const data = {
           [item[0]]: {
-            selected: item[1].vmodel
+            selected: item[1].vmodel,
+            childs: []
           }
         }
+
+        if (item[1].hasChilds) {
+          data[item[0]].childs.push(getchilds(item[1].items))
+        }
+
+        return data
       })
-      console.table(retval)
-      console.log(JSON.stringify(retval, null, 4))
+
+      // console.table(retval)
+      // console.log(JSON.stringify(retval, null, 4))
       console.groupEnd()
       console.log('')
 

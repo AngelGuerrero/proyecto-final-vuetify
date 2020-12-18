@@ -15,11 +15,11 @@
       <v-checkbox
         v-for="item in localItems"
         :key="item.id"
-        v-model="item.checked"
         :label="item.slug"
         :name="item.group"
         :checked="item.checked"
-        :value="item.slug"
+        @change="item.checked = !item.checked"
+        :value="item.checked"
         :error="!results.valid"
         :success="successStatus ? results.valid : null"
         :class="itemsClasses"
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import Section from '../../models/Section'
 
 //
@@ -124,7 +125,7 @@ export default {
     message: {
       type: String,
       required: false,
-      default: ''
+      default: null
     },
 
     successStatus: {
@@ -143,31 +144,43 @@ export default {
   },
 
   created () {
-    this.localModel = this.model ? Section.getNewInstance(this.model) : null
-    this.localItems = this.model ? this.localModel.getItems() : this.items ? this.items : []
+    //
+    // Get items passed as props or from the model
+    this.localItems =
+      this.items.length > 0
+        ? this.items
+        : this.model
+          ? this.model.items
+          : []
 
-    this.localMessage =
-      this.message !== ''
-        ? this.message
-        : this.validation === 'one'
-          ? `Debes seleccionar un campo ${this.model ? 'de ' + this.model.getTitle() : ''}`
-          : this.validation === 'all'
-            ? `Debes seleccionar todos los campos ${this.model ? 'de ' + this.model.getTitle() : ''}`
-            : ''
-  },
+    //
+    // Get message from prop or from the model
+    // this.localMessage = this.message !== null ? this.message : ''
+    if (this.message !== null) {
+      this.localMessage = this.message
+      return
+    }
 
-  mounted () {
-    this.validate(this.localItems)
+    if (this.validation === 'one') {
+      this.localMessage = this.model
+        ? this.model.validation.message
+        : `Debes seleccionar una opción ${
+            this.model ? 'de ' + this.model.getValidationMessage() : ''
+          }`
+      return
+    }
+
+    if (this.validation === 'all') {
+      this.localMessage = `Debes seleccionar todos los campos ${this.model ? 'de ' + this.model.getTitle() : ''}`
+    }
   },
 
   data () {
     return {
       results: results(),
 
-      localModel: null,
-      localItems: this.items || [],
-      localTitle: this.title || this.model.getTitle() || null,
-      localMessage: ''
+      localItems: null,
+      localMessage: null
     }
   },
 
@@ -177,9 +190,9 @@ export default {
      */
     items: {
       deep: true,
-      immediate: true,
+      // immediate: true,
       handler (newValue) {
-        // console.group('🌟⚡ Validando items ⚡🌟')
+        // console.group('🌟⚡ Validating items ⚡🌟')
         this.validate(newValue)
         // console.groupEnd()
       }
@@ -187,12 +200,16 @@ export default {
 
     localItems: {
       deep: true,
-      immediate: true,
+      // immediate: true,
       handler (newValue) {
-        // console.group('🌟⚡ Validando local items ⚡🌟')
+        // console.group('🌟⚡ Validating local items ⚡🌟')
         this.validate(newValue)
         // console.groupEnd()
       }
+    },
+
+    message (newVal) {
+      this.localMessage = newVal
     }
   },
 
@@ -265,6 +282,8 @@ export default {
 
       if (!valid) {
         retval.valid = false
+        // retval.message = this.message || this.model.validation.message || this.localMessage
+        // retval.message = this.message || this.model.validation.message || this.localMessage
         retval.message = this.localMessage
       }
 

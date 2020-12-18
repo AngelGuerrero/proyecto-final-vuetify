@@ -61,9 +61,9 @@
                   <v-card-title><h4>Clusters de Ciudades</h4></v-card-title>
                   <v-card-text>
                     <p>
-                      Se calculó 104 cluster territoriales que comparten caracteristicas fisicas,
-                      demograficas, economicas, consumo y vias de comunicación similares entre espacios
-                      urbanos y son nombradas a razon de la ciudad principal.
+                      Se calculó 104 cluster territoriales que comparten caracteristicas fisicas, demograficas,
+                      economicas, consumo y vias de comunicación similares entre espacios urbanos y son nombradas a
+                      razon de la ciudad principal.
                     </p>
                     <validation-provider v-slot="{ validate, valid }" rules="required">
                       <v-select
@@ -126,8 +126,8 @@
                   <v-card-title><h5>Regiones AIM</h5></v-card-title>
                   <v-card-text>
                     <p>
-                      Grandes extensiones territoriales en las que se divide e territorio nacional para
-                      analisis de mercado segun la Asocion de Internet de Mexico.
+                      Grandes extensiones territoriales en las que se divide e territorio nacional para analisis de
+                      mercado segun la Asocion de Internet de Mexico.
                     </p>
                     <validate-checkbox
                       :model="model.aim"

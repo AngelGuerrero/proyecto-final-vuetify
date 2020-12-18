@@ -29,18 +29,14 @@
               v-if="!wqo64ijap1.xm2wgc167y"
               :steps="steps"
               :currentStep="currentStep.number"
-              @onSelectStep="selectCurrentStep"
+              @on-select-step="selectCurrentStep"
             ></header-component>
 
             <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
             <v-card class="py-3 elevation-10">
               <v-container v-if="wqo64ijap1.xm2wgc167y" class="px-3">
                 <div class="red pa-3 rounded elevation-3">
-                  <h3
-                    class="text-center white--text"
-                    background-color="error"
-                    color="error"
-                  >
+                  <h3 class="text-center white--text" background-color="error" color="error">
                     {{ wqo64ijap1.message }}
                   </h3>
                 </div>
@@ -48,17 +44,6 @@
 
               <!-- FIX: REMOVE ON PROD -->
               <div v-if="!wqo64ijap1.xm2wgc167y">
-                <!-- FIX: TEST -->
-                <v-container fluid>
-                  <pre>
-                    {{ $data }}
-                  </pre>
-                  <a class="btn" @click="test()">
-                    Test
-                  </a>
-                </v-container>
-                <!-- FIX: TEST -->
-
                 <component
                   v-for="step in steps"
                   :key="step.id"
@@ -66,6 +51,7 @@
                   v-show="currentStep.number === step.number"
                   :ref="step.component"
                   :step="step"
+                  :initialValidation="step.initialValidation"
                 ></component>
               </div>
 
@@ -83,12 +69,7 @@
                 </v-btn>
 
                 <!-- Download information -->
-                <v-btn
-                  v-if="isLast"
-                  @click="saveDataFromCurrentModel"
-                  color="success"
-                  class="ml-auto"
-                >
+                <v-btn v-if="isLast" @click="onDownload" color="success" class="ml-auto">
                   Descargay y enviar
                 </v-btn>
               </v-card-actions>
@@ -107,6 +88,7 @@
 </template>
 
 <script>
+// import Vue from 'vue'
 import HeaderComponent from './components/HeaderComponent'
 import NavbarComponent from './components/NavbarComponent'
 // Modelos dinámicos
@@ -135,6 +117,12 @@ export default {
     FormularioComponent
   },
 
+  provide () {
+    return {
+      $getInitialValidation: () => this.getInitialValidation
+    }
+  },
+
   created () {
     this.currentStep = this.steps[0]
   },
@@ -146,11 +134,8 @@ export default {
 
   data () {
     return {
-      url: '',
-      filename: '',
-
-      currentStep: null,
       steps: Steps,
+      currentStep: null,
 
       notification: {
         show: false,
@@ -158,8 +143,6 @@ export default {
         error: false,
         message: ''
       },
-
-      collectedDataFromModels: [],
 
       // FIX: REMOVE ON PROD
       wqo64ijap1: {
@@ -170,6 +153,14 @@ export default {
   },
 
   computed: {
+    getInitialValidation () {
+      if (!this.currentStep) {
+        return false
+      }
+
+      return this.currentStep.initialValidation
+    },
+
     isFirst () {
       const first = this.steps[0]
       return this.currentStep.number === first.number
@@ -186,42 +177,6 @@ export default {
   },
 
   methods: {
-    test () {
-      const data = JSON.stringify(this.steps)
-      // const blob = new Blob([data], { type: 'text/plain' })
-
-      // this.filename = 'download.json'
-      // this.url = window.URL.createObjectURL(blob)
-
-      const blob = new Blob([data], { type: 'text/plain' })
-      const e = document.createEvent('MouseEvents')
-      const a = document.createElement('a')
-      a.download = 'test.json'
-      a.href = window.URL.createObjectURL(blob)
-      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-      e.initEvent(
-        'click',
-        true,
-        false,
-        window,
-        0,
-        0,
-        0,
-        0,
-        0,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      )
-      a.dispatchEvent(e)
-
-      // window.localStorage.setItem('data', data)
-      // console.log(JSON.parse(window.localStorage.getItem('data')))
-    },
-
     selectCurrentStep (step) {
       this.currentStep = step
     },
@@ -249,16 +204,26 @@ export default {
         return
       }
 
+      //
+      // Mark current step as valid
+      this.steps[this.currentStep.number - 1].valid = true
+      // this.currentStep.initialValidation = true
+      // Save the data into data steps
       this.saveDataFromCurrentModel()
+
+      //
+      // Next step
       this.currentStep = this.steps[this.currentStep.number]
     },
 
     validateCurrentModel (modelName) {
       //
-      // Throw a validation method for current component
+      // Get the reference
       const model = this.$refs[modelName][0]
 
-      model.validateModel()
+      //
+      // Update its initial validation for this current step
+      this.steps[this.currentStep.number - 1].initialValidation = true
 
       //
       // Return the value from a computed
@@ -284,6 +249,31 @@ export default {
       this.notification.show = true
       this.notification.error = error || false
       this.notification.message = message
+    },
+
+    onDownload () {
+      //
+      // Mark current step as valid
+      this.steps[this.currentStep.number - 1].valid = true
+
+      this.saveDataFromCurrentModel()
+
+      this.download()
+    },
+
+    download () {
+      const data = JSON.stringify(this.steps)
+      const blob = new Blob([data], { type: 'text/plain' })
+      const e = document.createEvent('MouseEvents')
+      const a = document.createElement('a')
+      //
+      // Change this for the name of the file
+      // requested at the end of the program.
+      a.download = 'mydata.json'
+      a.href = window.URL.createObjectURL(blob)
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+      a.dispatchEvent(e)
     },
 
     // =============================================
