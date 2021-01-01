@@ -1,8 +1,15 @@
 <template>
-  <v-app-bar app color="#6A76AB" prominent :src="`${require('@/assets/img/pattern1.jpg')}`" shrink-on-scroll dark>
+  <v-app-bar
+    :src="`${require('@/assets/img/pattern1.jpg')}`"
+    color="indigo darken-4"
+    app
+    prominent
+    shrink-on-scroll
+    fade-img-on-scroll
+    dark
+  >
     <template v-slot:img="{ props }">
-      <!-- <v-img v-bind="props" gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"></v-img> -->
-      <v-img v-bind="props" gradient="to top right, rgba(2,0,36,.7) 0%, rgba(9,9,121,1)"></v-img>
+      <v-img v-bind="props" gradient="to top right, rgba(2,0,36,.9) 0%, rgba(9,9,121,.9)"></v-img>
     </template>
 
     <v-app-bar-nav-icon class="white--text"></v-app-bar-nav-icon>

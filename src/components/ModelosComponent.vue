@@ -17,7 +17,7 @@
               model.modelos.setValid(model.modelos.vmodel !== null)
               toggleChildsValid(model.modelos.getItems(), model.modelos.vmodel)
             "
-            row
+            :row="true"
           >
             <v-radio
               v-for="item in model.modelos.getItems()"
@@ -32,7 +32,7 @@
       </v-container>
     </v-row>
 
-    <!-- Segmentar Clientes -->
+    <!-- SEGMENTAR CLIENTES -->
     <v-expansion-panels v-show="model.modelos.vmodel === 'segmentar'" v-model="panels">
       <!-- RFM POR cATEGORÍAS -->
       <v-expansion-panel>
@@ -67,7 +67,6 @@
             </v-col>
           </v-row>
         </v-expansion-panel-header>
-
         <v-expansion-panel-content panel>
           <v-container>
             <v-row>
@@ -80,10 +79,8 @@
                   @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].area, $event.valid)"
                 ></validate-checkbox>
               </v-col>
-
               <v-col cols="12" md="4">
                 <h4>Categorías de productos</h4>
-
                 <validation-provider v-slot="{ validate, valid }" rules="required">
                   <v-select
                     outlined
@@ -95,10 +92,8 @@
                   ></v-select>
                 </validation-provider>
               </v-col>
-
               <v-col cols="12" md="4">
                 <h4>Tipo de compra</h4>
-
                 <validate-checkbox
                   :model="model.segmentar.getItems()[0].compra"
                   validation="none"
@@ -119,7 +114,6 @@
                   @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recency, $event.valid)"
                 ></validate-checkbox>
               </v-col>
-
               <v-col cols="12" md="4">
                 <h4>F=Frecuency</h4>
                 <p>Numero de compras</p>
@@ -130,7 +124,6 @@
                   @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].frecuency, $event.valid)"
                 ></validate-checkbox>
               </v-col>
-
               <v-col cols="12" md="4">
                 <h4>M=Money</h4>
                 <p>Valor de las compras totales del cliente</p>
@@ -173,7 +166,6 @@
             </v-col>
           </v-row>
         </v-expansion-panel-header>
-
         <v-expansion-panel-content panel>
           <v-container>
             <v-row>
@@ -226,7 +218,6 @@
             </v-col>
           </v-row>
         </v-expansion-panel-header>
-
         <v-expansion-panel-content panel>
           <validate-checkbox
             :model="model.segmentar.getItems()[0].puntualidad"
@@ -241,8 +232,9 @@
       </v-expansion-panel>
       <!-- END OF PUNTUALIDAD N -->
     </v-expansion-panels>
+    <!-- END OF SEGMENTAR CLIENTES -->
 
-    <!-- Modelos de recomendación -->
+    <!-- MODELOS DE RECOMENDACIÓN -->
     <v-expansion-panels v-show="model.modelos.vmodel === 'recomendar'" focusable accordion v-model="panels">
       <v-container>
         <h1 class="text-center text-h4 text-md-h4">
@@ -252,7 +244,6 @@
           Elige el modelo de recomendación de productos que más se ajuste a tus necesidades.
         </p>
       </v-container>
-      <!-- Option 1 -->
       <v-expansion-panel>
         <v-expansion-panel-header class="d-flex flex-row">
           <v-container>
@@ -264,7 +255,6 @@
             </p>
           </v-container>
         </v-expansion-panel-header>
-
         <v-expansion-panel-content panel>
           <v-row>
             <v-col><h3>Ejemplo</h3></v-col>
@@ -272,6 +262,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <!-- END OF MODELOS DE RECOMENDACIÓN -->
   </base-component>
 </template>
 
