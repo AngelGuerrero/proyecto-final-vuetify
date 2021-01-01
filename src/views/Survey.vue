@@ -1,19 +1,17 @@
 <template>
-  <div>
+  <v-container fluid class="pa-3">
     <v-btn color="black" dark @click="mobile = !mobile">Toggle mobile</v-btn>
-
-    <!-- <example-component></example-component> -->
 
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
       :currentStep="currentStep.number"
       @on-select-step="selectCurrentStep"
-      :mobile="mobile"
+      :mobile="$vuetify.breakpoint.smAndDown"
     ></stepper-component>
 
     <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
-    <v-card class="elevation-10 pa-4" v-show="!mobile">
+    <v-card class="elevation-10 pa-4" v-show="!$vuetify.breakpoint.smAndDown">
       <component
         v-for="step in steps"
         :key="step.id"
@@ -57,7 +55,7 @@
         {{ notification.message }}
       </h3>
     </v-snackbar>
-  </div>
+  </v-container>
 </template>
 
 <script>

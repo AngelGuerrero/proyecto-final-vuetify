@@ -1,47 +1,33 @@
 <template>
-  <v-app id="vuetify-app">
-    <instructions :dialog="showInstructions" @on-close="showInstructions = !showInstructions"></instructions>
+  <v-app id="app">
+    <navbar-component @on-toggle-drawer="drawer = !drawer"></navbar-component>
+    <drawer-component v-model="drawer"></drawer-component>
 
-    <div id="wrapper">
-      <nav id="my_nav">
-        <navbar-component @toggle-modal="showInstructions = !showInstructions" />
-      </nav>
+    <v-main class="blue-grey lighten-4 pb-4">
+      <router-view />
+    </v-main>
 
-      <div id="content" class="grey lighten-2 mt-5">
-        <v-main class="pb-5 px-4 mx-md-13">
-            <survey-view></survey-view>
-            <!-- <welcome-view></welcome-view> -->
-        </v-main>
-      </div>
-
-      <div id="my_footer" class="grey lighten-2 d-flex justify-center align-center">
-        <p> © 2020 | UAEM </p>
-      </div>
-    </div>
-
+    <v-footer class="blue-grey lighten-4 d-flex justify-center text--secondary">
+      <p class="font-weight-bold">© 2020 | UAEM</p>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
+import DrawerComponent from '@/components/DrawerComponent'
 import NavbarComponent from '@/components/NavbarComponent'
-import Instructions from '@/components/Instructions'
-import SurveyView from '@/components/Views/SurveyView'
-import WelcomeView from '@/components/Views/WelcomeView'
 
 export default {
   name: 'App',
 
   components: {
     NavbarComponent,
-    Instructions,
-    SurveyView,
-    WelcomeView
+    DrawerComponent
   },
 
   data () {
     return {
-      showInstructions: false
+      drawer: false
     }
   }
 }

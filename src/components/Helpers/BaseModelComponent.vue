@@ -113,35 +113,7 @@ export default {
      * if all model passed as prop are valid or not.
      */
     isValid () {
-      let retval = { value: true, message: '', data: this.l_model }
-
-      if (!this.getInitialValidation) {
-        return { value: false, message: '', data: null }
-      }
-
-      console.log('')
-      console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
-      for (const [key, value] of Object.entries(this.l_model)) {
-        console.log(key, ' | valid :>> ', value.validation.valid)
-
-        if (!value.validation.valid) {
-          retval = {
-            value: false,
-            message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
-            data: null
-          }
-          this.setMessage(retval.message)
-          break
-        }
-      }
-      console.groupEnd()
-      console.log('')
-
-      //
-      // Only log purposes
-      if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
-
-      return retval
+      return this.validateItems(this.l_model)
     }
   },
 
@@ -151,6 +123,50 @@ export default {
     validateModel (callback) {
       console.log(`%c✨ Validating '${this.name}'✨`, 'color:skyblue;')
       return callback(this.isValid)
+    },
+
+    validateItems (items) {
+      let retval = { value: true, message: '', data: items }
+
+      if (!this.getInitialValidation) {
+        return { value: false, message: '', data: null }
+      }
+
+      console.log('')
+      console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
+      // for (const [key, value] of Object.entries(this.l_model)) {
+      //   console.log(key, ' | valid :>> ', value.validation.valid)
+
+      //   if (!value.validation.valid) {
+      //     retval = {
+      //       value: false,
+      //       message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
+      //       data: null
+      //     }
+      //     this.setMessage(retval.message)
+      //     break
+      //   }
+      // }
+
+      const notValid = Object.values(items).some(value => !value.validation.valid)
+      console.log('notValid :>> ', notValid)
+
+      if (notValid) {
+        retval = {
+          value: false,
+          message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
+          data: null
+        }
+      }
+
+      console.groupEnd()
+      console.log('')
+
+      //
+      // Only log purposes
+      if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
+
+      return retval
     },
 
     getData () {

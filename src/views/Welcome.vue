@@ -1,5 +1,5 @@
 <template>
-  <v-container class="white rounded elevation-3 pb-5">
+  <v-container class="pb-5">
     <v-responsive min-height="60vh">
       <v-carousel cycle hide-delimiter-background hide-delimiters :show-arrows="false" height="100%" light>
         <v-carousel-item v-for="slide in sliders" :key="slide.id">
@@ -22,7 +22,13 @@
     </v-responsive>
 
     <v-row>
-      <v-col align="center"><v-btn color="primary" rounded>Comenzar</v-btn></v-col>
+      <v-col align="center">
+        <router-link :to="{ name: 'Survey' }">
+          <v-btn class="primary" rounded dark>
+            Comenzar
+          </v-btn>
+        </router-link>
+      </v-col>
     </v-row>
   </v-container>
 </template>

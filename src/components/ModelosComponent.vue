@@ -301,6 +301,7 @@ export default {
     model: {
       deep: true,
       handler (newVal) {
+        console.log('newVal :>> ', newVal)
         if (!newVal.modelos) return
 
         const selected = newVal.modelos.vmodel
@@ -329,7 +330,11 @@ export default {
 
       const selected = this.model.modelos.vmodel
 
-      return this.$_validateModel(this.model[selected].getItems()[0])
+      const items = this.model[selected].getItems()[0]
+
+      if (!items) return { value: false, message: 'No hay items que validar' }
+
+      return this.$refs.base.validateItems(items)
     },
 
     toggleChildsValid (items, selected) {
@@ -345,37 +350,6 @@ export default {
       //
       // Set invalid item
       this.model[invalidItem.name].setValid(false)
-    },
-
-    // ===========================================
-    // PRIVATE METHODS
-    // ===========================================
-
-    $_validateModel (items) {
-      if (!items) return { value: false, message: 'No hay items que validar para este componente.' }
-
-      let retval = { value: true, message: '' }
-
-      const localItems = items
-
-      console.group(`=== 🐕‍🦺 Inner section '${this.model.modelos.vmodel}' 🐱‍👤 ===`)
-      for (const [key, value] of Object.entries(localItems)) {
-        console.log(key, ' | valid :>> ', value.validation.valid)
-        console.groupEnd()
-
-        if (!value.validation.valid) {
-          retval = {
-            value: false,
-            message: `Debes completar todos los campos de '${this.model[this.model.modelos.vmodel].getTitle()}'`
-          }
-          break
-        }
-      }
-      //
-      // Log purposes
-      if (retval.value) console.log('🎉🎉🎉 Inner valid! 🎉🎉🎉')
-
-      return retval
     }
   }
 }

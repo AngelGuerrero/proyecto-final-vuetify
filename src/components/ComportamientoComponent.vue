@@ -81,7 +81,6 @@
                     :ref="model.antiguedad"
                     v-model="model.antiguedad.vmodel"
                     :name="model.antiguedad.id"
-                    :id="model.antiguedad.id"
                   />
                 </v-card-text>
               </v-card>
@@ -102,7 +101,6 @@
                     :ref="model.ultima_actividad"
                     v-model="model.ultima_actividad.vmodel"
                     :name="model.ultima_actividad.id"
-                    :id="model.ultima_actividad.id"
                     type="text"
                   />
                 </v-card-text>
@@ -284,7 +282,6 @@
                         :ref="model.importe_abonado"
                         v-model="model.importe_abonado.vmodel"
                         :name="model.importe_abonado.id"
-                        :id="model.importe_abonado.id"
                       />
                     </v-card-text>
                   </v-card>
@@ -320,7 +317,6 @@
                         :ref="model.linea_c"
                         v-model="model.linea_c.vmodel"
                         :name="model.linea_c.id"
-                        :id="model.linea_c.id"
                       />
                     </v-card-text>
                   </v-card>

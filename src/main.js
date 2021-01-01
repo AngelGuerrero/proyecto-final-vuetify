@@ -11,13 +11,14 @@ import './assets/js/rangeSlider.js'
 // Global components
 import BaseComponent from '@/components/Helpers/BaseModelComponent'
 
+import router from './router'
+
 Vue.component('BaseComponent', BaseComponent)
 
 Vue.config.productionTip = false
 
 new Vue({
-  //
-  // Global mixin
   vuetify,
+  router,
   render: h => h(App)
 }).$mount('#app')

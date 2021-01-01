@@ -5,17 +5,17 @@
     app
     prominent
     shrink-on-scroll
-    fade-img-on-scroll
     dark
   >
     <template v-slot:img="{ props }">
       <v-img v-bind="props" gradient="to top right, rgba(2,0,36,.9) 0%, rgba(9,9,121,.9)"></v-img>
+      <!-- <v-img v-bind="props" gradient="to top right, rgba(26, 34, 126, .9) 0%, rgba(9,9,121,.9)"></v-img> -->
     </template>
 
-    <v-app-bar-nav-icon class="white--text"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon class="white--text" @click="emitToggleDrawer"></v-app-bar-nav-icon>
 
     <v-toolbar-title class="quicksand">
-      <h1 class="text-subtitle-1 text-sm-h5 font-weight-bold">Home</h1>
+      <h1 class="text-subtitle-1 text-sm-h5 font-weight-bold">{{ title }}</h1>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
@@ -33,9 +33,20 @@
 export default {
   name: 'NavbarComponent',
 
+  props: {
+    title: {
+      type: String,
+      default: '¡Bienvenido!'
+    }
+  },
+
   methods: {
     emitToggleModal () {
       this.$emit('toggle-modal')
+    },
+
+    emitToggleDrawer () {
+      this.$emit('on-toggle-drawer')
     }
   }
 }
