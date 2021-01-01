@@ -7,15 +7,15 @@ export default {
     },
 
     validateModel () {
-      let retval
+      console.group("🚧 Validating from 'base mixin' 🚧")
 
-      console.group("🚧 Method called from 'base mixin' 🚧")
+      let retval
 
       //
       // Executes an action based in the response
       this.$refs.base.validateModel(response => {
         retval = response
-        console.warn(`${retval.valid ? '' : 'Model has not passed validations'}`)
+        console.warn(`${retval.valid ? '' : 'Model is not valid'}`)
       })
 
       console.groupEnd()
@@ -32,22 +32,18 @@ export default {
       // Proxy
       const that = this
       const getSliderId = data => data.input[0].id
-      //
       // Start
       const onStart = data => {
         const id = getSliderId(data)
         that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
-      //
       // onChange
       const onChange = data => {
         const id = getSliderId(data)
         that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
-      //
       // onFinish
       const onFinish = data => {}
-      //
       // onUpdate
       const onUpdate = data => {}
 
@@ -75,17 +71,14 @@ export default {
         to: data.to,
         min: data.min,
         max: data.max,
-        //
         // if value
         from_value: data.from_value || null,
         to_value: data.to_value || null,
-        //
         // if pretty
         from_pretty: data.from_pretty || null,
         to_pretty: data.to_pretty || null,
         min_pretty: data.min_pretty || null,
         max_pretty: data.max_pretty || null,
-        //
         // if percent
         from_percent: data.from_percent || null,
         to_percent: data.to_percent || null

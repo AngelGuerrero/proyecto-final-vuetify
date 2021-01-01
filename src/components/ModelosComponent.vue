@@ -5,8 +5,8 @@
     :name="step.name"
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"
-    v-slot="{ isValid }"
   >
+    <!-- v-slot="{ isValid }" -->
     <v-row>
       <v-container cols="12" class="d-flex justify-center">
         <validation-provider rules="required" v-slot="{ validate }">
@@ -33,179 +33,204 @@
     </v-row>
 
     <!-- Segmentar Clientes -->
-    <v-expansion-panels
-      v-show="model.modelos.vmodel === 'segmentar'"
-      focusable
-      :accordion="isValid.value"
-      :multiple="!isValid.value"
-      v-model="panels"
-    >
-      <!-- Option 1 -->
+    <v-expansion-panels v-show="model.modelos.vmodel === 'segmentar'" v-model="panels">
+      <!-- RFM POR cATEGORÍAS -->
       <v-expansion-panel>
-        <v-expansion-panel-header class="d-flex flex-row">
-          <v-container>
-            <h3>RFM por Categorias</h3>
-            <p class="my-3">
-              Consiste en clasificar a los clientes mediante tres variables indicadoras:
-            </p>
-            <p class="ma-0 mb-1">
-              Recency (Tiempo transcurrido desde su ultima compra)
-            </p>
-            <p class="ma-0 mb-1">Frecuency (Numero de compras)</p>
-            <p class="ma-0 mb-1">
-              Money (Valor de las compras totales del cliente).Este modelo califica cada variable del 1 al 4, donde 4 es
-              el valor mas alto.
-            </p>
-          </v-container>
+        <v-expansion-panel-header v-slot="{ open }">
+          <v-row no-gutters>
+            <v-col cols="4" class="d-flex align-center justify-end pr-4">
+              <h3>RFM por Categorías</h3>
+            </v-col>
+            <v-col cols="8" class="text--secondary">
+              <v-fade-transition leave-absolute>
+                <span v-if="open">
+                  <p class="ma-0 text-center my-4">
+                    Elije las variables del modelo RFM más adecuadas a tu campaña.
+                  </p>
+                </span>
+                <v-row v-else no-gutters style="width: 100%">
+                  <v-col class="px-3 text-justify">
+                    <ul>
+                      <li class="pb-2">Consiste en clasificar a los clientes mediante tres variables indicadoras:</li>
+                      <li class="pb-2">
+                        Recency (Tiempo transcurrido desde su última compra)
+                      </li>
+                      <li class="pb-2">Frecuency (Numero de compras)</li>
+                      <li class="pb-2">
+                        Money (Valor de las compras totales del cliente).Este modelo califica cada variable del 1 al 4,
+                        donde 4 es el valor más alto.
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
+              </v-fade-transition>
+            </v-col>
+          </v-row>
         </v-expansion-panel-header>
 
         <v-expansion-panel-content panel>
-          <p class="text-center my-4">
-            Elije las variables del modelo RFM por Categorias mas adecuadas a tu campaña.
-          </p>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="4">
+                <h4>Area</h4>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].area"
+                  validation="none"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].area, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].area, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
 
-          <v-row>
-            <v-col cols="12" md="4">
-              <h3>Area</h3>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].area"
-                validation="none"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].area, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].area, $event.valid)"
-              ></validate-checkbox>
-            </v-col>
+              <v-col cols="12" md="4">
+                <h4>Categorías de productos</h4>
 
-            <v-col cols="12" md="4">
-              <h3>Categorias de productos</h3>
+                <validation-provider v-slot="{ validate, valid }" rules="required">
+                  <v-select
+                    outlined
+                    :items="model.segmentar.getItems()[0].productos.getItems()"
+                    v-model="model.segmentar.getItems()[0].productos.vmodel"
+                    :error-messages="model.segmentar.getItems()[0].productos.getErrorMessages()"
+                    @change="validate()"
+                    @blur="model.segmentar.getItems()[0].productos.setValid(valid)"
+                  ></v-select>
+                </validation-provider>
+              </v-col>
 
-              <validation-provider v-slot="{ validate, valid }" rules="required">
-                <v-select
-                  outlined
-                  :items="model.segmentar.getItems()[0].productos.getItems()"
-                  v-model="model.segmentar.getItems()[0].productos.vmodel"
-                  :error-messages="model.segmentar.getItems()[0].productos.getErrorMessages()"
-                  @change="validate()"
-                  @blur="model.segmentar.getItems()[0].productos.setValid(valid)"
-                ></v-select>
-              </validation-provider>
-            </v-col>
+              <v-col cols="12" md="4">
+                <h4>Tipo de compra</h4>
 
-            <v-col cols="12" md="4">
-              <h3>Tipo de compra</h3>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].compra"
+                  validation="none"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].compra, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].compra, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
+            </v-row>
 
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].compra"
-                validation="none"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].compra, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].compra, $event.valid)"
-              ></validate-checkbox>
-            </v-col>
-          </v-row>
+            <v-row>
+              <v-col cols="12" md="4">
+                <h4>R=Recency</h4>
+                <p>Tiempo transcurrido desde su última compra</p>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].recency"
+                  validation="one"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recency, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recency, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
 
-          <v-row>
-            <v-col cols="12" md="4">
-              <h3>R=Recency</h3>
-              <p>Tiempo transcurrido desde su ultima compra</p>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].recency"
-                validation="one"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recency, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recency, $event.valid)"
-              ></validate-checkbox>
-            </v-col>
+              <v-col cols="12" md="4">
+                <h4>F=Frecuency</h4>
+                <p>Numero de compras</p>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].frecuency"
+                  validation="one"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].frecuency, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].frecuency, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
 
-            <v-col cols="12" md="4">
-              <h3>F=Frecuency</h3>
-              <p>Numero de compras</p>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].frecuency"
-                validation="one"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].frecuency, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].frecuency, $event.valid)"
-              ></validate-checkbox>
-            </v-col>
-
-            <v-col cols="12" md="4">
-              <h3>M=Money</h3>
-              <p>Valor de las compras totales del cliente</p>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].money"
-                validation="one"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].money, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].money, $event.valid)"
-              ></validate-checkbox>
-            </v-col>
-          </v-row>
+              <v-col cols="12" md="4">
+                <h4>M=Money</h4>
+                <p>Valor de las compras totales del cliente</p>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].money"
+                  validation="one"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].money, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].money, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-expansion-panel-content>
       </v-expansion-panel>
+      <!-- END OF RFM POR CATEGORÍAS -->
 
-      <!-- Option 2 -->
+      <!-- SCP PROBABILIDAD DE COMPRA -->
       <v-expansion-panel>
-        <v-expansion-panel-header class="d-flex flex-row">
-          <v-container>
-            <h3>SPC "Probabilidad de compra"</h3>
-            <p class="my-3">
-              Este modelo clasifica a los clientes acuerdo al número de compras y tiempo transcurrido entre compras por
-              medios digitales y los divide
-              <br />
-              por estrategia de comunicación y probabilidad de compra.
-            </p>
-          </v-container>
-        </v-expansion-panel-header>
-
-        <v-expansion-panel-content panel>
-          <p class="text-center my-4">
-            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu campaña.
-          </p>
-
-          <v-row>
-            <v-col cols="12" md="6">
-              <h3>Retencion del cliente</h3>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].reteCliente"
-                validation="one"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].reteCliente, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].reteCliente, $event.valid)"
-              ></validate-checkbox>
+        <v-expansion-panel-header v-slot="{ open }">
+          <v-row no-gutters>
+            <v-col cols="4" class="d-flex justify-end align-center pr-4">
+              <h3>SCP Probabilidad de compra</h3>
             </v-col>
-            <v-col cols="12" md="6">
-              <h3>Recuperacion del cliente</h3>
-              <validate-checkbox
-                :model="model.segmentar.getItems()[0].recuCliente"
-                validation="one"
-                @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recuCliente, $event)"
-                @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recuCliente, $event.valid)"
-              ></validate-checkbox>
+            <v-col cols="8" class="text--secondary text-justify">
+              <v-fade-transition leave-absolute>
+                <span v-if="open">
+                  <p class="ma-0 text-center my-4">
+                    Elije las variables del modelo SPC "Probabilidad de compra" más adecuadas a tu campaña.
+                  </p>
+                </span>
+                <v-row v-else no-gutters style="width: 100%">
+                  <v-col class="px-4">
+                    <p class="ma-0">
+                      Este modelo clasifica a los clientes acuerdo al número de compras y tiempo transcurrido entre
+                      compras por medios digitales y los divide por estrategia de comunicación y probabilidad de compra.
+                    </p>
+                  </v-col>
+                </v-row>
+              </v-fade-transition>
             </v-col>
           </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <!-- Option 3 -->
-      <v-expansion-panel>
-        <v-expansion-panel-header class="d-flex flex-row">
-          <v-container>
-            <h3>Puntualidad "N"</h3>
-            <p class="my-3">
-              Utiliza diversas variables económicas, demográficas y de perfil digital que permite predecir la
-              puntualidad de abono
-              <br />
-              para Clientes clasificación "N" antes de que sus meses de maduración permitan clasificarlos en algun tipo
-              de puntualidad.
-            </p>
-          </v-container>
         </v-expansion-panel-header>
 
         <v-expansion-panel-content panel>
-          <p class="text-center my-4">
-            Elije las variables del modelo SPC "Probabilidad de compra" mas adecuadas a tu campaña.
-          </p>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="6">
+                <h4>Retencion del cliente</h4>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].reteCliente"
+                  validation="one"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].reteCliente, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].reteCliente, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
+              <v-col cols="12" md="6">
+                <h4>Recuperacion del cliente</h4>
+                <validate-checkbox
+                  :model="model.segmentar.getItems()[0].recuCliente"
+                  validation="one"
+                  @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].recuCliente, $event)"
+                  @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].recuCliente, $event.valid)"
+                ></validate-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <!-- END OF SCP PROBABILIDAD DE COMPRA -->
 
-          <h3>Predicción de Puntualidad</h3>
+      <!-- PUNTUALIDAD N -->
+      <v-expansion-panel>
+        <v-expansion-panel-header v-slot="{ open }">
+          <v-row no-gutters>
+            <v-col cols="4" class="d-flex justify-end align-center pr-4">
+              <h3>Puntualidad "N"</h3>
+            </v-col>
+            <v-col cols="8" class="text--secondary text-justify">
+              <v-fade-transition leave-absolute>
+                <span v-if="open">
+                  <p class="ma-0 text-center">Predicción de Puntualidad</p>
+                </span>
+                <v-row v-else no-gutters style="width: 100%">
+                  <v-col class="px-4">
+                    <p class="ma-0">
+                      Utiliza diversas variables económicas, demográficas y de perfil digital que permite predecir la
+                      puntualidad de abono, para clientes clasificación "N", antes de que sus meses de maduración
+                      permitan clasificarlos en algún tipo de puntualidad.
+                    </p>
+                  </v-col>
+                </v-row>
+              </v-fade-transition>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-header>
 
+        <v-expansion-panel-content panel>
           <validate-checkbox
             :model="model.segmentar.getItems()[0].puntualidad"
-            validation="one"
+            validation="none"
             @on-change="model.segmentar.setChildVmodel(model.segmentar.getItems()[0].puntualidad, $event)"
             @on-validate="model.segmentar.setChildValid(model.segmentar.getItems()[0].puntualidad, $event.valid)"
             headerClasses="text-center"
@@ -214,6 +239,7 @@
           ></validate-checkbox>
         </v-expansion-panel-content>
       </v-expansion-panel>
+      <!-- END OF PUNTUALIDAD N -->
     </v-expansion-panels>
 
     <!-- Modelos de recomendación -->
@@ -223,7 +249,7 @@
           Modelos de Recomendación
         </h1>
         <p class="text-center my-3">
-          Elige el modelo de recomendación de productos que mas se ajuste a tus necesidades.
+          Elige el modelo de recomendación de productos que más se ajuste a tus necesidades.
         </p>
       </v-container>
       <!-- Option 1 -->
@@ -232,9 +258,9 @@
           <v-container>
             <h3>Recomendar productos</h3>
             <p class="my-3">
-              Esta sección estará validada pero como no hay de momento controles que se validen, no avanzará a la siguiente sección.
-
-              Se podría generar un control en esta vista o hacer que la sección por defecto esté validada, eso desde el modelo de datos de nombre "recomendado".
+              Esta sección estará validada pero como no hay de momento controles que se validen, no avanzará a la
+              siguiente sección. Se podría generar un control en esta vista o hacer que la sección por defecto esté
+              validada, eso desde el modelo de datos de nombre "recomendado".
             </p>
           </v-container>
         </v-expansion-panel-header>
@@ -250,124 +276,14 @@
 </template>
 
 <script>
-//
-// Base
-import BaseComponent from '../components/Helpers/BaseModelComponent'
-import baseMixin from '@/mixins/baseMixin'
-// Validation
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
-// Models
-import Section from '../models/Section'
-import Checkbox from '../models/Checkbox'
-
-/**
- * Model
- *
- * Contains all information of controls.
- */
-const model = () => ({
-  //
-  // Tipo de modelos
-  modelos: new Section('modelos', 'Modelos de segmentación', [
-    { name: 'segmentar', title: 'Segmentar Clientes' },
-    { name: 'recomendar', title: 'Recomendar Productos' }
-  ]),
-
-  //
-  // Segmentar clientes
-  segmentar: new Section(
-    'segmentar',
-    'Segmentar Clientes',
-    [
-      {
-        //
-        // Area
-        area: new Section('area', 'Área', [new Checkbox('area', 'Muebles'), new Checkbox('area', 'Ropa')]),
-
-        //
-        // Productos
-        productos: new Section('productos', 'Productos', [
-          'Zapato infantil',
-          'Zapato dama',
-          'Zapato caballero',
-          'Transporte y movilidad'
-        ]),
-
-        //
-        // Compra
-        compra: new Section('compra', 'Compra', [new Checkbox('compra', 'Crédito'), new Checkbox('compra', 'Contado')]),
-
-        //
-        // Recency
-        recency: new Section('recency', 'Recency', [
-          new Checkbox('recency', '4'),
-          new Checkbox('recency', '3'),
-          new Checkbox('recency', '2'),
-          new Checkbox('recency', '1')
-        ]),
-
-        //
-        // Frecuency
-        frecuency: new Section('frecuency', 'Frecuency', [
-          new Checkbox('frecuency', '4'),
-          new Checkbox('frecuency', '3'),
-          new Checkbox('frecuency', '2'),
-          new Checkbox('frecuency', '1')
-        ]),
-
-        //
-        // Money
-        money: new Section('money', 'Money', [
-          new Checkbox('money', '4'),
-          new Checkbox('money', '3'),
-          new Checkbox('money', '2'),
-          new Checkbox('money', '1')
-        ]),
-
-        //
-        // Retención del cliente
-        reteCliente: new Section('reteCliente', 'Retención del cliente', [
-          new Checkbox('reteCliente', 'Alta probabilidad de compra'),
-          new Checkbox('reteCliente', 'Baja probabilidad de compra')
-        ]),
-
-        //
-        // Recuperación del cliente
-        recuCliente: new Section('recuCliente', 'Recuperación del cliente', [
-          new Checkbox('recuCliente', 'Alta probabilidad de compra'),
-          new Checkbox('recuCliente', 'Baja probabilidad de compra')
-        ]),
-
-        //
-        // Puntualidad
-        puntualidad: new Section('puntualidad', 'Puntualidad', [
-          new Checkbox('puntualidad', 'Cliente A'),
-          new Checkbox('puntualidad', 'Cliente B'),
-          new Checkbox('puntualidad', 'Cliente C'),
-          new Checkbox('puntualidad', 'Cliente D'),
-          new Checkbox('puntualidad', 'Cliente Z')
-        ])
-      }
-    ],
-    null,
-    null,
-    false,
-    true
-  ),
-
-  //
-  // Recomendar productos
-  recomendar: new Section('recomendar', 'Recomendar Productos', [], null, null, false, true)
-})
+import { MODELOS as model } from '@/api/data'
 
 export default {
   name: 'ModelosComponent',
 
-  mixins: [baseMixin],
-
   components: {
-    BaseComponent,
     ValidateCheckbox,
     ValidationProvider
   },
@@ -379,17 +295,12 @@ export default {
     }
   },
 
-  created () {
-    this.model = model()
-  },
-
   data () {
     return {
       //
       // All the model where contains the checkboxes
       // information that will be rendered.
-      model: null,
-
+      model,
       panels: [0],
       panelsCount: 3
     }
@@ -427,7 +338,7 @@ export default {
 
       const selected = this.model.modelos.vmodel
 
-      return this.$_validateModelPriv(this.model[selected].getItems()[0])
+      return this.$_validateModel(this.model[selected].getItems()[0])
     },
 
     toggleChildsValid (items, selected) {
@@ -445,8 +356,12 @@ export default {
       this.model[invalidItem.name].setValid(false)
     },
 
-    $_validateModelPriv (items) {
-      if (!items) return { value: false, message: 'No hay items qué validar para este componente.' }
+    // ===========================================
+    // PRIVATE METHODS
+    // ===========================================
+
+    $_validateModel (items) {
+      if (!items) return { value: false, message: 'No hay items que validar para este componente.' }
 
       let retval = { value: true, message: '' }
 
@@ -466,7 +381,7 @@ export default {
         }
       }
       //
-      // Only log purposes
+      // Log purposes
       if (retval.value) console.log('🎉🎉🎉 Inner valid! 🎉🎉🎉')
 
       return retval

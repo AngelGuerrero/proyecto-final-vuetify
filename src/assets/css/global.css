@@ -3,24 +3,33 @@ html {
 }
 
 .dev {
-  border: 1px dashed tomato;
+  border: 1px dashed tomato !important;
 }
 
 #wrapper {
   min-height: 100vh;
   display: grid;
-
   grid-template-columns: auto;
   grid-template-rows: auto 1fr 50px;
+}
+
+#wrapper p {
+  font-family: 'Quicksand', sans-serif;
 }
 
 #my_nav {
   grid-row: 1/2;
 }
+
 #content {
   grid-row: 2/3;
   background-color: pink;
 }
+
 #my_footer {
   grid-row: 3/4;
+}
+
+.quicksand {
+  font-family: 'Quicksand', sans-serif;
 }

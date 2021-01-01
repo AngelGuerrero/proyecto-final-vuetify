@@ -2,7 +2,7 @@ const Steps = [
   {
     pageTitle: 'Modelos de Segmentación',
     label: 'Modelos',
-    pageDescription: 'Elige el modelo de segmentación de clientes que mas se ajuste a tus necesidades.',
+    pageDescription: 'Elige el modelo de segmentación de clientes que más se ajuste a tus necesidades.',
     number: 1,
     name: 'modelos',
     component: 'modelos',
@@ -11,10 +11,10 @@ const Steps = [
     initialValidation: false
   },
   {
-    pageTitle: 'Categoría Sociodemográficos',
+    pageTitle: 'Sociodemográficos',
     label: 'Sociodemográficos',
     pageDescription:
-      'En esta categoria puedes filtrar por caracteristicas sociodemograficas del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
+      'En esta categoría puedes filtrar por características sociodemográficas del cliente.',
     number: 2,
     name: 'sociodemograficos',
     component: 'sociodemograficos',
@@ -23,10 +23,10 @@ const Steps = [
     initialValidation: false
   },
   {
-    pageTitle: 'Categoría Comportamiento del cliente',
+    pageTitle: 'Comportamiento del cliente',
     label: 'Comportamiento del cliente',
     pageDescription:
-      'En Comportamiento del cliente puedes filtrar las caracteristacas del comportamiento de compra del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
+      'En Comportamiento del cliente puedes filtrar las características del comportamiento de compra del cliente.',
     number: 3,
     name: 'comportamiento',
     component: 'comportamiento',
@@ -35,10 +35,10 @@ const Steps = [
     initialValidation: false
   },
   {
-    pageTitle: 'Categoría Geográficos',
+    pageTitle: 'Categoría: Geográficos',
     label: 'Geografícos',
     pageDescription:
-      'La categorias geograficas te permiten filtrar varias opciones de ubicacion del cliente. Ahora bien, si no lo requieres, pues dar clic en continuar.',
+      'La categorías geográficas te permiten filtrar varias opciones de ubicación del cliente.',
     number: 4,
     name: 'geograficos',
     component: 'geograficos',
@@ -50,7 +50,7 @@ const Steps = [
     pageTitle: 'Datos',
     label: 'Datos',
     pageDescription:
-      '¡Ya casí terminas! <br /> Aquí deberas elegir la información del cliente que te es util para tu campaña o proyecto. El formato del archivo que se exportará es en .csv',
+      '¡Ya casi terminas! <br /> Aquí deberas elegir la información del cliente que te es útil para tu campaña o proyecto. El formato del archivo que se exportará es en .csv',
     number: 5,
     name: 'datos',
     component: 'datos',
@@ -61,8 +61,7 @@ const Steps = [
   {
     pageTitle: 'Formulario',
     label: 'Formulario',
-    pageDescription:
-      'Tu archivo está listo.<br /> Pero antes, apóyanos completando la siguiente información.',
+    pageDescription: 'Tu archivo está listo.<br /> Pero antes, apóyanos completando la siguiente información.',
     number: 6,
     name: 'formulario',
     component: 'formulario',

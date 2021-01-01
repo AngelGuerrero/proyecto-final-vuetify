@@ -4,33 +4,31 @@
       Alert
       Show error alert if the component is not valid
      -->
-    <v-container fluid>
-      <v-alert v-if="alert.show" type="error" elevation="1">
-        <div class="d-flex justify-center">
-          {{ isValid.message }}
-        </div>
-      </v-alert>
-    </v-container>
+    <v-alert v-if="isValid.message" type="error" elevation="1">
+      <div class="d-flex justify-center">
+        {{ isValid.message }}
+      </div>
+    </v-alert>
 
     <v-card-title class="justify-center">
-      <h1 class="text-center subtitle-1 text-sm-h4">{{ pageTitle }}</h1>
+      <h1 class="title text-sm-h4">{{ pageTitle }}</h1>
     </v-card-title>
 
     <!--
         DEFAULT
         This is the default slot
      -->
-    <v-card-text>
-      <!--
+    <!-- <v-card-text> -->
+    <!--
           DESCRIPTION
           Description of the section.
         -->
-      <v-container>
-        <p class="text-center" v-html="pageDescription"></p>
-      </v-container>
+    <v-container>
+      <p class="text-center" v-html="pageDescription"></p>
+    </v-container>
 
-      <slot :isValid="isValid" :mutate="mutate"></slot>
-    </v-card-text>
+    <slot :isValid="isValid" :mutate="mutate"></slot>
+    <!-- </v-card-text> -->
   </div>
 </template>
 
@@ -93,7 +91,6 @@ export default {
       //
       // Alert object to show a message to user.
       alert: {
-        show: false,
         message: null
       },
 
@@ -119,12 +116,7 @@ export default {
       let retval = { value: true, message: '', data: this.l_model }
 
       if (!this.getInitialValidation) {
-        this.setMessage(false, '')
-        return {
-          value: false,
-          message: 'Validación inicial ignorada',
-          data: null
-        }
+        return { value: false, message: '', data: null }
       }
 
       console.log('')
@@ -138,7 +130,7 @@ export default {
             message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
             data: null
           }
-          this.setMessage(!retval.value, retval.message)
+          this.setMessage(retval.message)
           break
         }
       }
@@ -203,9 +195,8 @@ export default {
       return retval
     },
 
-    setMessage (show, message) {
-      this.alert.show = show
-      this.alert.message = show ? message : ''
+    setMessage (message) {
+      this.alert.message = message || ''
     },
 
     mutate (model, property, data) {

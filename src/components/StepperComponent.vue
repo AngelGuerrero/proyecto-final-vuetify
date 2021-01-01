@@ -1,49 +1,75 @@
 <template>
-  <v-card class="pa-0 transparent elevation-0">
-    <v-card-text>
-      <v-stepper v-model="currentStep" class="elevation-0">
-        <v-stepper-items>
-          <v-stepper-content
-            v-for="step in steps"
-            :key="`${step.number}-content`"
+  <div>
+    <v-stepper v-model="currentStep" class="my-3" :vertical="mobile">
+      <!--
+      Mobile version
+     -->
+      <div v-show="mobile" v-for="step in steps" :key="step.number + 'step-mobile'">
+        <v-stepper-step
+          :key="'step-header-mobile-' + step.id"
+          :complete="currentStep > step.number"
+          :step="step.number"
+          class="quicksand"
+        >
+          {{ step.label }}
+        </v-stepper-step>
+
+        <v-stepper-content if="mobile" :step="step.number">
+          <v-container class="mb-12 elevation-0 px-1">
+            <component
+              :is="step.component + '-component'"
+              :ref="step.component"
+              :step="step"
+              :initialValidation="step.initialValidation"
+            ></component>
+          </v-container>
+        </v-stepper-content>
+
+        <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>
+      </div>
+
+      <v-stepper-header v-show="!mobile">
+        <template v-for="step in steps">
+          <v-stepper-step
+            :key="step.number + 'not-mobile'"
+            :complete="currentStep > step.number"
             :step="step.number"
+            class="quicksand"
           >
-            <v-card>
-              <component :is="currentStep.component"></component>
-
-              <v-card-title class="justify-center">
-                <h3>¿Qué tipo de modelo quieres utilizar?</h3>
-              </v-card-title>
-
-              <v-card-text>
-                <v-expansion-panels focusable>
-                  <v-expansion-panel v-for="(item, i) in steps" :key="i">
-                    <v-expansion-panel-header>{{ item.title }}</v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-              </v-card-text>
-
-              <v-card-actions d-flex class="px-3">
-                <v-btn text color="secondary" @click="emitPrevStep">Anterior</v-btn>
-                <v-btn text color="primary" @click="emitNextStep" class="ml-auto">Siguiente</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-stepper-content>
-        </v-stepper-items>
-      </v-stepper>
-    </v-card-text>
-  </v-card>
+            {{ step.label }}
+          </v-stepper-step>
+          <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>
+        </template>
+      </v-stepper-header>
+    </v-stepper>
+  </div>
 </template>
 
 <script>
+/* eslint-disable vue/no-unused-components */
+import StepperHeader from '@/components/StepperHeader'
+import RenderSteps from '@/components/RenderSteps'
+
+import ModelosComponent from '@/components/ModelosComponent'
+import SociodemograficosComponent from '@/components/SociodemograficosComponent'
+import ComportamientoComponent from '@/components/ComportamientoComponent'
+import GeograficosComponent from '@/components/GeograficosComponent'
+import DatosComponent from '@/components/DatosComponent'
+import FormularioComponent from '@/components/FormularioComponent'
+
 export default {
   name: 'StepperComponent',
+
+  components: {
+    StepperHeader,
+    RenderSteps,
+    ModelosComponent,
+    SociodemograficosComponent,
+    ComportamientoComponent,
+    GeograficosComponent,
+    DatosComponent,
+    FormularioComponent
+  },
 
   props: {
     steps: {
@@ -54,16 +80,19 @@ export default {
     currentStep: {
       type: Number,
       required: true
+    },
+
+    mobile: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   methods: {
-    emitPrevStep () {
-      this.$emit('onPrevStep')
-    },
-
-    emitNextStep () {
-      this.$emit('onNextStep')
+    selectStep (step) {
+      if (!step.valid) return
+      this.$emit('on-select-step', step)
     }
   }
 }

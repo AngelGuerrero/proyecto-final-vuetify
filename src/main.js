@@ -7,9 +7,17 @@ import './assets/css/rangeSlider.css'
 import './assets/css/rangeSliderSkin.css'
 import './assets/js/rangeSlider.js'
 
+//
+// Global components
+import BaseComponent from '@/components/Helpers/BaseModelComponent'
+
+Vue.component('BaseComponent', BaseComponent)
+
 Vue.config.productionTip = false
 
 new Vue({
+  //
+  // Global mixin
   vuetify,
   render: h => h(App)
 }).$mount('#app')
