@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>StepperHeader</h1>
     <v-stepper-header v-show="!mobile">
       <v-stepper-step
         v-for="step in steps"

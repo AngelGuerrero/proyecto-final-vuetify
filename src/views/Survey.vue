@@ -1,7 +1,6 @@
 <template>
   <v-container fluid class="pa-3">
-    <v-btn color="black" dark @click="mobile = !mobile">Toggle mobile</v-btn>
-
+    <v-btn @click="test" color="black" dark>Prueba</v-btn>
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
@@ -40,27 +39,10 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-
-    <!-- Show notification -->
-    <v-snackbar
-      v-model="notification.show"
-      :timeout="notification.timeout"
-      top
-      right
-      :color="notification.error ? 'error' : 'success'"
-      elevation="24"
-      class="white--text"
-    >
-      <h3>
-        {{ notification.message }}
-      </h3>
-    </v-snackbar>
   </v-container>
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
-
 import StepperComponent from '@/components/StepperComponent'
 // Modelos dinámicos
 import ModelosComponent from '@/components/ModelosComponent'
@@ -70,8 +52,7 @@ import GeograficosComponent from '@/components/GeograficosComponent'
 import DatosComponent from '@/components/DatosComponent'
 import FormularioComponent from '@/components/FormularioComponent'
 import Steps from '@/models/Steps'
-
-import ExampleComponent from '@/components/ExampleComponent'
+import { EventBus } from '@/EventBus.js'
 
 export default {
   name: 'SurveyView',
@@ -83,9 +64,7 @@ export default {
     ComportamientoComponent,
     GeograficosComponent,
     DatosComponent,
-    FormularioComponent,
-    // example
-    ExampleComponent
+    FormularioComponent
   },
 
   provide () {
@@ -101,16 +80,7 @@ export default {
   data () {
     return {
       steps: Steps,
-      currentStep: null,
-
-      mobile: false,
-
-      notification: {
-        show: false,
-        timeout: 7000,
-        error: false,
-        message: ''
-      }
+      currentStep: null
     }
   },
 
@@ -139,6 +109,11 @@ export default {
   },
 
   methods: {
+    test () {
+      console.log('Emiting event')
+      EventBus.$emit('on-set-notification', 'Esta es una prueba')
+    },
+
     selectCurrentStep (step) {
       this.currentStep = step
     },
@@ -204,13 +179,7 @@ export default {
 
       this.steps[index].data = getval
 
-      this.setNotification('¡Datos guardados correctamente!')
-    },
-
-    setNotification (message, error) {
-      this.notification.show = true
-      this.notification.error = error || false
-      this.notification.message = message
+      EventBus.$emit('on-set-notification', '¡Datos guardados correctamente!')
     },
 
     onDownload () {
