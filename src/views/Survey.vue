@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="pa-3">
-    <v-btn @click="test" color="black" dark>Prueba</v-btn>
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
@@ -20,30 +19,14 @@
         :step="step"
         :initialValidation="step.initialValidation"
       ></component>
-
-      <!-- Control steps -->
-      <v-card-actions>
-        <!-- Prev step -->
-        <v-btn v-if="!isFirst" @click="prevStep" color="black" dark>
-          Anterior
-        </v-btn>
-
-        <!-- Next step -->
-        <v-btn v-if="!isLast" @click="nextStep" color="indigo" dark class="ml-auto">
-          Siguiente
-        </v-btn>
-
-        <!-- Download information -->
-        <v-btn v-if="isLast" @click="onDownload" color="success" class="ml-auto">
-          Descargay y enviar
-        </v-btn>
-      </v-card-actions>
+      <stepper-action></stepper-action>
     </v-card>
   </v-container>
 </template>
 
 <script>
 import StepperComponent from '@/components/StepperComponent'
+import StepperAction from '@/components/StepperAction'
 // Modelos dinámicos
 import ModelosComponent from '@/components/ModelosComponent'
 import SociodemograficosComponent from '@/components/SociodemograficosComponent'
@@ -59,6 +42,7 @@ export default {
 
   components: {
     StepperComponent,
+    StepperAction,
     ModelosComponent,
     SociodemograficosComponent,
     ComportamientoComponent,
@@ -69,12 +53,26 @@ export default {
 
   provide () {
     return {
-      $getInitialValidation: () => this.getInitialValidation
+      $getInitialValidation: () => this.getInitialValidation,
+
+      $isFirst: () => this.isFirst,
+
+      $isLast: () => this.isLast
     }
   },
 
   created () {
     this.currentStep = this.steps[0]
+  },
+
+  mounted () {
+    //
+    // Listen events
+    EventBus.$on('on-prev-step', () => this.prevStep())
+
+    EventBus.$on('on-next-step', () => this.nextStep())
+
+    EventBus.$on('on-download', () => this.download())
   },
 
   data () {
@@ -109,11 +107,6 @@ export default {
   },
 
   methods: {
-    test () {
-      console.log('Emiting event')
-      EventBus.$emit('on-set-notification', 'Esta es una prueba')
-    },
-
     selectCurrentStep (step) {
       this.currentStep = step
     },

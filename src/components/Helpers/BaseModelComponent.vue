@@ -5,7 +5,7 @@
       Show error alert if the component is not valid
      -->
     <v-alert v-if="isValid.message" type="error" elevation="1">
-      <div class="d-flex justify-center">
+      <div class="justify-center d-flex">
         {{ isValid.message }}
       </div>
     </v-alert>
@@ -18,7 +18,6 @@
         DEFAULT
         This is the default slot
      -->
-    <!-- <v-card-text> -->
     <!--
           DESCRIPTION
           Description of the section.
@@ -28,7 +27,6 @@
     </v-container>
 
     <slot :isValid="isValid" :mutate="mutate"></slot>
-    <!-- </v-card-text> -->
   </div>
 </template>
 

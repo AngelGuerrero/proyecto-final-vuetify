@@ -8,7 +8,7 @@
   >
     <!-- v-slot="{ isValid }" -->
     <v-row>
-      <v-container cols="12" class="d-flex justify-center">
+      <v-container cols="12" class="justify-center d-flex">
         <validation-provider rules="required" v-slot="{ validate }">
           <v-radio-group
             v-model="model.modelos.vmodel"
@@ -17,7 +17,7 @@
               model.modelos.setValid(model.modelos.vmodel !== null)
               toggleChildsValid(model.modelos.getItems(), model.modelos.vmodel)
             "
-            :row="true"
+            :row="!$vuetify.breakpoint.smAndDown"
           >
             <v-radio
               v-for="item in model.modelos.getItems()"
@@ -38,13 +38,13 @@
       <v-expansion-panel>
         <v-expansion-panel-header v-slot="{ open }">
           <v-row no-gutters>
-            <v-col cols="4" class="d-flex align-center justify-end pr-4">
-              <h3>RFM por Categorías</h3>
+            <v-col cols="12" md="4" class="justify-center pr-4 md-justify-end d-flex align-center">
+              <h3 class="mb-5 mb-md-0">RFM por Categorías</h3>
             </v-col>
-            <v-col cols="8" class="text--secondary">
+            <v-col cols="12" md="8" class="text--secondary">
               <v-fade-transition leave-absolute>
                 <span v-if="open">
-                  <p class="ma-0 text-center my-4">
+                  <p class="my-4 text-center ma-0">
                     Elije las variables del modelo RFM más adecuadas a tu campaña.
                   </p>
                 </span>
@@ -144,13 +144,13 @@
       <v-expansion-panel>
         <v-expansion-panel-header v-slot="{ open }">
           <v-row no-gutters>
-            <v-col cols="4" class="d-flex justify-end align-center pr-4">
-              <h3>SCP Probabilidad de compra</h3>
+            <v-col cols="12" md="4" class="justify-center pr-4 md-justify-end d-flex align-center">
+              <h3 class="mb-5 mb-md-0">SCP Probabilidad de compra</h3>
             </v-col>
-            <v-col cols="8" class="text--secondary text-justify">
+            <v-col cols="12" md="8" class="text-justify text--secondary">
               <v-fade-transition leave-absolute>
                 <span v-if="open">
-                  <p class="ma-0 text-center my-4">
+                  <p class="my-4 text-center ma-0">
                     Elije las variables del modelo SPC "Probabilidad de compra" más adecuadas a tu campaña.
                   </p>
                 </span>
@@ -197,13 +197,13 @@
       <v-expansion-panel>
         <v-expansion-panel-header v-slot="{ open }">
           <v-row no-gutters>
-            <v-col cols="4" class="d-flex justify-end align-center pr-4">
-              <h3>Puntualidad "N"</h3>
+            <v-col cols="12" md="4" class="justify-center pr-4 md-justify-end d-flex align-center">
+              <h3 class="mb-5 mb-md-0">Puntualidad "N"</h3>
             </v-col>
-            <v-col cols="8" class="text--secondary text-justify">
+            <v-col cols="12" md="8" class="text-justify text--secondary">
               <v-fade-transition leave-absolute>
                 <span v-if="open">
-                  <p class="ma-0 text-center">Predicción de Puntualidad</p>
+                  <p class="text-center ma-0">Predicción de Puntualidad</p>
                 </span>
                 <v-row v-else no-gutters style="width: 100%">
                   <v-col class="px-4">
@@ -240,12 +240,12 @@
         <h1 class="text-center text-h4 text-md-h4">
           Modelos de Recomendación
         </h1>
-        <p class="text-center my-3">
+        <p class="my-3 text-center">
           Elige el modelo de recomendación de productos que más se ajuste a tus necesidades.
         </p>
       </v-container>
       <v-expansion-panel>
-        <v-expansion-panel-header class="d-flex flex-row">
+        <v-expansion-panel-header class="flex-row d-flex">
           <v-container>
             <h3>Recomendar productos</h3>
             <p class="my-3">

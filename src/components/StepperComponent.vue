@@ -15,7 +15,7 @@
         </v-stepper-step>
 
         <v-stepper-content if="mobile" :step="step.number">
-          <v-container class="mb-12 elevation-0 px-1">
+          <v-container class="px-1 mb-12 elevation-0">
             <component
               :is="step.component + '-component'"
               :ref="step.component"
@@ -23,6 +23,7 @@
               :initialValidation="step.initialValidation"
             ></component>
           </v-container>
+          <stepper-action></stepper-action>
         </v-stepper-content>
 
         <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>
@@ -46,29 +47,27 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
-import StepperHeader from '@/components/StepperHeader'
-import RenderSteps from '@/components/RenderSteps'
-
 import ModelosComponent from '@/components/ModelosComponent'
 import SociodemograficosComponent from '@/components/SociodemograficosComponent'
 import ComportamientoComponent from '@/components/ComportamientoComponent'
 import GeograficosComponent from '@/components/GeograficosComponent'
 import DatosComponent from '@/components/DatosComponent'
 import FormularioComponent from '@/components/FormularioComponent'
+import StepperAction from '@/components/StepperAction'
 
 export default {
   name: 'StepperComponent',
 
+  inject: ['$isFirst'],
+
   components: {
-    StepperHeader,
-    RenderSteps,
     ModelosComponent,
     SociodemograficosComponent,
     ComportamientoComponent,
     GeograficosComponent,
     DatosComponent,
-    FormularioComponent
+    FormularioComponent,
+    StepperAction
   },
 
   props: {
