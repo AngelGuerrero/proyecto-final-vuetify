@@ -74,7 +74,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[0]
+    this.currentStep = this.steps[2]
 
     //
     // Listen events

@@ -33,7 +33,7 @@
           </v-card-title>
           <v-card-text>
             <p>
-              Elije el tipo de clasificación de edad del cliente que mas se adecue a tus necesidades.
+              Elije el tipo de clasificación de edad del cliente que más se adecúe a tus necesidades.
             </p>
 
             <!-- Panels -->
@@ -55,7 +55,7 @@
                           :ref="model.s_edad_1.id"
                           v-model="model.s_edad_1.vmodel"
                           :name="model.s_edad_1.id"
-                          :id="model.s_edad_1.id"
+                          :class="model.s_edad_1.id"
                         />
                       </v-col>
 
@@ -67,7 +67,7 @@
                           :ref="model.s_edad_2.id"
                           v-model="model.s_edad_2.vmodel"
                           :name="model.s_edad_2.id"
-                          :id="model.s_edad_2.id"
+                          :class="model.s_edad_2.id"
                         />
                       </v-col>
 
@@ -77,7 +77,7 @@
                           :ref="model.s_edad_3.id"
                           v-model="model.s_edad_3.vmodel"
                           :name="model.s_edad_3.id"
-                          :id="model.s_edad_3.id"
+                          :class="model.s_edad_3.id"
                         />
                       </v-col>
                     </v-row>
@@ -604,11 +604,13 @@ export default {
   },
 
   methods: {
-    // ===========================================
-    // Region: Base component methods to call
-    // ===========================================
-    //
-    // @Override mixin function
+    /**
+     * validateModel
+     *
+     * @override Function from base mixin, overrides
+     * its functionality to perform custom actions
+     * in this component, based on response.
+     */
     validateModel () {
       let retval
 

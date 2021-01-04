@@ -5,6 +5,7 @@
     :name="step.name"
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"
+    v-slot="{ isValid }"
   >
     <v-row>
       <v-container cols="12" class="justify-center d-flex">
@@ -32,7 +33,7 @@
     </v-row>
 
     <!-- SEGMENTAR CLIENTES -->
-    <v-expansion-panels v-show="model.modelos.vmodel === 'segmentar'" v-model="panels">
+    <v-expansion-panels v-show="model.modelos.vmodel === 'segmentar'" v-model="panels" :multiple="!isValid.value">
       <!-- RFM POR cATEGORÍAS -->
       <v-expansion-panel>
         <v-expansion-panel-header v-slot="{ open }">
@@ -269,9 +270,13 @@
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
 import { MODELOS as model } from '@/api/data'
+// Mixin
+import baseMixin from '@/mixins/baseMixin'
 
 export default {
   name: 'ModelosComponent',
+
+  mixins: [baseMixin],
 
   components: {
     ValidateCheckbox,
@@ -332,7 +337,18 @@ export default {
 
       if (!items) return { value: false, message: 'No hay items que validar' }
 
-      return this.$refs.base.validateItems(items)
+      let retval
+      this.$refs.base.validateItems(items, response => {
+        if (!response.value) {
+          if (!this.step.initialValidation) return
+
+          this.panels = this.openAllPanels(this.panelsCount)
+        }
+
+        retval = response
+      })
+
+      return retval
     },
 
     toggleChildsValid (items, selected) {

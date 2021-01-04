@@ -117,6 +117,8 @@ export default {
     },
 
     getAlert () {
+      if (this.isValid.value) return { message: null }
+
       return this.$getAlert()
     }
   },
@@ -129,11 +131,17 @@ export default {
       return callback(this.isValid)
     },
 
-    validateItems (items) {
+    validateItems (items, callback = null) {
       let retval = { value: true, message: '', data: items }
 
       if (!this.getInitialValidation) {
-        return { value: false, message: '', data: null }
+        retval.value = false
+
+        if (callback) {
+          callback(retval)
+        }
+
+        return retval
       }
 
       console.log('')
@@ -150,11 +158,14 @@ export default {
       }
 
       console.groupEnd()
-      console.log('')
 
       //
       // Only log purposes
       if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
+
+      if (callback) {
+        callback(retval)
+      }
 
       return retval
     },
