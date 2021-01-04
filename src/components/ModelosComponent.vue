@@ -301,7 +301,6 @@ export default {
     model: {
       deep: true,
       handler (newVal) {
-        console.log('newVal :>> ', newVal)
         if (!newVal.modelos) return
 
         const selected = newVal.modelos.vmodel

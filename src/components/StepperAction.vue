@@ -1,5 +1,5 @@
 <template>
-  <v-card-actions class="mb-4">
+  <v-card-actions>
     <!-- Prev step -->
     <v-btn v-if="!isFirst" @click="prevStep" color="black" dark>
       Anterior

@@ -22,8 +22,8 @@
               :step="step"
               :initialValidation="step.initialValidation"
             ></component>
+            <stepper-action></stepper-action>
           </v-container>
-          <stepper-action></stepper-action>
         </v-stepper-content>
 
         <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>

@@ -441,7 +441,7 @@
                         :ref="model.in_mensual"
                         v-model="model.in_mensual.vmodel"
                         :name="model.in_mensual.id"
-                        :id="model.in_mensual.id"
+                        :class="model.in_mensual.id"
                       />
                     </v-col>
                   </v-row>

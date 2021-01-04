@@ -1,5 +1,7 @@
 <template>
   <v-container fluid class="pa-3">
+    <v-btn color="black" dark>Test</v-btn>
+
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
@@ -19,7 +21,9 @@
         :step="step"
         :initialValidation="step.initialValidation"
       ></component>
-      <stepper-action></stepper-action>
+      <v-container>
+        <stepper-action></stepper-action>
+      </v-container>
     </v-card>
   </v-container>
 </template>
@@ -57,7 +61,9 @@ export default {
 
       $isFirst: () => this.isFirst,
 
-      $isLast: () => this.isLast
+      $isLast: () => this.isLast,
+
+      $getSteps: () => this.getSteps
     }
   },
 
@@ -72,7 +78,7 @@ export default {
 
     EventBus.$on('on-next-step', () => this.nextStep())
 
-    EventBus.$on('on-download', () => this.download())
+    EventBus.$on('on-download', () => this.onDownload())
   },
 
   data () {
@@ -89,6 +95,10 @@ export default {
       }
 
       return this.currentStep.initialValidation
+    },
+
+    getSteps () {
+      return this.steps
     },
 
     isFirst () {
@@ -152,18 +162,15 @@ export default {
       const model = this.$refs[modelName][0]
 
       //
-      // Update its initial validation for this current step
+      // Update initial validation on this step
       this.steps[this.currentStep.number - 1].initialValidation = true
 
       //
-      // Return the value from a computed
-      // property of the component
+      // Return the value from a computed property
       return model.$refs.base.isValid.value
     },
 
     saveDataFromCurrentModel () {
-      if (!this.validateCurrentModel(this.currentStep.component)) return
-
       const baseComponent = this.$refs[this.currentStep.component][0].$refs.base
 
       const getval = baseComponent.getData()
@@ -195,7 +202,9 @@ export default {
       //
       // Change this for the name of the file
       // requested at the end of the program.
-      a.download = 'mydata.json' // <--
+      // a.download = 'mydata.json' // <--
+      const formulario = this.steps.find(el => el.name === 'formulario')
+      a.download = formulario.data ? formulario.data.archivo.selected : 'mydata.json'
       a.href = window.URL.createObjectURL(blob)
       a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
       e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)

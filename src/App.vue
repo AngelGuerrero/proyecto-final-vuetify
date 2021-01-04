@@ -41,7 +41,6 @@ export default {
 
   created () {
     EventBus.$on('on-set-notification', (data) => {
-      console.log('data :>> ', data)
       this.setNotification(data)
     })
   },

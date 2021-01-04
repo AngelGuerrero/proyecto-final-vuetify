@@ -31,15 +31,15 @@ export default {
     renderSlider (slider) {
       // Proxy
       const that = this
-      const getSliderId = data => data.input[0].id
+      const getClassList = data => data.input[0].classList
       // Start
       const onStart = data => {
-        const id = getSliderId(data)
+        const id = getClassList(data)[0]
         that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
       // onChange
       const onChange = data => {
-        const id = getSliderId(data)
+        const id = getClassList(data)[0]
         that.mutate(that.model[id], 'vmodel', this.selectDataFromSlider(data))
       }
       // onFinish
@@ -49,7 +49,7 @@ export default {
 
       //
       // Slider options and listen events.
-      $(`#${slider.id}`).ionRangeSlider({
+      $(`.${slider.id}`).ionRangeSlider({
         keyboard: true,
         onStart: data => onStart(data),
         onChange: data => onChange(data),

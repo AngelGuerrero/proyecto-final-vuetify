@@ -340,10 +340,10 @@ const COMPORTAMIENTO = {
     'Tipo cliente',
     [
       new Checkbox('tipo_cliente', 'Contado'),
-      new Checkbox('tipo_cliente', 'Credito Titular'),
-      new Checkbox('tipo_cliente', 'Credito Adicional'),
-      new Checkbox('tipo_cliente', 'Credito Especial'),
-      new Checkbox('tipo_cliente', 'Empleado Titular'),
+      new Checkbox('tipo_cliente', 'Crédito Títular'),
+      new Checkbox('tipo_cliente', 'Crédito Adicional'),
+      new Checkbox('tipo_cliente', 'Crédito Especial'),
+      new Checkbox('tipo_cliente', 'Empleado Títular'),
       new Checkbox('tipo_cliente', 'Cliente Moroso'),
       new Checkbox('tipo_cliente', 'Sin Dato/No incluir')
     ],

@@ -74,13 +74,14 @@
                 </v-card-title>
                 <v-card-text>
                   <p class="text-center">
-                    Elije los minimos y maximos de años de antiguedad del cliente
+                    Elije los mínimos y máximos de años de antiguedad del cliente
                   </p>
 
                   <input
                     :ref="model.antiguedad"
                     v-model="model.antiguedad.vmodel"
                     :name="model.antiguedad.id"
+                    :class="model.antiguedad.id"
                   />
                 </v-card-text>
               </v-card>
@@ -90,11 +91,11 @@
             <v-col cols="12" sm="12" lg="6" :class="getMobileClasses">
               <v-card :class="!mobile && 'px-8'">
                 <v-card-title class="justify-center">
-                  <h5 class="text-center">Ultima actividad</h5>
+                  <h5 class="text-center">Última actividad</h5>
                 </v-card-title>
                 <v-card-text>
                   <p class="text-center">
-                    Elije los minimos y maximos en meses de la ultima actividad de cliente
+                    Elije los mínimos y máximos en meses de la última actividad de cliente
                   </p>
 
                   <input
@@ -102,6 +103,7 @@
                     v-model="model.ultima_actividad.vmodel"
                     :name="model.ultima_actividad.id"
                     type="text"
+                    :class="model.ultima_actividad.id"
                   />
                 </v-card-text>
               </v-card>
@@ -146,7 +148,7 @@
                             Fin:
                             {{ model.actividad_r.items.getRangeOfDatedPretty()[1] }}
                           </strong>
-                          <v-btn color="default" class="my-3" @click="model.actividad_r.items.vmodel = []" small>
+                          <v-btn color="orange" class="my-3" @click="model.actividad_r.items.vmodel = []">
                             Limpiar
                           </v-btn>
                         </p>
@@ -158,7 +160,7 @@
             </v-col>
 
             <!-- Fecha de última actividad de M -->
-            <v-col cols="12" sm="6" md="4" :class="getMobileClasses">
+            <v-col cols="12" sm="12" md="4" :class="getMobileClasses">
               <v-card>
                 <v-card-title class="justify-center">
                   <h5>Fecha de última actividad de M</h5>
@@ -195,7 +197,7 @@
                             Fin:
                             {{ model.actividad_m.items.getRangeOfDatedPretty()[1] }}
                           </strong>
-                          <v-btn color="default" class="my-3" @click="model.actividad_m.items.vmodel = []" small>
+                          <v-btn class="orange my-3" @click="model.actividad_m.items.vmodel = []">
                             Limpiar
                           </v-btn>
                         </p>
@@ -207,7 +209,7 @@
             </v-col>
 
             <!-- Fecha de última actividad de T -->
-            <v-col cols="12" sm="6" md="4" :class="getMobileClasses">
+            <v-col cols="12" sm="12" md="4" :class="getMobileClasses">
               <v-card>
                 <v-card-title class="justify-center">
                   <h5>Fecha de última actividad de T</h5>
@@ -244,7 +246,7 @@
                             Fin:
                             {{ model.actividad_t.items.getRangeOfDatedPretty()[1] }}
                           </strong>
-                          <v-btn color="default" class="my-3" @click="model.actividad_t.items.vmodel = []" small>
+                          <v-btn color="orange" class="my-3" @click="model.actividad_t.items.vmodel = []">
                             Limpiar
                           </v-btn>
                         </p>
@@ -263,7 +265,7 @@
 
             <v-card-text :class="getMobileClasses">
               <p class="text-center">
-                En esta sección podras seleccionar algunas de las carateristicas del C y a del cliente
+                En esta sección podrás seleccionar algunas de las caraterísticas del C y del cliente
               </p>
 
               <v-row>
@@ -275,13 +277,14 @@
                     </v-card-title>
                     <v-card-text>
                       <p class="text-center">
-                        Elije los minimos y maximos de la linea de credito otorgada al cliente
+                        Elije los mínimos y máximos de la línea de crédito otorgada al cliente
                       </p>
 
                       <input
                         :ref="model.importe_abonado"
                         v-model="model.importe_abonado.vmodel"
                         :name="model.importe_abonado.id"
+                        :class="model.importe_abonado.id"
                       />
                     </v-card-text>
                   </v-card>
@@ -317,6 +320,7 @@
                         :ref="model.linea_c"
                         v-model="model.linea_c.vmodel"
                         :name="model.linea_c.id"
+                        :class="model.linea_c.id"
                       />
                     </v-card-text>
                   </v-card>
@@ -362,7 +366,7 @@
                                 Fin:
                                 {{ model.movimiento_a.items.getRangeOfDatedPretty()[1] }}
                               </strong>
-                              <v-btn color="default" class="my-3" @click="model.movimiento_a.items.vmodel = []" small>
+                              <v-btn color="orange" class="my-3" @click="model.movimiento_a.items.vmodel = []">
                                 Limpiar
                               </v-btn>
                             </p>
@@ -410,9 +414,9 @@ export default {
   },
 
   mounted () {
+    this.updateRenderSliders()
     window.addEventListener('resize', this.onResize)
     this.onResize()
-    this.updateRenderSliders()
   },
 
   data () {
@@ -447,11 +451,6 @@ export default {
 
     onResize () {
       this.mobile = window.innerWidth <= 768
-    },
-
-    getCalendarSize () {
-      const size = this.mobile ? 180 : null
-      return size
     }
   }
 }

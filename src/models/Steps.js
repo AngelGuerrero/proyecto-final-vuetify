@@ -10,6 +10,7 @@ const Steps = [
     valid: false,
     initialValidation: false
   },
+
   {
     pageTitle: 'Sociodemográficos',
     label: 'Sociodemográficos',
@@ -22,6 +23,7 @@ const Steps = [
     valid: false,
     initialValidation: false
   },
+
   {
     pageTitle: 'Comportamiento del cliente',
     label: 'Comportamiento del cliente',
@@ -34,6 +36,7 @@ const Steps = [
     valid: false,
     initialValidation: false
   },
+
   {
     pageTitle: 'Categoría: Geográficos',
     label: 'Geografícos',
@@ -46,6 +49,7 @@ const Steps = [
     valid: false,
     initialValidation: false
   },
+
   {
     pageTitle: 'Datos',
     label: 'Datos',
@@ -58,10 +62,11 @@ const Steps = [
     valid: false,
     initialValidation: false
   },
+
   {
     pageTitle: 'Formulario',
     label: 'Formulario',
-    pageDescription: 'Tu archivo está listo.<br /> Pero antes, apóyanos completando la siguiente información.',
+    pageDescription: 'Tu archivo está listo.<br /> Apóyanos completando la siguiente información.',
     number: 6,
     name: 'formulario',
     component: 'formulario',

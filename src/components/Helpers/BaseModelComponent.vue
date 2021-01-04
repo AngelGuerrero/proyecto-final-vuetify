@@ -1,5 +1,8 @@
 <template>
   <div>
+    <pre>
+      {{ getSteps }}
+    </pre>
     <!--
       Alert
       Show error alert if the component is not valid
@@ -14,18 +17,14 @@
       <h1 class="title text-sm-h4">{{ pageTitle }}</h1>
     </v-card-title>
 
-    <!--
-        DEFAULT
-        This is the default slot
-     -->
-    <!--
-          DESCRIPTION
-          Description of the section.
-        -->
     <v-container>
       <p class="text-center" v-html="pageDescription"></p>
     </v-container>
 
+    <!--
+        DEFAULT
+        This is the default slot
+     -->
     <slot :isValid="isValid" :mutate="mutate"></slot>
   </div>
 </template>
@@ -34,7 +33,7 @@
 export default {
   name: 'BaseModelComponent',
 
-  inject: ['$getInitialValidation'],
+  inject: ['$getInitialValidation', '$getSteps'],
 
   props: {
     /**
@@ -104,6 +103,10 @@ export default {
       return this.$getInitialValidation()
     },
 
+    getSteps () {
+      return this.$getSteps()
+    },
+
     /**
      * isValid.
      *
@@ -111,6 +114,7 @@ export default {
      * if all model passed as prop are valid or not.
      */
     isValid () {
+      console.log('this.l_model:>> ', this.l_model)
       return this.validateItems(this.l_model)
     }
   },
