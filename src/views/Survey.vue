@@ -10,7 +10,10 @@
       :mobile="$vuetify.breakpoint.smAndDown"
     ></stepper-component>
 
-    <!-- Renderiza un componente dinámico en base al paso seleccionado. -->
+    <!--
+        NOTE: Shows different structure for not mobile screens,
+              basically show the component without header, and content outside.
+    -->
     <v-card class="elevation-10 pa-4" v-show="!$vuetify.breakpoint.smAndDown">
       <component
         v-for="step in steps"
@@ -21,9 +24,8 @@
         :step="step"
         :initialValidation="step.initialValidation"
       ></component>
-      <v-container>
-        <stepper-action></stepper-action>
-      </v-container>
+      <stepper-action></stepper-action>
+      <v-container></v-container>
     </v-card>
   </v-container>
 </template>
@@ -57,50 +59,50 @@ export default {
 
   provide () {
     return {
-      $getInitialValidation: () => this.getInitialValidation,
-
       $isFirst: () => this.isFirst,
 
       $isLast: () => this.isLast,
 
-      $getSteps: () => this.getSteps
+      $getSteps: () => this.getSteps,
+
+      $getCurrentStep: () => this.getCurrentStep,
+
+      $getInitialValidation: () => this.getInitialValidation,
+
+      $getAlert: () => this.getAlert
     }
   },
 
   created () {
     this.currentStep = this.steps[0]
-  },
 
-  mounted () {
     //
     // Listen events
-    EventBus.$on('on-prev-step', () => this.prevStep())
+    EventBus.$on('on-prev-step', () => {
+      this.prevStep()
+    })
 
-    EventBus.$on('on-next-step', () => this.nextStep())
+    EventBus.$on('on-next-step', () => {
+      this.nextStep()
+    })
 
-    EventBus.$on('on-download', () => this.onDownload())
+    EventBus.$on('on-download', () => {
+      this.onDownload()
+    })
   },
 
   data () {
     return {
       steps: Steps,
-      currentStep: null
+      currentStep: null,
+      alert: {
+        type: 'error',
+        message: null
+      }
     }
   },
 
   computed: {
-    getInitialValidation () {
-      if (!this.currentStep) {
-        return false
-      }
-
-      return this.currentStep.initialValidation
-    },
-
-    getSteps () {
-      return this.steps
-    },
-
     isFirst () {
       const first = this.steps[0]
       return this.currentStep.number === first.number
@@ -109,6 +111,26 @@ export default {
     isLast () {
       const last = this.steps[this.steps.length - 1]
       return this.currentStep.number === last.number
+    },
+
+    getSteps () {
+      return this.steps
+    },
+
+    getCurrentStep () {
+      return this.currentStep
+    },
+
+    getInitialValidation () {
+      if (!this.currentStep) {
+        return false
+      }
+
+      return this.currentStep.initialValidation
+    },
+
+    getAlert () {
+      return this.alert
     },
 
     showNext () {
@@ -166,8 +188,18 @@ export default {
       this.steps[this.currentStep.number - 1].initialValidation = true
 
       //
-      // Return the value from a computed property
-      return model.$refs.base.isValid.value
+      // Is the same action for evert each model, then, exists a function
+      // that performs this action for all models, exists in baseMixin file.
+      //
+      // If you need some special action based in the response,
+      // then you can override it inside of the model.
+      const getval = model.validateModel()
+
+      //
+      // Based in the response of validation of this model set an according message.
+      this.alert.message = getval.message
+
+      return getval.value
     },
 
     saveDataFromCurrentModel () {

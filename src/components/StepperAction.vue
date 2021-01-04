@@ -1,12 +1,12 @@
 <template>
-  <v-card-actions>
+  <v-container fluid class="d-flex justify-around my-3">
     <!-- Prev step -->
     <v-btn v-if="!isFirst" @click="prevStep" color="black" dark>
       Anterior
     </v-btn>
 
     <!-- Next step -->
-    <v-btn v-if="!isLast" @click="nextStep" color="indigo" dark class="ml-auto">
+    <v-btn v-if="!isLast" @click="nextStep" color="blue darken-4" dark class="ml-auto">
       Siguiente
     </v-btn>
 
@@ -14,7 +14,7 @@
     <v-btn v-if="isLast" @click="onDownload" color="success" class="ml-auto">
       Descargay y enviar
     </v-btn>
-  </v-card-actions>
+  </v-container>
 </template>
 
 <script>

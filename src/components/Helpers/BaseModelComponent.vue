@@ -1,15 +1,14 @@
 <template>
   <div>
-    <pre>
-      {{ getSteps }}
-    </pre>
     <!--
       Alert
       Show error alert if the component is not valid
      -->
-    <v-alert v-if="isValid.message" type="error" elevation="1">
+    <v-alert v-if="getAlert.message" type="error">
       <div class="justify-center d-flex">
-        {{ isValid.message }}
+        <span class="font-weight-bold">
+          {{ getAlert.message }}
+        </span>
       </div>
     </v-alert>
 
@@ -33,7 +32,7 @@
 export default {
   name: 'BaseModelComponent',
 
-  inject: ['$getInitialValidation', '$getSteps'],
+  inject: ['$getInitialValidation', '$getCurrentStep', '$getAlert'],
 
   props: {
     /**
@@ -86,12 +85,6 @@ export default {
   data () {
     return {
       //
-      // Alert object to show a message to user.
-      alert: {
-        message: null
-      },
-
-      //
       // Creates a copy from
       // props for mutate values.
       l_model: this.model
@@ -99,14 +92,6 @@ export default {
   },
 
   computed: {
-    getInitialValidation () {
-      return this.$getInitialValidation()
-    },
-
-    getSteps () {
-      return this.$getSteps()
-    },
-
     /**
      * isValid.
      *
@@ -114,8 +99,25 @@ export default {
      * if all model passed as prop are valid or not.
      */
     isValid () {
-      console.log('this.l_model:>> ', this.l_model)
+      if (this.getCurrentStep.name !== this.name) {
+        const val = { value: false, message: `'${this.name}' actually is not being validated`, data: null }
+        console.warn('val.message :>> ', val.message)
+        return val
+      }
+
       return this.validateItems(this.l_model)
+    },
+
+    getInitialValidation () {
+      return this.$getInitialValidation()
+    },
+
+    getCurrentStep () {
+      return this.$getCurrentStep()
+    },
+
+    getAlert () {
+      return this.$getAlert()
     }
   },
 
@@ -136,20 +138,6 @@ export default {
 
       console.log('')
       console.group(`=== 👾 Validating model '${this.name}' 🤞 ===`)
-      // for (const [key, value] of Object.entries(this.l_model)) {
-      //   console.log(key, ' | valid :>> ', value.validation.valid)
-
-      //   if (!value.validation.valid) {
-      //     retval = {
-      //       value: false,
-      //       message: `Debes completar todos los campos de la sección '${this.pageTitle}'`,
-      //       data: null
-      //     }
-      //     this.setMessage(retval.message)
-      //     break
-      //   }
-      // }
-
       const notValid = Object.values(items).some(value => !value.validation.valid)
       console.log('notValid :>> ', notValid)
 
@@ -205,16 +193,12 @@ export default {
         return data
       })
 
-      // console.table(retval)
-      // console.log(JSON.stringify(retval, null, 4))
+      console.table(retval)
+      console.log(JSON.stringify(retval, null, 4))
       console.groupEnd()
       console.log('')
 
       return retval
-    },
-
-    setMessage (message) {
-      this.alert.message = message || ''
     },
 
     mutate (model, property, data) {

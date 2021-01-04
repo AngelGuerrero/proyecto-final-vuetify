@@ -40,7 +40,7 @@ export default {
   },
 
   created () {
-    EventBus.$on('on-set-notification', (data) => {
+    EventBus.$on('on-set-notification', data => {
       this.setNotification(data)
     })
   },
@@ -50,7 +50,7 @@ export default {
       drawer: false,
 
       notification: {
-        show: true,
+        show: false,
         timeout: 7000,
         error: false,
         message: ''

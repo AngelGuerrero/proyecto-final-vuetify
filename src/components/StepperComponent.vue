@@ -2,7 +2,10 @@
   <div>
     <v-stepper v-model="currentStep" class="my-3" :vertical="mobile">
       <!--
-      Mobile version
+      NOTE: MOBILE VERSION.
+            If is a mobile screen, then
+            shows the components with the next structure
+            each component is on its corresponding step.
      -->
       <div v-show="mobile" v-for="step in steps" :key="step.number + 'step-mobile'">
         <v-stepper-step
@@ -29,6 +32,11 @@
         <v-divider v-if="step.number !== steps.length" :key="step.id"></v-divider>
       </div>
 
+      <!--
+        NOTE: NOT MOBILE VERSION.
+              If the screen is not mobile, then
+              shows the next structure, it is only the steps header.
+       -->
       <v-stepper-header v-show="!mobile">
         <template v-for="step in steps">
           <v-stepper-step

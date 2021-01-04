@@ -6,7 +6,6 @@
     :pageTitle="step.pageTitle"
     :pageDescription="step.pageDescription"
   >
-    <!-- v-slot="{ isValid }" -->
     <v-row>
       <v-container cols="12" class="justify-center d-flex">
         <validation-provider rules="required" v-slot="{ validate }">
@@ -17,7 +16,7 @@
               model.modelos.setValid(model.modelos.vmodel !== null)
               toggleChildsValid(model.modelos.getItems(), model.modelos.vmodel)
             "
-            :row="!$vuetify.breakpoint.smAndDown"
+            :row="$vuetify.breakpoint.width > 680"
           >
             <v-radio
               v-for="item in model.modelos.getItems()"
