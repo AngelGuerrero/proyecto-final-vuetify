@@ -267,11 +267,10 @@
 </template>
 
 <script>
+import baseMixin from '@/mixins/baseMixin'
+import { MODELOS as model } from '@/api/data'
 import { ValidationProvider } from 'vee-validate'
 import ValidateCheckbox from '../components/Helpers/ValidateCheckbox'
-import { MODELOS as model } from '@/api/data'
-// Mixin
-import baseMixin from '@/mixins/baseMixin'
 
 export default {
   name: 'ModelosComponent',
@@ -337,18 +336,13 @@ export default {
 
       if (!items) return { value: false, message: 'No hay items que validar' }
 
-      let retval
-      this.$refs.base.validateItems(items, response => {
-        if (!response.value) {
-          if (!this.step.initialValidation) return
+      const getval = this.$refs.base.validateItems(items)
 
-          this.panels = this.openAllPanels(this.panelsCount)
-        }
+      if (!getval.value) {
+        this.panels = this.openAllPanels(this.panelsCount)
+      }
 
-        retval = response
-      })
-
-      return retval
+      return getval
     },
 
     toggleChildsValid (items, selected) {

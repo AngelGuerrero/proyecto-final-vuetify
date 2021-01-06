@@ -1,7 +1,5 @@
 <template>
   <v-container fluid class="pa-3">
-    <v-btn color="black" dark>Test</v-btn>
-
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
@@ -74,7 +72,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[2]
+    this.currentStep = this.steps[0]
 
     //
     // Listen events
@@ -179,9 +177,13 @@ export default {
     },
 
     validateCurrentModel (modelName) {
+      console.log('modelName :>> ', modelName)
       //
       // Get the reference
       const model = this.$refs[modelName][0]
+      if (model === undefined) {
+        debugger
+      }
 
       //
       // Update initial validation on this step
@@ -194,6 +196,7 @@ export default {
       // If you need some special action based in the response,
       // then you can override it inside of the model.
       const getval = model.validateModel()
+      console.log('getval.message :>> ', getval.message)
 
       //
       // Based in the response of validation of this model set an according message.
@@ -234,13 +237,30 @@ export default {
       //
       // Change this for the name of the file
       // requested at the end of the program.
-      // a.download = 'mydata.json' // <--
-      const formulario = this.steps.find(el => el.name === 'formulario')
-      a.download = formulario.data ? formulario.data.archivo.selected : 'mydata.json'
+      a.download = `${this.getFileName().data}.json`
+
       a.href = window.URL.createObjectURL(blob)
       a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
       e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
       a.dispatchEvent(e)
+    },
+
+    getFileName () {
+      const retval = { error: false, message: 'ok', data: 'mydata' }
+
+      try {
+        const formulario = this.steps.find(el => el.name === 'formulario')
+
+        if (formulario) {
+          const archivo = formulario.data.find(el => Object.keys(el)[0] === 'archivo').archivo
+          retval.data = archivo.selected
+        }
+      } catch (error) {
+        retval.error = true
+        retval.message = error.message
+      }
+
+      return retval
     }
   }
 }

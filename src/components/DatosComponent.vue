@@ -78,26 +78,9 @@
 </template>
 
 <script>
-import Section from '../models/Section'
-import Checkbox from '../models/Checkbox'
-import ValidateCheckbox from './Helpers/ValidateCheckbox'
-import BaseComponent from './Helpers/BaseModelComponent'
-// Mixin
 import baseMixin from '@/mixins/baseMixin'
-
-//
-// Data of showed sections
-const model = () => ({
-  datos: new Section('datos', 'Datos a exportar', [
-    new Checkbox('ancla', 'id Client'),
-    new Checkbox('ancla', 'Genero'),
-    new Checkbox('ancla', 'Nombre propio'),
-    new Checkbox('ancla', 'Apellido Paterno'),
-    new Checkbox('ancla', 'Apellido Materno'),
-    new Checkbox('ancla', 'Correo electronico'),
-    new Checkbox('ancla', 'Telefono')
-  ])
-})
+import { DATOS as model } from '@/api/data'
+import ValidateCheckbox from './Helpers/ValidateCheckbox'
 
 export default {
   name: 'DatosComponent',
@@ -105,7 +88,6 @@ export default {
   mixins: [baseMixin],
 
   components: {
-    BaseComponent,
     ValidateCheckbox
   },
 
@@ -118,7 +100,7 @@ export default {
 
   data () {
     return {
-      model: model()
+      model
     }
   }
 }

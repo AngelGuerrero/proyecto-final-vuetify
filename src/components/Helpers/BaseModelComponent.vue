@@ -131,15 +131,11 @@ export default {
       return callback(this.isValid)
     },
 
-    validateItems (items, callback = null) {
+    validateItems (items) {
       let retval = { value: true, message: '', data: items }
 
       if (!this.getInitialValidation) {
         retval.value = false
-
-        if (callback) {
-          callback(retval)
-        }
 
         return retval
       }
@@ -162,10 +158,6 @@ export default {
       //
       // Only log purposes
       if (retval.value) console.log('🎉🎉🎉 Valid! 🎉🎉🎉')
-
-      if (callback) {
-        callback(retval)
-      }
 
       return retval
     },

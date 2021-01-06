@@ -381,12 +381,9 @@
 
 <script>
 import baseMixin from '@/mixins/baseMixin'
+import { COMPORTAMIENTO as model } from '@/api/data'
 import ValidateCalendar from './Helpers/ValidateCalendar'
 import ValidateCheckbox from './Helpers/ValidateCheckbox'
-//
-// Model
-import { COMPORTAMIENTO as model } from '@/api/data'
-
 // External
 var $ = require('jquery')
 

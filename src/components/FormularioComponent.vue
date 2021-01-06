@@ -14,15 +14,10 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <validation-provider
-            :name="model.nombre.name"
-            :rules="'required:' + model.nombre.name"
-            immediate
-            v-slot="{ errors }"
-          >
+          <!-- :rules="'required:' + model.nombre.name" -->
+          <validation-provider :name="model.nombre.name" immediate v-slot="{ errors }">
             <v-text-field
               clearable
-              autofocus
               filled
               prepend-inner-icon="mdi-account"
               :error-messages="errors"
@@ -41,15 +36,10 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <validation-provider
-            :name="model.area.name"
-            :rules="'required:' + model.area.name"
-            immediate
-            v-slot="{ errors }"
-          >
+          <!-- :rules="'required:' + model.area.name" -->
+          <validation-provider :name="model.area.name" immediate v-slot="{ errors }">
             <v-text-field
               clearable
-              autofocus
               filled
               prepend-inner-icon="mdi-badge-account-horizontal"
               :error-messages="errors"
@@ -68,7 +58,7 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="6">
-          <validation-provider rules="required" v-slot="{ validate }">
+          <validation-provider v-slot="{ validate }">
             <v-radio-group
               :error-messages="model.canal.vmodel ? [] : model.canal.validation.message"
               v-model="model.canal.vmodel"
@@ -88,13 +78,9 @@
             </v-radio-group>
           </validation-provider>
 
-          <validation-provider
-            :name="model.canal_otro.title"
-            :rules="model.canal.vmodel === 'Otro' ? 'required:' + model.canal_otro.name + '|max:50' : ''"
-            v-slot="{ errors }"
-          >
+          <!-- :rules="model.canal.vmodel === 'Otro' ? 'required:' + model.canal_otro.name + '|max:50' : ''" -->
+          <validation-provider :name="model.canal_otro.title" v-slot="{ errors }">
             <v-text-field
-              autofocus
               clearable
               filled
               prepend-inner-icon="mdi-account-question"
@@ -114,14 +100,9 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <validation-provider
-            :name="model.campana.title"
-            :rules="'required:' + model.campana.name + '|max:50'"
-            immediate
-            v-slot="{ errors }"
-          >
+          <!-- :rules="'required:' + model.campana.name + '|max:50'" -->
+          <validation-provider :name="model.campana.title" immediate v-slot="{ errors }">
             <v-text-field
-              autofocus
               clearable
               filled
               prepend-inner-icon="mdi-pencil"
@@ -178,14 +159,9 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <validation-provider
-            :name="model.correo.name"
-            :rules="'required:' + model.correo.name + '|email'"
-            immediate
-            v-slot="{ errors }"
-          >
+          <!-- :rules="'required:' + model.correo.name + '|email'" -->
+          <validation-provider :name="model.correo.name" immediate v-slot="{ errors }">
             <v-text-field
-              autofocus
               clearable
               filled
               prepend-inner-icon="mdi-email"
@@ -210,7 +186,6 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              autofocus
               clearable
               filled
               prepend-inner-icon="mdi-file"
@@ -244,35 +219,44 @@ import { required, email, max } from 'vee-validate/dist/rules'
 const model = () => ({
   //
   // Nombre
-  nombre: new Section('nombre', 'Nombre'),
+  nombre: new Section('nombre', 'Nombre', null, '', null, false, false, true),
 
   //
   // Área a la que perteneces
-  area: new Section('area', 'Área a la que perteneces'),
+  area: new Section('area', 'Área a la que perteneces', null, '', null, false, false, true),
 
   //
   // Canal de recomendación
-  canal: new Section('canal', 'Canal de recomendación', ['Email', 'SMS', 'Paid Medi', 'Venta por Telefono', 'Otro']),
+  canal: new Section(
+    'canal',
+    'Canal de recomendación',
+    ['Email', 'SMS', 'Paid Medi', 'Venta por Telefono', 'Otro'],
+    '',
+    null,
+    false,
+    false,
+    true
+  ),
 
   //
   // Extension option for 'Canal de recomendación'
-  canal_otro: new Section('canal_otro', 'Otra opción', null),
+  canal_otro: new Section('canal_otro', 'Otra opción', null, '', null, false, false, true),
 
   //
   // Nombre de campaña
-  campana: new Section('campana', 'Nombre de campaña'),
+  campana: new Section('campana', 'Nombre de campaña', null, '', null, false, false, true),
 
   //
   // Fecha de campaña
-  cam_fecha: new Section('cam_fecha', 'Fecha de campaña', null, 'La fecha de campaña es requerida.'),
+  cam_fecha: new Section('cam_fecha', 'Fecha de campaña', null, '', null, false, false, true),
 
   //
   // Correo electrónico
-  correo: new Section('correo', 'Correo electrónico'),
+  correo: new Section('correo', 'Correo electrónico', null, '', null, false, false, true),
 
   //
   // Nombre de archivo
-  archivo: new Section('archivo', 'Nombre de archivo')
+  archivo: new Section('archivo', 'Nombre de archivo', null, '')
 })
 
 /**

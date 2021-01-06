@@ -445,4 +445,110 @@ const COMPORTAMIENTO = {
   )
 }
 
-export { MODELOS, SOCIODEMOGRAFICOS, COMPORTAMIENTO }
+const GEOGRAFICOS = {
+  // Estados
+  estado: new Section('estado', 'Estados', [
+    'AGUASCALIENTES',
+    'BAJA CALIFORNIA',
+    'BAJA CALIFORNIA SUR',
+    'CAMPECHE',
+    'COAHUILA DE ZARAGOZA',
+    'COLIMA',
+    'CHIAPAS',
+    'CHIHUAHUA',
+    'CIUDAD DE MEXICO',
+    'DURANGO',
+    'GUANAJUATO',
+    'GUERRERO',
+    'HIDALG',
+    'JALISCO',
+    'MEXICO',
+    'MICHOACAN DE OCAMPO',
+    'MORELOS',
+    'NAYARIT',
+    'NUEVO LEON',
+    'OAXACA',
+    'PUEBLA',
+    'QUERETARO',
+    'QUINTANA ROO',
+    'SAN LUIS POTOSI',
+    'SINALOA',
+    'SONORA',
+    'TABASCO',
+    'TAMAULIPAS',
+    'TLAXCALA',
+    'VERACRUZ DE IGNACIO DE LA LLAVE',
+    'YUCATAN',
+    'ZACATECAS'
+  ]),
+  // Municipio
+  municipio: new Section('municipio', 'Municipio', [
+    'ACAMBAY',
+    'ACOLMAN',
+    'ACULCO',
+    'ALMOLOYA DE ALQUISIRAS',
+    'ALMOLOYA DE JUAREZ',
+    'ALMOLOYA DEL RIO',
+    'AMANALCO',
+    'AMATEPEC',
+    'AMECAMECA',
+    'APAXCO',
+    'ATENCO',
+    'ATIZAPAN',
+    'ATIZAPAN DE ZARAGOZA',
+    'ATLAUTLA',
+    'AXAPUSCO',
+    'AYAPANGO'
+  ]),
+  // Tipo de ciudad
+  ciudad: new Section('ciudad', 'Tipo de ciudad', [
+    new Checkbox('ciudad', 'Zonas Metropolitanas'),
+    new Checkbox('ciudad', 'Conurbacion'),
+    new Checkbox('ciudad', 'Centros Urbanos'),
+    new Checkbox('ciudad', 'n/a')
+  ]),
+  // Clústers
+  cluster: new Section('cluster', 'Clústers', ['opción 1', 'opción 2', 'opción 3', 'opción 4', 'opción 5']),
+  // División C
+  div_c: new Section('div_c', 'División C', [
+    new Checkbox('div_c', 'División I'),
+    new Checkbox('div_c', 'División II'),
+    new Checkbox('div_c', 'División III'),
+    new Checkbox('div_c', 'División IV'),
+    new Checkbox('div_c', 'División V')
+  ]),
+  // Regiones Nielsen
+  nielsen: new Section('nielsen', 'Regiones Nielsen', [
+    new Checkbox('nielsen', 'División I'),
+    new Checkbox('nielsen', 'División II'),
+    new Checkbox('nielsen', 'División III'),
+    new Checkbox('nielsen', 'División IV'),
+    new Checkbox('nielsen', 'División V')
+  ]),
+  // Regiones AIM
+  aim: new Section('aim', 'Regiones AIM', [
+    new Checkbox('aim', 'Centro Norte'),
+    new Checkbox('aim', 'Centro Sur'),
+    new Checkbox('aim', 'Este'),
+    new Checkbox('aim', 'No identificado'),
+    new Checkbox('aim', 'Noreste'),
+    new Checkbox('aim', 'Noroeste'),
+    new Checkbox('aim', 'Oeste'),
+    new Checkbox('aim', 'Sureste'),
+    new Checkbox('aim', 'Suroeste')
+  ])
+}
+
+const DATOS = {
+  datos: new Section('datos', 'Datos a exportar', [
+    new Checkbox('datos', 'id Client'),
+    new Checkbox('datos', 'Género'),
+    new Checkbox('datos', 'Nombre propio'),
+    new Checkbox('datos', 'Apellido Paterno'),
+    new Checkbox('datos', 'Apellido Materno'),
+    new Checkbox('datos', 'Correo electrónico'),
+    new Checkbox('datos', 'Teléfono')
+  ])
+}
+
+export { MODELOS, SOCIODEMOGRAFICOS, COMPORTAMIENTO, GEOGRAFICOS, DATOS }
