@@ -177,32 +177,30 @@ export default {
     },
 
     validateCurrentModel (modelName) {
-      console.log('modelName :>> ', modelName)
-      //
-      // Get the reference
-      const model = this.$refs[modelName][0]
-      if (model === undefined) {
-        debugger
-      }
-
       //
       // Update initial validation on this step
       this.steps[this.currentStep.number - 1].initialValidation = true
 
       //
-      // Is the same action for evert each model, then, exists a function
-      // that performs this action for all models, exists in baseMixin file.
-      //
-      // If you need some special action based in the response,
-      // then you can override it inside of the model.
-      const getval = model.validateModel()
-      console.log('getval.message :>> ', getval.message)
+      // Check if the model in refs is not undefined
+      if (this.$refs[modelName][0]) {
+        const model = this.$refs[modelName][0]
+        //
+        // Is the same action for evert each model, then, exists a function
+        // that performs this action for all models, exists in baseMixin file.
+        //
+        // If you need some special action based in the response,
+        // then you can override it inside of the model.
+        const getval = model.validateModel()
 
-      //
-      // Based in the response of validation of this model set an according message.
-      this.alert.message = getval.message
+        //
+        // Based in the response of validation of this model set an according message.
+        this.alert.message = getval.message
 
-      return getval.value
+        return getval.value
+      }
+
+      return false
     },
 
     saveDataFromCurrentModel () {
