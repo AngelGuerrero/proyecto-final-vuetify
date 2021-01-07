@@ -14,15 +14,19 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <!-- :rules="'required:' + model.nombre.name" -->
-          <validation-provider :name="model.nombre.name" immediate v-slot="{ errors }">
+          <validation-provider
+            :rules="'required:' + model.nombre.name"
+            :name="model.nombre.name"
+            immediate
+            v-slot="{ errors }"
+          >
             <v-text-field
               clearable
               filled
               prepend-inner-icon="mdi-account"
               :error-messages="errors"
               v-model="model.nombre.vmodel"
-              @change="setValidation(model.nombre, errors.length)"
+              @change="mutate(model.nombre, 'validation', hasErrors(errors))"
               class="ma-0 pa-0"
             ></v-text-field>
           </validation-provider>
@@ -36,15 +40,19 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <!-- :rules="'required:' + model.area.name" -->
-          <validation-provider :name="model.area.name" immediate v-slot="{ errors }">
+          <validation-provider
+            :rules="'required:' + model.area.name"
+            :name="model.area.name"
+            immediate
+            v-slot="{ errors }"
+          >
             <v-text-field
               clearable
               filled
               prepend-inner-icon="mdi-badge-account-horizontal"
               :error-messages="errors"
               v-model="model.area.vmodel"
-              @change="setValidation(model.area, errors.length)"
+              @change="mutate(model.area, 'validation', hasErrors(errors))"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -58,11 +66,11 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="6">
-          <validation-provider v-slot="{ validate }">
+          <validation-provider rules="required_radio" :name="model.canal.name" immediate v-slot="{ errors }">
             <v-radio-group
-              :error-messages="model.canal.vmodel ? [] : model.canal.validation.message"
+              :error-messages="errors"
               v-model="model.canal.vmodel"
-              @change="model.canal.validation.valid = model.canal.vmodel !== null"
+              @change="mutate(model.canal, 'validation', hasErrorsRadio(model.canal.vmodel))"
             >
               <v-radio
                 v-for="item in model.canal.items"
@@ -70,16 +78,16 @@
                 :name="model.canal.name"
                 :label="item"
                 :value="item"
-                @change="
-                  validate
-                  model.canal_otro.validation.valid = true
-                "
               ></v-radio>
             </v-radio-group>
           </validation-provider>
 
-          <!-- :rules="model.canal.vmodel === 'Otro' ? 'required:' + model.canal_otro.name + '|max:50' : ''" -->
-          <validation-provider :name="model.canal_otro.title" v-slot="{ errors }">
+          <validation-provider
+            :rules="model.canal.vmodel === 'Otro' ? 'required:' + model.canal_otro.name + '|max:50' : ''"
+            immediate
+            :name="model.canal_otro.title"
+            v-slot="{ errors }"
+          >
             <v-text-field
               clearable
               filled
@@ -87,6 +95,7 @@
               :disabled="model.canal.vmodel !== 'Otro'"
               v-model="model.canal_otro.vmodel"
               :error-messages="errors"
+              @change="mutate(model.canal, 'validation', hasErrors(errors))"
               label="¿Cuál?"
             ></v-text-field>
           </validation-provider>
@@ -100,15 +109,19 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <!-- :rules="'required:' + model.campana.name + '|max:50'" -->
-          <validation-provider :name="model.campana.title" immediate v-slot="{ errors }">
+          <validation-provider
+            :rules="'required:' + model.campana.name + '|max:50'"
+            :name="model.campana.title"
+            immediate
+            v-slot="{ errors }"
+          >
             <v-text-field
               clearable
               filled
               prepend-inner-icon="mdi-pencil"
               :error-messages="errors"
               v-model="model.campana.vmodel"
-              @change="setValidation(model.campana, errors.length)"
+              @change="mutate(model.campana, 'validation', hasErrors(errors))"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -159,8 +172,12 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
-          <!-- :rules="'required:' + model.correo.name + '|email'" -->
-          <validation-provider :name="model.correo.name" immediate v-slot="{ errors }">
+          <validation-provider
+            :rules="'required:' + model.correo.name + '|email'"
+            :name="model.correo.name"
+            immediate
+            v-slot="{ errors }"
+          >
             <v-text-field
               clearable
               filled
@@ -168,7 +185,7 @@
               autocomplete
               :error-messages="errors"
               v-model="model.correo.vmodel"
-              @input="setValidation(model.correo, errors.length)"
+              @input="mutate(model.correo, 'validation', hasErrors(errors))"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -191,7 +208,7 @@
               prepend-inner-icon="mdi-file"
               :error-messages="errors"
               v-model="model.archivo.vmodel"
-              @change="setValidation(model.archivo, errors.length)"
+              @change="mutate(model.archivo, 'validation', hasErrors(errors))"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -219,44 +236,41 @@ import { required, email, max } from 'vee-validate/dist/rules'
 const model = () => ({
   //
   // Nombre
-  nombre: new Section('nombre', 'Nombre', null, '', null, false, false, true),
+  nombre: new Section('nombre', 'Nombre'),
 
   //
   // Área a la que perteneces
-  area: new Section('area', 'Área a la que perteneces', null, '', null, false, false, true),
+  area: new Section('area', 'Área a la que perteneces'),
 
   //
   // Canal de recomendación
-  canal: new Section(
-    'canal',
-    'Canal de recomendación',
-    ['Email', 'SMS', 'Paid Medi', 'Venta por Telefono', 'Otro'],
-    '',
-    null,
-    false,
-    false,
-    true
-  ),
+  canal: new Section('canal', 'Canal de recomendación', [
+    'Email',
+    'SMS',
+    'Paid Medi',
+    'Venta por Telefono',
+    'Otro'
+  ]),
 
   //
   // Extension option for 'Canal de recomendación'
-  canal_otro: new Section('canal_otro', 'Otra opción', null, '', null, false, false, true),
+  canal_otro: new Section('canal_otro', 'Otra opción'),
 
   //
   // Nombre de campaña
-  campana: new Section('campana', 'Nombre de campaña', null, '', null, false, false, true),
+  campana: new Section('campana', 'Nombre de campaña'),
 
   //
   // Fecha de campaña
-  cam_fecha: new Section('cam_fecha', 'Fecha de campaña', null, '', null, false, false, true),
+  cam_fecha: new Section('cam_fecha', 'Fecha de campaña'),
 
   //
   // Correo electrónico
-  correo: new Section('correo', 'Correo electrónico', null, '', null, false, false, true),
+  correo: new Section('correo', 'Correo electrónico'),
 
   //
   // Nombre de archivo
-  archivo: new Section('archivo', 'Nombre de archivo', null, '')
+  archivo: new Section('archivo', 'Nombre de archivo')
 })
 
 /**
@@ -278,6 +292,28 @@ extend('required', {
   message: name => {
     return `El campo ${model()[name] !== undefined ? model()[name].title : ''} es requerido.`
   }
+})
+
+extend('required_radio', {
+  ...required,
+
+  validate (value) {
+    if (value) {
+      return {
+        required: true,
+        valid: true
+      }
+    }
+
+    return {
+      required: true,
+      valid: false
+    }
+  },
+
+  computesRequired: true,
+
+  message: 'Debes seleccionar al menos una opción'
 })
 
 /**
@@ -335,7 +371,6 @@ export default {
     },
 
     'model.cam_fecha.vmodel' (val) {
-      console.log(val)
       this.formatedDate = moment(val).format('DD/MM/YYYY')
     }
   },
@@ -347,14 +382,30 @@ export default {
      */
     save (date) {
       this.$refs.menu.save(date)
-      this.setValidation(this.model.cam_fecha, 0)
+      this.model.cam_fecha.validation.valid = true
+      this.model.cam_fecha.validation.message = ''
     },
 
-    setValidation (model, value) {
-      if (value === 0) {
-        this.model[model.name].validation.valid = true
-        this.model[model.name].validation.message = ''
+    hasErrorsRadio (value) {
+      let retval = { message: 'El campo no es valido', valid: false }
+
+      if (value !== []) {
+        retval = {
+          message: '',
+          valid: true
+        }
       }
+
+      return retval
+    },
+
+    hasErrors (errors) {
+      const retval = {
+        message: errors.length <= 0 ? '' : 'El campo no es válido',
+        valid: errors.length <= 0
+      }
+
+      return retval
     }
   }
 }

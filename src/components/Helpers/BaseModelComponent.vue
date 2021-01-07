@@ -91,6 +91,14 @@ export default {
     }
   },
 
+  watch: {
+    model (newValue) {
+      if (newValue) {
+        this.l_model = newValue
+      }
+    }
+  },
+
   computed: {
     /**
      * isValid.
@@ -127,7 +135,7 @@ export default {
     //
     // Return selected data
     validateModel (callback) {
-      console.log(`%c✨ Validating '${this.name}'✨`, 'color:skyblue;')
+      console.log(`%c✨ Validating '${this.name}'✨`, 'color:blue;')
       return callback(this.isValid)
     },
 

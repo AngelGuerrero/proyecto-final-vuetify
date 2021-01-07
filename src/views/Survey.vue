@@ -72,7 +72,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[0]
+    this.currentStep = this.steps[5]
 
     //
     // Listen events
@@ -177,6 +177,7 @@ export default {
     },
 
     validateCurrentModel (modelName) {
+      window.scrollTo(0, 0)
       //
       // Update initial validation on this step
       this.steps[this.currentStep.number - 1].initialValidation = true

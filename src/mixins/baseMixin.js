@@ -3,6 +3,7 @@ var $ = require('jquery')
 export default {
   methods: {
     mutate (model, property, data) {
+      console.log('mutating model :>> ', model)
       this.model[model.name][property] = data
     },
 
@@ -14,6 +15,7 @@ export default {
       //
       // Executes an action based in the response
       this.$refs.base.validateModel(response => {
+        console.log('response :>> ', response)
         retval = response
         console.warn(`${retval.valid ? '' : 'Model is not valid'}`)
       })
