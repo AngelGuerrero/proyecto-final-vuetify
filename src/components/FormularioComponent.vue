@@ -66,12 +66,13 @@
           </v-subheader>
         </v-col>
         <v-col cols="12" md="6">
-          <validation-provider rules="required_radio" :name="model.canal.name" immediate v-slot="{ errors }">
-            <v-radio-group
-              :error-messages="errors"
-              v-model="model.canal.vmodel"
-              @change="mutate(model.canal, 'validation', hasErrorsRadio(model.canal.vmodel))"
-            >
+          <validation-provider
+            rules="required_radio"
+            :name="model.canal.name"
+            immediate
+            v-slot="{ errors }"
+          >
+            <v-radio-group :error-messages="errors" v-model="model.canal.vmodel">
               <v-radio
                 v-for="item in model.canal.items"
                 :key="item.id"
@@ -83,7 +84,11 @@
           </validation-provider>
 
           <validation-provider
-            :rules="model.canal.vmodel === 'Otro' ? 'required:' + model.canal_otro.name + '|max:50' : ''"
+            :rules="
+              model.canal.vmodel === 'Otro'
+                ? 'required:' + model.canal_otro.name + '|max:50'
+                : ''
+            "
             immediate
             :name="model.canal_otro.title"
             v-slot="{ errors }"
@@ -95,7 +100,6 @@
               :disabled="model.canal.vmodel !== 'Otro'"
               v-model="model.canal_otro.vmodel"
               :error-messages="errors"
-              @change="mutate(model.canal, 'validation', hasErrors(errors))"
               label="¿Cuál?"
             ></v-text-field>
           </validation-provider>
@@ -159,7 +163,10 @@
               ref="picker"
               v-model="model.cam_fecha.vmodel"
               min="1950-01-01"
-              @change="save"
+              @change="
+                save
+                mutate(model.cam_fecha, 'validation', validateDate($event))
+              "
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -193,7 +200,9 @@
 
       <v-row>
         <v-col cols="12" md="4">
-          <v-subheader class="font-weight-bold">¿Como quieres nombrar tu archivo?</v-subheader>
+          <v-subheader class="font-weight-bold">
+            ¿Como quieres nombrar tu archivo?
+          </v-subheader>
         </v-col>
         <v-col cols="12" md="8">
           <validation-provider
@@ -233,7 +242,7 @@ import { required, email, max } from 'vee-validate/dist/rules'
  *
  * Contains all information of controls.
  */
-const model = () => ({
+const model = {
   //
   // Nombre
   nombre: new Section('nombre', 'Nombre'),
@@ -271,7 +280,7 @@ const model = () => ({
   //
   // Nombre de archivo
   archivo: new Section('archivo', 'Nombre de archivo')
-})
+}
 
 /**
  * Extend 'required' validation
@@ -290,7 +299,7 @@ extend('required', {
    * for each one or single one control.
    */
   message: name => {
-    return `El campo ${model()[name] !== undefined ? model()[name].title : ''} es requerido.`
+    return `El campo ${model[name] !== undefined ? model[name].title : ''} es requerido.`
   }
 })
 
@@ -298,22 +307,10 @@ extend('required_radio', {
   ...required,
 
   validate (value) {
-    if (value) {
-      return {
-        required: true,
-        valid: true
-      }
-    }
-
-    return {
-      required: true,
-      valid: false
-    }
+    return value !== null
   },
 
-  computesRequired: true,
-
-  message: 'Debes seleccionar al menos una opción'
+  message: 'Debes seleccionar una opción'
 })
 
 /**
@@ -358,7 +355,7 @@ export default {
 
   data () {
     return {
-      model: model(),
+      model,
       date: null,
       formatedDate: null,
       menu: false
@@ -372,40 +369,71 @@ export default {
 
     'model.cam_fecha.vmodel' (val) {
       this.formatedDate = moment(val).format('DD/MM/YYYY')
+    },
+
+    'model.canal.vmodel' (val) {
+      //
+      // Validate canal
+      const isCanalValid = val !== null
+      this.model.canal.validation.valid = isCanalValid
+      this.model.canal.validation.message = isCanalValid ? '' : 'Selecciona una opcion'
+
+      //
+      // Is valid if the canal vmodel is distinct to 'otro'
+      const isCanalOtroActive = val.toLowerCase() === 'otro'
+
+      //
+      // Canal otro
+      if (isCanalOtroActive) {
+        const isCanalOtroValid = this.model.canal_otro.vmodel !== null
+
+        this.model.canal_otro.validation.valid = isCanalOtroValid
+        this.model.canal_otro.validation.message = isCanalOtroValid
+          ? ''
+          : 'No se ha escrito una opción'
+      } else {
+        this.model.canal_otro.validation.valid = true
+        this.model.canal_otro.validation.message = ''
+      }
+    },
+
+    'model.canal_otro.vmodel' (val) {
+      //
+      // Validate canal otro
+      const isCanalOtroValid = val !== null
+      this.model.canal_otro.validation.valid = isCanalOtroValid
+      this.model.canal_otro.validation.message = isCanalOtroValid
+        ? ''
+        : 'No se ha escrito una opción'
     }
   },
 
   methods: {
+    validateDate (event) {
+      const expression = !!event
+
+      return this.getResponse(expression, this.model.cam_fecha.validation.message)
+    },
+
     /**
      * Perform validations for date here,
      * maybe you want validate the limit date.
      */
     save (date) {
       this.$refs.menu.save(date)
-      this.model.cam_fecha.validation.valid = true
-      this.model.cam_fecha.validation.message = ''
-    },
-
-    hasErrorsRadio (value) {
-      let retval = { message: 'El campo no es valido', valid: false }
-
-      if (value !== []) {
-        retval = {
-          message: '',
-          valid: true
-        }
-      }
-
-      return retval
     },
 
     hasErrors (errors) {
-      const retval = {
-        message: errors.length <= 0 ? '' : 'El campo no es válido',
-        valid: errors.length <= 0
-      }
+      const expression = errors.length <= 0
 
-      return retval
+      return this.getResponse(expression, errors[0])
+    },
+
+    getResponse (value, message) {
+      return {
+        valid: value,
+        message: value ? '' : message || 'El campo es requerido.'
+      }
     }
   }
 }

@@ -91,14 +91,6 @@ export default {
     }
   },
 
-  watch: {
-    model (newValue) {
-      if (newValue) {
-        this.l_model = newValue
-      }
-    }
-  },
-
   computed: {
     /**
      * isValid.
@@ -109,7 +101,7 @@ export default {
     isValid () {
       if (this.getCurrentStep.name !== this.name) {
         const val = { value: false, message: `'${this.name}' actually is not being validated`, data: null }
-        console.warn('val.message :>> ', val.message)
+        // console.warn('val.message :>> ', val.message)
         return val
       }
 
@@ -204,8 +196,8 @@ export default {
         return data
       })
 
-      console.table(retval)
-      console.log(JSON.stringify(retval, null, 4))
+      // console.table(retval)
+      // console.log(JSON.stringify(retval, null, 4))
       console.groupEnd()
       console.log('')
 

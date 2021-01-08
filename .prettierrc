@@ -6,9 +6,9 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "htmlWhitespaceSensitivity": "ignore",
-  "jsxBracketSameLine": true,
+  "jsxBracketSameLine": false,
   "jsxSingleQuote": true,
   "arrowParens": "avoid",
   "parser": "vue",
-  "printWidth": 110
+  "printWidth": 90
 }

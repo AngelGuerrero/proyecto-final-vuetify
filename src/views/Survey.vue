@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-3">
+  <v-container :fluid="$vuetify.breakpoint.mdAndDown" class="pa-3">
     <!-- Iterates over all steps -->
     <stepper-component
       :steps="steps"
@@ -72,7 +72,7 @@ export default {
   },
 
   created () {
-    this.currentStep = this.steps[5]
+    this.currentStep = this.steps[0]
 
     //
     // Listen events
